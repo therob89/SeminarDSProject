@@ -11,7 +11,6 @@ import sinalgo.nodes.Connections;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.edges.Edge;
 import sinalgo.nodes.messages.Inbox;
-import sinalgo.nodes.messages.Message;
 import sinalgo.tools.logging.Logging;
 
 public class MSNode extends Node {
