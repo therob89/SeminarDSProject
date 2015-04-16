@@ -1,0 +1,4 @@
+This is the project for the seminar in Distributed System and Architectures.
+
+***********
++++++++

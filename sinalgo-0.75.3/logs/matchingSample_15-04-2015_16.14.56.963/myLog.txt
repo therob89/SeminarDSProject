@@ -1,0 +1,10 @@
+Node:: 9 Pressed popup menu
+Node: 1 has received this message hello from 9
+Node: 12 has received this message hello from 9
+Node:: 4 Pressed popup menu
+Node: 6 has received this message hello from 4
+Node: 20 has received this message hello from 4
+Node: 7 has received this message hello from 4
+Node:: 12 Pressed popup menu
+Node: 6 has received this message hello from 12
+Node: 20 has received this message hello from 12
