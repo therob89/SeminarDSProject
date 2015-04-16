@@ -17,6 +17,11 @@ public class MSTimer extends Timer {
 		this.sender = sender;
 		this.interval = interval;
 	}
+	/**
+	 * This method must implement the daemon
+	 * 
+	 * 
+	 */
 	@Override
 	public void fire() {
 		// TODO Auto-generated method stub
