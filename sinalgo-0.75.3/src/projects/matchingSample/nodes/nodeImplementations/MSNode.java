@@ -3,6 +3,7 @@ package projects.matchingSample.nodes.nodeImplementations;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Iterator;
+import java.util.Random;
 
 import projects.matchingSample.nodes.messages.MSMessage;
 import sinalgo.configuration.WrongConfigurationException;
@@ -16,7 +17,10 @@ import sinalgo.tools.logging.Logging;
 public class MSNode extends Node {
 
 	public static boolean isSending = true;
-	public static boolean isMarried = false;
+	boolean isMarried;
+	Integer pointingNode; 
+	int interval;
+	
 	Logging myLog = Logging.getLogger("myLog.txt");
 
 	
@@ -39,7 +43,8 @@ public class MSNode extends Node {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		
+		this.isMarried = false;
+		this.pointingNode = -1 ;
 		
 	}
 
