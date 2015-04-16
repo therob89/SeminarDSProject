@@ -25,7 +25,12 @@ public class MSNode extends Node {
 	int interval;
 	
 	Logging myLog = Logging.getLogger("myLog.txt");
-
+	
+	
+	/**
+	 * Check if neighbor was pointing to me
+	 * @return The id of neighbor such that neighbor.ID == self,  -1 otherwise
+	 */
 	private int checkNeighborForMarriage(){
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
@@ -37,7 +42,10 @@ public class MSNode extends Node {
 		}
 		return -1;
 	}
-	
+	/**
+	 * Check trough neighbor (maxID) to find one that can be available with a certain condition
+	 * @return The id of neighbor such that neighbor.ID == self,  -1 otherwise
+	 */
 	private int checkMaxNeighborForMarriageWithNullPreference(){
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
@@ -75,10 +83,16 @@ public class MSNode extends Node {
 		}
 		return false;
 	}
+	/**
+	 *  Four mutual exclusive guarded rules
+	 * @return
+	 */
 	
 	
-	
-	
+	/**
+	 * Check if the value of isMarried is equal to predicate
+	 * @return True if this rule can be activate, false otherwise
+	 */
 	boolean updateRules(){
 		boolean flag = this.PRmarried();
 		if(this.isMarried != flag){
@@ -87,7 +101,10 @@ public class MSNode extends Node {
 		}
 		return false;
 	}
-	
+	/**
+	 * Check if this process can be married with 1 of his neighbors
+	 * @return True if this rule can be activate, false otherwise
+	 */
 	boolean marriageRule(){
 		int j = -1;
 		if((this.isMarried == this.PRmarried()) && this.pointingNode == -1 && (j=this.checkNeighborForMarriage())!=-1){
@@ -96,20 +113,31 @@ public class MSNode extends Node {
 		}
 		return false;
 	}
-	
-	void seductionRule(){
+	/**
+	 * Check if this process can seduce with 1 of his neighbors
+	 * @return True if this rule can be activate, false otherwise
+	 */
+	boolean seductionRule(){
 		int j;
 		if((this.isMarried == this.PRmarried()) && this.pointingNode == -1 && this.checkNeighborForMarriage()==-1 && (j = this.checkMaxNeighborForMarriageWithNullPreference())!=-1){
 			this.pointingNode = j;
+			return true;
 		}
+		return false;
 	}
-	void abandonmentRule(){
+	/**
+	 * Check if this process must abandon 
+	 * @return True if this rule can be activate, false otherwise
+	 */
+	boolean abandonmentRule(){
 		MSNode temp = this.getNodeByID(this.pointingNode);
 		if(this.isMarried == this.PRmarried() && this.pointingNode!=-1 
 				&& temp.pointingNode!=this.ID 
 				&& (temp.isMarried || temp.ID <= this.ID)){
 			this.pointingNode = -1;
+			return true;
 		}
+		return false;
 	}
 	@Override
 	public void handleMessages(Inbox inbox) {
