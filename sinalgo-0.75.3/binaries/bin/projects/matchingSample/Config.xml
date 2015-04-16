@@ -116,7 +116,7 @@
 		<DefaultMessageTransmissionModel value="ConstantTime" />
 
 		<!--Default connectivity model used when none is specified-->
-		<DefaultConnectivityModel value="UDG" />
+		<DefaultConnectivityModel value="StaticConnectivity" />
 
 		<!--Default distribution model used when none is specified-->
 		<DefaultDistributionModel value="Random" />

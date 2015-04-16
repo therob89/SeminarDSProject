@@ -4,9 +4,11 @@ import sinalgo.nodes.messages.Message;
 
 public class MSMessage extends Message {
 
+	public static final String MARRIAGE_MEX = "MARRY ME";
 	/**
 	 * The payload of the S1Message.
 	 */
+	
 	public String data;
 	
 	/**

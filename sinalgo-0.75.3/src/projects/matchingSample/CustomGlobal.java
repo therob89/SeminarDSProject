@@ -42,6 +42,7 @@ import javax.swing.JOptionPane;
 
 import sinalgo.nodes.Node.NodePopupMethod;
 import sinalgo.runtime.AbstractCustomGlobal;
+import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
 
 /**

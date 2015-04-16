@@ -1,0 +1,100 @@
+Init method for nodeID 1 that have outgoingconnections 0
+Init method for nodeID 2 that have outgoingconnections 0
+Init method for nodeID 3 that have outgoingconnections 0
+Timer elapsed for nodeID: 2
+Node: 2 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 2 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 2 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Sed rule..now NodeID: 2 pointing to 3
+NodeID:2does seduction rule!!
+Timer elapsed for nodeID: 3
+Node: 3 Checking Neighbor for marriage method..size of outgoingConnections = 2
+NodeID:3does marriage!!
+Timer elapsed for nodeID: 3
+NodeID:3does update!!
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 2
+NodeID:2does update!!
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
+Timer elapsed for nodeID: 2
+Timer elapsed for nodeID: 3
+Timer elapsed for nodeID: 1
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor for marriage method..size of outgoingConnections = 2
+Node: 1 Checking Neighbor Max for marriage method..size of outgoingConnections = 2
