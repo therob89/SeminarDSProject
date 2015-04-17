@@ -76,7 +76,13 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public boolean hasTerminated() {
 		return false;
 	}
-
+	@Override
+	public void postRound() {
+	// TODO Auto-generated method stub
+		super.postRound();
+		JOptionPane.showMessageDialog(null, "Simulation is ended at: "+Tools.getGlobalTime()+" number of steps", "End of Simulation", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
 	/**
 	 * An example of a method that will be available through the menu of the GUI.
 	 */

@@ -1,6 +1,8 @@
 package projects.matchingSample.nodes.timers;
 
 
+import java.awt.Color;
+
 import projects.matchingSample.nodes.messages.MSMessage;
 import projects.matchingSample.nodes.nodeImplementations.MSNode;
 import sinalgo.nodes.timers.Timer;
@@ -49,6 +51,7 @@ public class MSTimer extends Timer {
 				myLog.logln("NodeID:"+this.sender.ID+"does abandonment rule!!");
 			}
 		}
+		
 		this.startRelative(Tools.getRandomNumberGenerator().nextDouble(), sender);
 
 	}

@@ -1,0 +1,243 @@
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Sed rule..now NodeID: 2 pointing to 3
+NodeID:2does seduction rule!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Scheduler decides that i can run
+Sed rule..now NodeID: 1 pointing to 3
+NodeID:1does seduction rule!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Scheduler decides that i can run
+Node:ID 3 married with 1
+NodeID:3does marriage!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Scheduler decides that i can run
+NodeID:1does update!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Scheduler decides that i can run
+NodeID:3does update!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+NodeID:2does abandonment rule!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Scheduler decides that i can run
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Scheduler decides that i can run
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Scheduler decides that i can run
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+Node: 3Cannot execute...Try to next round!!
