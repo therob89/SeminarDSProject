@@ -1,0 +1,259 @@
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Scheduler decides that i can run
+NodeID:7does seduction rule!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Scheduler decides that i can run
+******* NOW NodeID 9 is married with: 7
+NodeID:9does matching!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Scheduler decides that i can run
+NodeID:12does seduction rule!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Scheduler decides that i can run
+--------------------NodeID:7.....cannot move anymore!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Scheduler decides that i can run
+--------------------NodeID:12.....cannot move anymore!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Scheduler decides that i can run
+NodeID:8does seduction rule!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Scheduler decides that i can run
+******* NOW NodeID 10 is married with: 8
+NodeID:10does matching!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Scheduler decides that i can run
+--------------------NodeID:12.....cannot move anymore!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Scheduler decides that i can run
+--------------------NodeID:8.....cannot move anymore!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Scheduler decides that i can run
+--------------------NodeID:9.....cannot move anymore!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Scheduler decides that i can run
+--------------------NodeID:8.....cannot move anymore!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Scheduler decides that i can run
+******* NOW NodeID 11 is married with: 12
+NodeID:11does matching!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Scheduler decides that i can run
+--------------------NodeID:7.....cannot move anymore!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Scheduler decides that i can run
+--------------------NodeID:9.....cannot move anymore!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Scheduler decides that i can run
+--------------------NodeID:7.....cannot move anymore!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Scheduler decides that i can run
+--------------------NodeID:11.....cannot move anymore!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Scheduler decides that i can run
+--------------------NodeID:12.....cannot move anymore!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Scheduler decides that i can run
+--------------------NodeID:12.....cannot move anymore!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Scheduler decides that i can run
+--------------------NodeID:8.....cannot move anymore!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Cannot execute...Try to next round!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Cannot execute...Try to next round!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Cannot execute...Try to next round!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!
+Node: 7 PRE_STEP 
+Node: 7 POST_STEP 
+Node: 7Cannot execute...Try to next round!!
+Node: 8 PRE_STEP 
+Node: 8 POST_STEP 
+Node: 8Cannot execute...Try to next round!!
+Node: 9 PRE_STEP 
+Node: 9 POST_STEP 
+Node: 9Scheduler decides that i can run
+--------------------NodeID:9.....cannot move anymore!!
+Node: 10 PRE_STEP 
+Node: 10 POST_STEP 
+Node: 10Scheduler decides that i can run
+--------------------NodeID:10.....cannot move anymore!!
+Node: 11 PRE_STEP 
+Node: 11 POST_STEP 
+Node: 11Scheduler decides that i can run
+--------------------NodeID:11.....cannot move anymore!!
+Node: 12 PRE_STEP 
+Node: 12 POST_STEP 
+Node: 12Cannot execute...Try to next round!!

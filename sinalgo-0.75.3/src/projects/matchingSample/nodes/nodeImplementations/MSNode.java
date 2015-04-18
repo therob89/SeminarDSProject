@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import projects.matchingSample.nodes.messages.MSMessage;
-import projects.matchingSample.nodes.timers.MSTimer;
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.gui.transformation.PositionTransformation;
 import sinalgo.nodes.Connections;
@@ -17,7 +16,6 @@ import sinalgo.nodes.edges.Edge;
 import sinalgo.nodes.messages.Inbox;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
-//			t.startRelative(Tools.getRandomNumberGenerator().nextDouble(), this);
 
 public class MSNode extends Node {
 
@@ -26,11 +24,32 @@ public class MSNode extends Node {
 	public Integer pointingNode; 
 	boolean isEligibile;
 	int interval;
-	boolean flag = false;
+	boolean isAllowed_To_Move;
+	public boolean end_flag;
+	Edge married_egde;
+	double threshold_probability = 0.5;
 	
-	Logging myLog = Logging.getLogger("myLog.txt");
+	Logging myLog = Logging.getLogger("logAlgorithm1.txt");
 	
-	
+	public boolean getEndFlag(){
+		return this.end_flag;
+	}
+	public void setThresholdProbability(double k){
+		myLog.logln("Node: "+this.ID+" Now threshold probability is: "+ k);
+		this.threshold_probability = k;
+	}
+	public void clearState(){
+		this.isMarried = false;
+		this.pointingNode = -1;
+		if(this.getColor()!=Color.BLACK){
+			this.setColor(Color.BLACK);
+		}
+		this.end_flag = false;
+		if(this.married_egde!=null){
+			this.married_egde.defaultColor = Color.BLACK;
+		}
+		Tools.repaintGUI();
+	}
 	/**
 	 * Check if neighbor was pointing to me
 	 * @return The id of neighbor such that neighbor.ID == self,  -1 otherwise
@@ -65,24 +84,7 @@ public class MSNode extends Node {
 		}
 		return null;
 	}
-	/**
-	 * Check trough neighbor (maxID) to find one that can be available with a certain condition
-	 * @return The id of neighbor such that neighbor.ID == self,  -1 otherwise
-	 */
-	private int checkMaxNeighborForMarriageWithNullPreference(){
-		Connections conn = this.outgoingConnections;
-		Iterator<Edge> it = conn.iterator();
-		Integer t = -1;
-		while(it.hasNext()){
-			MSNode temp = (MSNode)it.next().endNode;
-			if(temp.pointingNode == -1 && temp.ID > this.ID && temp.isMarried == false){
-				if(temp.ID > t){
-					t = temp.ID;
-				}
-			}
-		}
-		return t;
-	}
+
 	
 	private Edge getEdgeByEndNode(Integer nodeID){
 		Connections conn = this.outgoingConnections;
@@ -150,6 +152,8 @@ public class MSNode extends Node {
 			if(e!=null){
 				e.defaultColor = Color.GREEN;
 			}
+			this.married_egde = e;
+			Tools.repaintGUI();
 			return true;
 		}
 		return false;
@@ -180,6 +184,7 @@ public class MSNode extends Node {
 				&& (temp.isMarried || temp.ID <= this.ID)){
 			this.pointingNode = -1;
 			this.setColor(Color.BLACK);
+			Tools.repaintGUI();
 			return true;
 
 		}
@@ -199,10 +204,10 @@ public class MSNode extends Node {
 	public void preStep() {
 		// TODO Auto-generated method stub
 		myLog.logln("Node: "+this.ID+" PRE_STEP ");
-		if(Tools.getRandomNumberGenerator().nextDouble()<=0.5){
-			flag = true;
+		if(Tools.getRandomNumberGenerator().nextDouble()<=this.threshold_probability){
+			this.isAllowed_To_Move = true;
 		}else{
-			flag = false;
+			this.isAllowed_To_Move = false;
 		}
 	}
 
@@ -212,8 +217,8 @@ public class MSNode extends Node {
 		this.isMarried = false;
 		this.pointingNode = -1 ;
 		this.isEligibile = true;
-		//MSTimer timer = new MSTimer(this,Tools.getRandomNumberGenerator().nextDouble());
-		//timer.startRelative(Tools.getRandomNumberGenerator().nextDouble(), this);
+		this.end_flag = false;
+		this.married_egde = null;
 	}
 
 	@Override
@@ -226,20 +231,25 @@ public class MSNode extends Node {
 	public void postStep() {
 		// TODO Auto-generated method stub
 		myLog.logln("Node: "+this.ID+" POST_STEP ");
-		if(flag == true){
+		if(this.isAllowed_To_Move){
 			myLog.logln("Node: "+this.ID+"Scheduler decides that i can run");
 			if(this.updateRules()){
 				myLog.logln("NodeID:"+this.ID+"does update!!");
+				return;
 			}
 			if(this.marriageRule()){
 				myLog.logln("NodeID:"+this.ID+"does marriage!!");
+				return;
 			}
 			if(this.seductionRule()){
 				myLog.logln("NodeID:"+this.ID+"does seduction rule!!");
+				return;
 			}
 			if(this.abandonmentRule()){
 				myLog.logln("NodeID:"+this.ID+"does abandonment rule!!");
+				return;
 			}
+			this.end_flag = true;
 		}else{
 			myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!");
 		}
@@ -255,7 +265,7 @@ public class MSNode extends Node {
 	@Override
 	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {
 		// TODO Auto-generated method stub
-		super.drawNodeAsSquareWithText(g, pt, highlight, Integer.toString(this.ID), 16, Color.WHITE);
+		super.drawNodeAsDiskWithText(g, pt, highlight, Integer.toString(this.ID), 14, Color.WHITE);
 	}
 	@NodePopupMethod(menuText="Send_Message")
 	public void myPopupMethod() {

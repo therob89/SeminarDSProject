@@ -37,10 +37,13 @@
 package projects.matchingSample;
 
 
-import javax.annotation.PostConstruct;
+import java.util.Iterator;
+
 import javax.swing.JOptionPane;
 
-import sinalgo.nodes.Node.NodePopupMethod;
+import projects.matchingSample.nodes.nodeImplementations.MS2Node;
+import projects.matchingSample.nodes.nodeImplementations.MSNode;
+import sinalgo.nodes.Node;
 import sinalgo.runtime.AbstractCustomGlobal;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
@@ -69,19 +72,65 @@ import sinalgo.tools.logging.Logging;
 public class CustomGlobal extends AbstractCustomGlobal{
 	
 	Logging log = Logging.getLogger("ms_log.txt");
+	boolean first_Algorithm = false;
+	boolean second_Algorithm = false;
 	
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
 	 */
 	public boolean hasTerminated() {
-		return false;
+		return first_Algorithm && second_Algorithm;
+		//return this.second_Algorithm;
+	}
+	
+	@Override
+	public void preRun() {
+		// TODO Auto-generated method stub
+		super.preRun();
+		//this.flag = false;
+	}
+	private boolean check_First_Algorithm(){
+		Iterator<Node> it = Tools.getNodeList().iterator();
+		Node _n;
+		while(it.hasNext()){
+			_n = it.next();
+			if(_n.getClass() == MSNode.class){
+				MSNode n = (MSNode)_n;
+				if(!n.getEndFlag()){
+					return false; 
+				}
+			}
+		}
+		return true;
+	}
+	private boolean check_Second_Algorithm(){
+		Iterator<Node> it = Tools.getNodeList().iterator();
+		Node _n;
+		while(it.hasNext()){
+			_n = it.next();
+			if(_n.getClass() == MS2Node.class){
+				MS2Node n = (MS2Node)_n;
+				if(!n.getEndFlag()){
+					return false; 
+				}
+			}
+		}
+		return true;
+		
 	}
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
 		super.postRound();
-		JOptionPane.showMessageDialog(null, "Simulation is ended at: "+Tools.getGlobalTime()+" number of steps", "End of Simulation", JOptionPane.INFORMATION_MESSAGE);
 		
+		if(this.check_First_Algorithm() && this.first_Algorithm == false){
+			this.first_Algorithm = true;
+			Tools.appendToOutput("Algorithm1 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
+		}
+		if(this.check_Second_Algorithm() && this.second_Algorithm == false){
+			this.second_Algorithm = true;
+			Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
+		}
 	}
 	/**
 	 * An example of a method that will be available through the menu of the GUI.
@@ -93,6 +142,34 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		// Show an information message 
 		JOptionPane.showMessageDialog(null, "You typed '" + answer + "'", "Example Echo", JOptionPane.INFORMATION_MESSAGE);
 	}
+	@AbstractCustomGlobal.GlobalMethod(menuText="Set Threshold Probability")
+	public void setThreshold() {
+		// Query the user for an input
+		if(Tools.getGlobalTime()!=0){
+			JOptionPane.showMessageDialog(null, "You can change this probability only when the simulation start","Alert", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		String answer = JOptionPane.showInputDialog(null, "Set the probability that a node can be selected to run.");
+		// Show an information message 
+		try{
+			double k = Double.parseDouble(answer);
+			Iterator<Node> it = Tools.getNodeList().iterator();
+			while(it.hasNext()){
+				Node n = it.next();
+				if(n.getClass() == MSNode.class){
+					MSNode n1 = (MSNode)n;
+					n1.setThresholdProbability(k);
+				}
+				if(n.getClass() == MS2Node.class){
+					MS2Node n1 = (MS2Node)n;
+					n1.setThresholdProbability(k);
+				}
+			}
+			JOptionPane.showMessageDialog(null, "Well done you have set this value:"+k,"Notice", JOptionPane.INFORMATION_MESSAGE);
+		}catch(NumberFormatException e){
+				JOptionPane.showMessageDialog(null, "You must insert a valid double ", "Alert", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
 	/**
 	 * An example to add a button to the user interface. In this sample, the button is labeled
 	 * with a text 'GO'. Alternatively, you can specify an icon that is shown on the button. See
@@ -102,8 +179,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public void sampleButton() {
 		JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
 	}
-	@AbstractCustomGlobal.CustomButton(buttonText="GOO", toolTipText="A sample")
+	@AbstractCustomGlobal.CustomButton(buttonText="CLEAR", toolTipText="Reset the state of each nodes")
 	public void sampleButton2() {
-		JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
+		//JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");		
 	}
 }
