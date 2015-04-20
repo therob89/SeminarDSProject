@@ -86,7 +86,7 @@ public class MSNode extends Node {
 	}
 
 	
-	private Edge getEdgeByEndNode(Integer nodeID){
+	public Edge getEdgeByEndNode(Integer nodeID){
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		while(it.hasNext()){

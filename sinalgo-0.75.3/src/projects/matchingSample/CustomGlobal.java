@@ -42,6 +42,7 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import projects.matchingSample.nodes.nodeImplementations.MS2Node;
+import projects.matchingSample.nodes.nodeImplementations.MS3Node;
 import projects.matchingSample.nodes.nodeImplementations.MSNode;
 import sinalgo.nodes.Node;
 import sinalgo.runtime.AbstractCustomGlobal;
@@ -74,13 +75,14 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	Logging log = Logging.getLogger("ms_log.txt");
 	boolean first_Algorithm = false;
 	boolean second_Algorithm = false;
+	boolean third_Algorithm = false;
 	
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
 	 */
 	public boolean hasTerminated() {
-		return first_Algorithm && second_Algorithm;
-		//return this.second_Algorithm;
+		//return first_Algorithm && second_Algorithm;
+		return this.first_Algorithm && this.third_Algorithm;
 	}
 	
 	@Override
@@ -118,6 +120,21 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		return true;
 		
 	}
+	private boolean check_Third_Algorithm(){
+		Iterator<Node> it = Tools.getNodeList().iterator();
+		Node _n;
+		while(it.hasNext()){
+			_n = it.next();
+			if(_n.getClass() == MS3Node.class){
+				MS3Node n = (MS3Node)_n;
+				if(!n.getEndFlag()){
+					return false; 
+				}
+			}
+		}
+		return true;
+		
+	}
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
@@ -126,10 +143,14 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		if(this.check_First_Algorithm() && this.first_Algorithm == false){
 			this.first_Algorithm = true;
 			Tools.appendToOutput("Algorithm1 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
-		}
+		}/*
 		if(this.check_Second_Algorithm() && this.second_Algorithm == false){
 			this.second_Algorithm = true;
 			Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
+		}*/
+		if(this.check_Third_Algorithm() && this.third_Algorithm == false){
+			this.third_Algorithm = true;
+			Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
 		}
 	}
 	/**
