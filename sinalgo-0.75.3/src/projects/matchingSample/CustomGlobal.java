@@ -36,7 +36,6 @@
 */
 package projects.matchingSample;
 
-
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -76,20 +75,65 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	boolean first_Algorithm = false;
 	boolean second_Algorithm = false;
 	boolean third_Algorithm = false;
-	
+	Integer edges_fist_algorithm;
+	Integer edges_second_algorithm;
+	Integer edges_third_algorithm;
+	Integer nodes_first_algorithm;
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
 	 */
 	public boolean hasTerminated() {
 		//return first_Algorithm && second_Algorithm;
-		return this.first_Algorithm && this.third_Algorithm;
+		if(this.third_Algorithm){
+			
+		}
+		return true;
 	}
-	
+	private int computeMatrix(){
+		int n = Tools.getNodeList().size();
+		double[][] matrix = new double[n][n];
+		log.logln("SIZE OF MATRIX ----------> " +n+" X "+n);
+		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+			Node i = it.next();
+			log.logln("Processin node --> "+ i.ID);
+			for (Iterator<Node> it2 = Tools.getNodeList().iterator();it2.hasNext();){
+				Node j = it2.next();
+				log.logln("FILLING THE MATRIX");
+				int _i = i.ID -1;
+				int _j = j.ID -1;
+				if(i.ID == j.ID){
+					matrix[_i][_j] = 0;
+				}
+				if(!i.outgoingConnections.contains(i, j)){
+					matrix[_i][_j] = 0;
+				}
+				else if(i.outgoingConnections.contains(i, j) && i.ID > j.ID){
+					matrix[_i][_j] = 1;
+				}
+				else{
+					matrix[_i][_j] = -1;
+				}
+			}
+			
+		}
+		log.logln("END CYCLE");
+		for(int i = 0;i<n;i++){
+			for(int j = 0;i<n;i++){
+				log.log(matrix[i][j]+" ");
+
+			}
+			log.log("\n");
+		}
+		Matrix m = new Matrix(matrix);
+		return m.rank();
+	}
 	@Override
 	public void preRun() {
 		// TODO Auto-generated method stub
 		super.preRun();
 		//this.flag = false;
+		this.edges_fist_algorithm = -1;
+		this.nodes_first_algorithm = -1;
 	}
 	private boolean check_First_Algorithm(){
 		Iterator<Node> it = Tools.getNodeList().iterator();
@@ -98,6 +142,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			_n = it.next();
 			if(_n.getClass() == MSNode.class){
 				MSNode n = (MSNode)_n;
+				this.edges_fist_algorithm += n.outgoingConnections.size();
+				this.nodes_first_algorithm+=1;
 				if(!n.getEndFlag()){
 					return false; 
 				}
@@ -139,10 +185,10 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public void postRound() {
 	// TODO Auto-generated method stub
 		super.postRound();
-		
+		/*
 		if(this.check_First_Algorithm() && this.first_Algorithm == false){
 			this.first_Algorithm = true;
-			Tools.appendToOutput("Algorithm1 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
+			Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
 		}/*
 		if(this.check_Second_Algorithm() && this.second_Algorithm == false){
 			this.second_Algorithm = true;
@@ -152,6 +198,12 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			this.third_Algorithm = true;
 			Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
 		}
+	}
+	
+	@AbstractCustomGlobal.GlobalMethod(menuText="Rank")
+	public void rankOfMatrix() {
+		JOptionPane.showMessageDialog(null, "Rank = "+this.computeMatrix(), "Example Rank", JOptionPane.INFORMATION_MESSAGE);
+
 	}
 	/**
 	 * An example of a method that will be available through the menu of the GUI.
@@ -204,4 +256,43 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public void sampleButton2() {
 		//JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");		
 	}
+	
+	@AbstractCustomGlobal.CustomButton(buttonText="Verify", toolTipText="Verify Upper bound")
+	public void showPane(){
+		String answer1 = JOptionPane.showInputDialog(null, "Choose kind of algorithm.. 1 | 2 | 3");
+		Integer algorithmType;
+		try{
+			algorithmType= Integer.valueOf(answer1);
+		}catch(NumberFormatException e){
+			JOptionPane.showMessageDialog(null, "Wrong number inserted."+answer1,"ERROR",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		String answer = JOptionPane.showInputDialog(null, "Insert |N| and |E| in this form N,E");
+		String[] parameters = answer.split(",");
+		if(parameters.length == 2){
+			try{
+				Integer n = Integer.valueOf(parameters[0]);
+				Integer e = Integer.valueOf(parameters[1]);
+				switch(algorithmType){
+					case 1:
+						JOptionPane.showMessageDialog(null, "Upper bound for algorithm= "+algorithmType+ ""
+								+(4*n+2*e),"Answer",JOptionPane.INFORMATION_MESSAGE);
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+				}
+			}catch(NumberFormatException e){
+				JOptionPane.showMessageDialog(null, "Error with parameters..you have insert."+answer);
+			}
+			
+		}
+	}
+	
 }
+
+
+
+
