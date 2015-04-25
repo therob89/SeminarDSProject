@@ -200,9 +200,9 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		}
 	}
 	
-	@AbstractCustomGlobal.GlobalMethod(menuText="Rank")
+	@AbstractCustomGlobal.GlobalMethod(menuText="Max Matching Size")
 	public void rankOfMatrix() {
-		JOptionPane.showMessageDialog(null, "Rank = "+this.computeMatrix(), "Example Rank", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Rank = "+(this.computeMatrix()/2), "Size of Max Matching", JOptionPane.INFORMATION_MESSAGE);
 
 	}
 	/**
