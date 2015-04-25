@@ -21,6 +21,7 @@ public class MS3Node extends Node {
 	Logging myLog = Logging.getLogger("logAlgorithm3.txt");
 	double threshold_probability = 0.5;
 	boolean isAllowed_To_Move;
+	boolean want_to_act;
 
 	public Integer getPointer_Node() {
 		return pointer_Node;
@@ -122,22 +123,21 @@ public class MS3Node extends Node {
 
 	}
 	
-	private boolean wantToEngage(){
-		MS3Node temp;
-		Edge e;
-		if(this.pointer_Node == -1 && (temp=this.getNeighborPointingMe())!=null){
-			this.pointer_Node = temp.ID;
-			this.setColor(Color.GREEN);
-			temp.setColor(Color.GREEN);
-			e = this.getEdgeByEndNode(temp.ID);
-			if(e!=null){
-				e.defaultColor = Color.GREEN;
+	public boolean allowedToAct(){
+		for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
+			MS3Node n = (MS3Node)it.next().endNode;
+			if(this.want_to_act == n.want_to_act == true && this.ID < n.ID){
+				return false;
 			}
-			this.married_edge = e;
-			Tools.repaintGUI();
-			return true;
 		}
-		return false;
+		return true;
+	}
+	private MS3Node wantToEngage(){
+		MS3Node temp;
+		if(this.pointer_Node == -1 && (temp=this.getNeighborPointingMe())!=null){
+			return temp;
+		}
+		return null;
 	}
 	
 	private boolean wantToPropose(){
@@ -163,16 +163,34 @@ public class MS3Node extends Node {
 	public void postStep() {
 		// TODO Auto-generated method stub
 		if(this.isAllowed_To_Move){
-			if(this.wantToEngage()){
+			boolean canAct = this.allowedToAct();
+			MS3Node temp;
+			if((this.want_to_act=((temp=this.wantToEngage())!=null && canAct))){
 				myLog.logln("NodeID:"+this.ID+"does matching!!");
+				Edge e;
+				this.pointer_Node = temp.ID;
+				myLog.logln("*** Now NodeID:"+this.ID+"is married with "+temp.ID);
+				this.setColor(Color.GREEN);
+				temp.setColor(Color.GREEN);
+				e = this.getEdgeByEndNode(temp.ID);
+				if(e!=null){
+					e.defaultColor = Color.GREEN;
+				}
+				this.married_edge = e;
+				Tools.repaintGUI();
+				Tools.repaintGUI();
 				return;
 			}
-			if(this.wantToPropose()){
+			if((this.want_to_act=(this.wantToPropose() && canAct))){
 				myLog.logln("NodeID:"+this.ID+"does seduction!!");
 				return;
 			}
-			if(this.wantTODesengage()){
+			if((this.want_to_act=(this.wantTODesengage() && canAct))){
 				myLog.logln("NodeID:"+this.ID+"does desengage!!");
+				return;
+			}
+			if(this.want_to_act != (this.wantToEngage()!=null || this.wantToPropose() || this.wantTODesengage())){
+				this.want_to_act = (this.wantToEngage()!=null || this.wantToPropose() || this.wantTODesengage());
 				return;
 			}
 			this.end_flag = true;

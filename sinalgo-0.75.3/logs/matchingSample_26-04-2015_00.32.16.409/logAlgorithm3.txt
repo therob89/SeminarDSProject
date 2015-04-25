@@ -1,0 +1,92 @@
+Node: 1 PRE_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+NodeID:2cannot perform any action!!
+Node: 3 PRE_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+Node: 5Cannot execute...Try to next round!!
+Node: 6 PRE_STEP 
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 2 PRE_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+NodeID:4cannot perform any action!!
+Node: 5 PRE_STEP 
+Node: 5Cannot execute...Try to next round!!
+Node: 6 PRE_STEP 
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+NodeID:2cannot perform any action!!
+Node: 3 PRE_STEP 
+NodeID:3cannot perform any action!!
+Node: 4 PRE_STEP 
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+Node: 5Cannot execute...Try to next round!!
+Node: 6 PRE_STEP 
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+NodeID:2cannot perform any action!!
+Node: 3 PRE_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+NodeID:5does matching!!
+Node: 6 PRE_STEP 
+NodeID:6cannot perform any action!!
+Node: 1 PRE_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+NodeID:2cannot perform any action!!
+Node: 3 PRE_STEP 
+NodeID:3cannot perform any action!!
+Node: 4 PRE_STEP 
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+NodeID:5does desengage!!
+Node: 6 PRE_STEP 
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+NodeID:3cannot perform any action!!
+Node: 4 PRE_STEP 
+NodeID:4cannot perform any action!!
+Node: 5 PRE_STEP 
+Node: 5Cannot execute...Try to next round!!
+Node: 6 PRE_STEP 
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+NodeID:1does matching!!
+Node: 2 PRE_STEP 
+Node: 3 PRE_STEP 
+NodeID:3does desengage!!
+Node: 4 PRE_STEP 
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+NodeID:5does matching!!
+Node: 6 PRE_STEP 
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+NodeID:1cannot perform any action!!
+Node: 2 PRE_STEP 
+Node: 3 PRE_STEP 
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+Node: 5 PRE_STEP 
+NodeID:5cannot perform any action!!
+Node: 6 PRE_STEP 
+NodeID:6does seduction!!

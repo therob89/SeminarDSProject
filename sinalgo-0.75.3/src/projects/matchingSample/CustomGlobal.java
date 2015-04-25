@@ -79,26 +79,32 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	Integer edges_second_algorithm;
 	Integer edges_third_algorithm;
 	Integer nodes_first_algorithm;
+	
+	Integer algorithm_choosed;
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
 	 */
 	public boolean hasTerminated() {
 		//return first_Algorithm && second_Algorithm;
-		if(this.third_Algorithm){
-			
+		if(this.algorithm_choosed !=-1){
+			switch(this.algorithm_choosed){
+			case 1:
+				return this.first_Algorithm;
+			case 2:
+				return this.second_Algorithm;
+			case 3:
+				return this.third_Algorithm;
+			}
 		}
-		return true;
+		return false;
 	}
 	private int computeMatrix(){
 		int n = Tools.getNodeList().size();
 		double[][] matrix = new double[n][n];
-		log.logln("SIZE OF MATRIX ----------> " +n+" X "+n);
 		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
 			Node i = it.next();
-			log.logln("Processin node --> "+ i.ID);
 			for (Iterator<Node> it2 = Tools.getNodeList().iterator();it2.hasNext();){
 				Node j = it2.next();
-				log.logln("FILLING THE MATRIX");
 				int _i = i.ID -1;
 				int _j = j.ID -1;
 				if(i.ID == j.ID){
@@ -116,17 +122,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			}
 			
 		}
-		log.logln("END CYCLE");
-		for(int i = 0;i<n;i++){
-			for(int j = 0;i<n;i++){
-				log.log(matrix[i][j]+" ");
-
-			}
-			log.log("\n");
-		}
 		Matrix m = new Matrix(matrix);
 		return m.rank();
 	}
+	
+	
 	@Override
 	public void preRun() {
 		// TODO Auto-generated method stub
@@ -185,26 +185,30 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public void postRound() {
 	// TODO Auto-generated method stub
 		super.postRound();
-		/*
-		if(this.check_First_Algorithm() && this.first_Algorithm == false){
-			this.first_Algorithm = true;
-			Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-		}/*
-		if(this.check_Second_Algorithm() && this.second_Algorithm == false){
-			this.second_Algorithm = true;
-			Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
-		}*/
-		if(this.check_Third_Algorithm() && this.third_Algorithm == false){
-			this.third_Algorithm = true;
-			Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
+		if(this.algorithm_choosed!=-1){
+			switch(this.algorithm_choosed){
+			case 1:
+				if(this.check_First_Algorithm() && this.first_Algorithm == false){
+					this.first_Algorithm = true;
+					Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+				}
+				break;
+			case 2:
+				if(this.check_Second_Algorithm() && this.second_Algorithm == false){
+					this.second_Algorithm = true;
+					Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
+				}
+				break;
+			case 3:
+				if(this.check_Third_Algorithm() && this.third_Algorithm == false){
+					this.third_Algorithm = true;
+					Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
+				}
+				break;
+			}
 		}
 	}
 	
-	@AbstractCustomGlobal.GlobalMethod(menuText="Max Matching Size")
-	public void rankOfMatrix() {
-		JOptionPane.showMessageDialog(null, "Rank = "+(this.computeMatrix()/2), "Size of Max Matching", JOptionPane.INFORMATION_MESSAGE);
-
-	}
 	/**
 	 * An example of a method that will be available through the menu of the GUI.
 	 */
@@ -243,6 +247,25 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				JOptionPane.showMessageDialog(null, "You must insert a valid double ", "Alert", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+	
+	@AbstractCustomGlobal.GlobalMethod(menuText="Choose Algorithm")
+	public void choosedAlgorithm() {
+		String answer = JOptionPane.showInputDialog(null, "Choose which algorithm analyze.");
+		// Show an information message 
+		try{
+			this.algorithm_choosed = Integer.parseInt(answer);
+			if(this.algorithm_choosed !=1 && this.algorithm_choosed != 2 && this.algorithm_choosed != 3){
+				JOptionPane.showMessageDialog(null, "You must insert a valid Algorithm -> 1|2|3 ", "Alert", JOptionPane.INFORMATION_MESSAGE);
+				this.algorithm_choosed = -1;
+			}
+			JOptionPane.showMessageDialog(null, "You have selected:"+this.algorithm_choosed,"Notice", JOptionPane.INFORMATION_MESSAGE);
+
+		}catch(NumberFormatException e){
+			JOptionPane.showMessageDialog(null, "You must insert a valid Algorithm -> 1|2|3 ", "Alert", JOptionPane.INFORMATION_MESSAGE);
+
+		}
+	}
+	
 	/**
 	 * An example to add a button to the user interface. In this sample, the button is labeled
 	 * with a text 'GO'. Alternatively, you can specify an icon that is shown on the button. See
@@ -276,12 +299,14 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				Integer e = Integer.valueOf(parameters[1]);
 				switch(algorithmType){
 					case 1:
-						JOptionPane.showMessageDialog(null, "Upper bound for algorithm= "+algorithmType+ ""
+						JOptionPane.showMessageDialog(null, "Upper bound for algorithm = "+algorithmType+ " = "
 								+(4*n+2*e),"Answer",JOptionPane.INFORMATION_MESSAGE);
 						break;
 					case 2:
+						
 						break;
 					case 3:
+						
 						break;
 				}
 			}catch(NumberFormatException e){
@@ -290,6 +315,13 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			
 		}
 	}
+	
+	@AbstractCustomGlobal.CustomButton(buttonText="RK", toolTipText="Find Max Matching Size")
+	public void rankOfMatrix() {
+		JOptionPane.showMessageDialog(null, "Rank = "+(this.computeMatrix()/2), "Size of Max Matching", JOptionPane.INFORMATION_MESSAGE);
+
+	}
+	
 	
 }
 
