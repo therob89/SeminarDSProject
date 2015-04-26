@@ -166,6 +166,7 @@ public class MS2Node extends Node {
 			}
 			this.married_egde = e;
 			Tools.repaintGUI();
+			Tools.repaintGUI();
 			return true;
 		}
 		return false;
