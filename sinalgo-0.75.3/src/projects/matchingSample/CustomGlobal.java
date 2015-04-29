@@ -36,6 +36,7 @@
 */
 package projects.matchingSample;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -44,6 +45,8 @@ import projects.matchingSample.nodes.nodeImplementations.MS2Node;
 import projects.matchingSample.nodes.nodeImplementations.MS3Node;
 import projects.matchingSample.nodes.nodeImplementations.MSNode;
 import sinalgo.nodes.Node;
+import sinalgo.nodes.edges.BidirectionalEdge;
+import sinalgo.nodes.edges.Edge;
 import sinalgo.runtime.AbstractCustomGlobal;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
@@ -98,6 +101,17 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		}
 		return false;
 	}
+	private Edge getEdgeByStartEndNode(Node a, Node b){
+		Edge temp;
+		for(Iterator<Edge> it = a.outgoingConnections.iterator();it.hasNext();){
+			temp = it.next();
+			if(temp.endNode.equals(b)){
+				return temp;
+				
+			}
+		}
+		return null;
+	}
 	private int computeMatrix(){
 		int n = Tools.getNodeList().size();
 		double[][] matrix = new double[n][n];
@@ -113,11 +127,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				if(!i.outgoingConnections.contains(i, j)){
 					matrix[_i][_j] = 0;
 				}
-				else if(i.outgoingConnections.contains(i, j) && i.ID > j.ID){
-					matrix[_i][_j] = 1;
+				else if(i.outgoingConnections.contains(i, j) && i.ID < j.ID){
+					matrix[_i][_j] = this.getEdgeByStartEndNode(i, j).getID();
 				}
-				else{
-					matrix[_i][_j] = -1;
+				else if(i.outgoingConnections.contains(i, j) && i.ID > j.ID){
+					matrix[_i][_j] = -(this.getEdgeByStartEndNode(i, j).getID());
 				}
 			}
 			
@@ -326,6 +340,33 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	@AbstractCustomGlobal.CustomButton(buttonText="RK", toolTipText="Find Max Matching Size")
 	public void rankOfMatrix() {
 		JOptionPane.showMessageDialog(null, "Rank = "+(this.computeMatrix()/2), "Size of Max Matching", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	@AbstractCustomGlobal.CustomButton(buttonText="Try", toolTipText="Try")
+	public void computeEdge(){
+		/*
+		Iterator<Node> it = Tools.getNodeList().iterator();
+		HashMap<Integer,Edge> v = new HashMap<Integer, Edge>();
+		int k = 1;
+		while(it.hasNext()){
+			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
+				Edge e = it2.next();
+				if(!v.containsValue(e)){
+					v.put(k,e);
+					k+=1;
+				}
+			}
+		}
+		for(int z=1;z<k;z++){
+			log.logln("Edge id "+z+ " contains: "+v.get(z).toString());
+		}*/
+		Iterator<Node> it = Tools.getNodeList().iterator();
+		while(it.hasNext()){
+			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
+				log.logln("Edge id --> "+it2.next().getID());
+
+			}
+		}
 	}
 	
 	
