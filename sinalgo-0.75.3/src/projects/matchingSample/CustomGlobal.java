@@ -198,6 +198,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				}
 			}
 		}
+		Tools.appendToOutput("**CAN TERM **** \n");
+
 		return true;
 		
 	}
@@ -359,14 +361,14 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		}
 		for(int z=1;z<k;z++){
 			log.logln("Edge id "+z+ " contains: "+v.get(z).toString());
-		}*/
+		}
 		Iterator<Node> it = Tools.getNodeList().iterator();
 		while(it.hasNext()){
 			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
 				log.logln("Edge id --> "+it2.next().getID());
 
 			}
-		}
+		}*/
 	}
 	
 	

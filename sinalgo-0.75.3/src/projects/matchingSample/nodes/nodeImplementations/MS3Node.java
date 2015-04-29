@@ -198,7 +198,7 @@ public class MS3Node extends Node {
 				return;
 			}
 			this.end_flag = true;
-			myLog.logln("NodeID:"+this.ID+"cannot perform any action!!");
+			myLog.logln("NodeID:"+this.ID+"cannot perform any action...having END FLAG = TRUE");
 		}else{
 			myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!..having wantToAct ="+this.want_to_act);
 		}
