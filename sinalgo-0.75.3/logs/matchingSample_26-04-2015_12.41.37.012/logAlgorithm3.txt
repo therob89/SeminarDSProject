@@ -1,8 +1,0 @@
-Node: 1 PRE_STEP 
-Node: 1Cannot execute...Try to next round!!
-Node: 2 PRE_STEP 
-Node: 2Cannot execute...Try to next round!!
-Node: 3 PRE_STEP 
-NodeID:3cannot perform any action!!
-Node: 4 PRE_STEP 
-Node: 4Cannot execute...Try to next round!!

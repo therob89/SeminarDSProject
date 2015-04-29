@@ -623,6 +623,14 @@ public class Tools {
 			// ignore
 		}
 	}
+	
+	public static void repaintGUINOW(){
+		try {
+			Main.getGuiRuntime().getGUI().redrawGUINow();
+		} catch (NotInGUIModeException e) {
+			// ignore
+		}
+	}
 
 	/**
 	 * Asks the user to select a node with the mouse.

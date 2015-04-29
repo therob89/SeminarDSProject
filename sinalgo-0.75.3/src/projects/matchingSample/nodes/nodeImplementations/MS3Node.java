@@ -115,6 +115,7 @@ public class MS3Node extends Node {
 		this.pointer_Node = -1;	
 		this.setColor(Color.PINK);
 		this.end_flag = false;
+		this.want_to_act = false;
 	}
 
 	@Override
@@ -140,20 +141,18 @@ public class MS3Node extends Node {
 		return null;
 	}
 	
-	private boolean wantToPropose(){
+	private MS3Node wantToPropose(){
 		MS3Node temp;
 		if(this.pointer_Node == -1 && this.getNeighborPointingMe()==null 
 				&& (temp=this.getAvailableNeighbor())!=null){
-			this.pointer_Node = temp.ID;
-			return true;
+			return temp;
 		}
-		return false;
+		return null;
 	}
 	private boolean wantTODesengage(){
 		MS3Node temp;
-		if(this.pointer_Node!=-1 && (temp = this.getNodeByID(this.pointer_Node)).ID!=this.ID
-				&& temp.pointer_Node != -1){
-			this.pointer_Node = -1;
+		temp = this.getNodeByID(this.pointer_Node);
+		if(this.pointer_Node!=-1 && temp.pointer_Node!=this.ID && temp.pointer_Node != -1){
 			return true;
 		}
 		return false;
@@ -164,8 +163,9 @@ public class MS3Node extends Node {
 		// TODO Auto-generated method stub
 		if(this.isAllowed_To_Move){
 			boolean canAct = this.allowedToAct();
-			MS3Node temp;
-			if((this.want_to_act=((temp=this.wantToEngage())!=null && canAct))){
+			MS3Node temp = this.wantToEngage();
+			this.want_to_act = (temp!=null && canAct);
+			if(this.want_to_act){
 				myLog.logln("NodeID:"+this.ID+"does matching!!");
 				Edge e;
 				this.pointer_Node = temp.ID;
@@ -178,25 +178,29 @@ public class MS3Node extends Node {
 				}
 				this.married_edge = e;
 				Tools.repaintGUI();
-				Tools.repaintGUI();
 				return;
 			}
-			if((this.want_to_act=(this.wantToPropose() && canAct))){
+			temp = this.wantToPropose();
+			this.want_to_act=(temp!=null && canAct);
+			if(this.want_to_act){
 				myLog.logln("NodeID:"+this.ID+"does seduction!!");
+				this.pointer_Node = temp.ID;
 				return;
 			}
-			if((this.want_to_act=(this.wantTODesengage() && canAct))){
+			this.want_to_act = (this.wantTODesengage() && canAct);
+			if(this.want_to_act){
 				myLog.logln("NodeID:"+this.ID+"does desengage!!");
 				return;
 			}
-			if(this.want_to_act != (this.wantToEngage()!=null || this.wantToPropose() || this.wantTODesengage())){
-				this.want_to_act = (this.wantToEngage()!=null || this.wantToPropose() || this.wantTODesengage());
+			boolean t = (this.wantToEngage()!=null || this.wantToPropose()!=null || this.wantTODesengage());
+			if(this.want_to_act != t){
+				this.want_to_act = t;
 				return;
 			}
 			this.end_flag = true;
 			myLog.logln("NodeID:"+this.ID+"cannot perform any action!!");
 		}else{
-			myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!");
+			myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!..having wantToAct ="+this.want_to_act);
 		}
 	}
 

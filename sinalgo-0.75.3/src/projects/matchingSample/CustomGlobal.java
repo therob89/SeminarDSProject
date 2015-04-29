@@ -80,7 +80,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	Integer edges_third_algorithm;
 	Integer nodes_first_algorithm;
 	
-	Integer algorithm_choosed;
+	Integer algorithm_choosed = -1;
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
 	 */
@@ -121,6 +121,12 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				}
 			}
 			
+		}
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				log.log(String.valueOf(matrix[i][j])+" ");
+			}
+			log.logln();
 		}
 		Matrix m = new Matrix(matrix);
 		return m.rank();
@@ -274,6 +280,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	@AbstractCustomGlobal.CustomButton(buttonText="GO", toolTipText="A sample button")
 	public void sampleButton() {
 		JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
+		
 	}
 	@AbstractCustomGlobal.CustomButton(buttonText="CLEAR", toolTipText="Reset the state of each nodes")
 	public void sampleButton2() {
@@ -319,7 +326,6 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	@AbstractCustomGlobal.CustomButton(buttonText="RK", toolTipText="Find Max Matching Size")
 	public void rankOfMatrix() {
 		JOptionPane.showMessageDialog(null, "Rank = "+(this.computeMatrix()/2), "Size of Max Matching", JOptionPane.INFORMATION_MESSAGE);
-
 	}
 	
 	
