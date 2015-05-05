@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import javafx.util.Pair;
 import projects.matchingSample.nodes.messages.MSMessage;
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.gui.transformation.PositionTransformation;
@@ -19,8 +22,9 @@ import sinalgo.tools.logging.Logging;
 
 public class MSNode extends Node {
 
-	public static boolean isSending = true;
+	//public static boolean isSending = true;
 	public boolean isMarried;
+	boolean findTheOptimum;
 	public Integer pointingNode; 
 	boolean isEligibile;
 	int interval;
@@ -28,8 +32,19 @@ public class MSNode extends Node {
 	public boolean end_flag;
 	Edge married_egde;
 	double threshold_probability = 0.5;
-	
 	Logging myLog = Logging.getLogger("logAlgorithm1.txt");
+	
+	/*
+	 * 	VARIABLES FOR OPTIMAL CASE
+	 * 
+	 */
+	Integer p_v,alfa_v,beta_v;
+	boolean rematch_v;
+	
+	
+	public void setFindTheOptimum(boolean findTheOptimum) {
+		this.findTheOptimum = findTheOptimum;
+	}
 	
 	public boolean getEndFlag(){
 		return this.end_flag;
@@ -219,19 +234,13 @@ public class MSNode extends Node {
 		this.isEligibile = true;
 		this.end_flag = false;
 		this.married_egde = null;
-	}
-
-	@Override
-	public void neighborhoodChange() {
-		// TODO Auto-generated method stub
-		
-	}
-
+		this.findTheOptimum = false;
+	}     
 	@Override
 	public void postStep() {
 		// TODO Auto-generated method stub
 		myLog.logln("Node: "+this.ID+" POST_STEP ");
-		if(this.isAllowed_To_Move){
+		if(this.isAllowed_To_Move && !this.findTheOptimum){
 			myLog.logln("Node: "+this.ID+"Scheduler decides that i can run");
 			if(this.updateRules()){
 				myLog.logln("NodeID:"+this.ID+"does update!!");
@@ -250,18 +259,18 @@ public class MSNode extends Node {
 				return;
 			}
 			this.end_flag = true;
+		}
+		if(this.isAllowed_To_Move && this.findTheOptimum){
+			/*
+			 * SINGLE NODE
+			 */
+			
 		}else{
 			myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!");
 		}
 
 		
 	}
-
-	@Override
-	public void checkRequirements() throws WrongConfigurationException {
-		// TODO Auto-generated method stub
-	}
-	
 	@Override
 	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {
 		// TODO Auto-generated method stub
@@ -291,6 +300,166 @@ public class MSNode extends Node {
 		}
 	}
 
-	
+	@Override
+	public void neighborhoodChange() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void checkRequirements() throws WrongConfigurationException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private boolean singleNodeRoutine(){
+		Integer n;
+		Set<Integer> s = new HashSet<Integer>();
+		for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
+			MSNode neighbor = (MSNode) it.next().endNode;
+			if(neighbor.p_v == this.ID){
+				s.add(neighbor.ID);
+			}
+		}
+		MSNode pv_node = (MSNode) Tools.getNodeByID(this.p_v);
+		if(this.p_v == -1 && !s.isEmpty() 
+				|| (!s.contains(this.p_v) && this.p_v!=-1)
+				|| (this.p_v != null && pv_node.p_v != this.ID)){
+			this.p_v = Collections.min(s);
+			return true;
+		}
+		return false;
+	}
+	
+	/*
+	 *  MATCHED NODE ROUTINE
+	 */
+	
+	
+	private boolean matchFirst(){
+		Integer askFirst = this.askFirst(this.ID);
+		MSNode n = (MSNode) Tools.getNodeByID(this.p_v);
+		if(askFirst != null && (this.p_v != askFirst || this.rematch_v != (n.p_v == this.ID))){
+			this.p_v = askFirst;
+			this.rematch_v = (n.p_v == this.ID);
+			return true;
+		}
+		return false;
+	}
+	
+	
+	private boolean matchSecond(){
+		Integer askSecond = this.askSecond(this.ID);
+		if(askSecond != null && this.rematch_v && this.p_v != askSecond){
+			this.p_v = askSecond;
+			return true;
+		}
+		return false;
+
+	}
+	
+	private boolean resetMatch(){
+		
+		Integer askFirst = this.askFirst(this.ID);
+		Integer askSecond = this.askSecond(this.ID);
+		if((askFirst == null && askSecond == null)  && this.p_v != null && this.rematch_v != false){
+			this.p_v = null;
+			this.rematch_v = false;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	private Pair<Integer,Integer> bestRematch(){
+		Integer a,b;
+		Set<Integer> s = this.getNeighborPointingMeForRematch();
+		a = Collections.min(s);
+		s.remove(a);
+		b = Collections.min(s);
+		return new Pair<Integer,Integer>(a,b);
+	}
+	
+	private Integer askFirst(Integer v){
+		MSNode v_node = (MSNode) Tools.getNodeByID(v);
+		Set<Integer> s = new HashSet<Integer>();
+		MSNode neighbor = (MSNode)Tools.getNodeByID(v_node.pointingNode);
+		s.add(alfa_v);
+		s.add(beta_v);
+		s.add(neighbor.alfa_v);
+		s.add(neighbor.beta_v);
+		if(v_node.alfa_v != -1 && neighbor.alfa_v!=-1 && s.size()>=2){
+			if(v_node.alfa_v < neighbor.alfa_v 
+					|| (v_node.alfa_v == neighbor.alfa_v && v_node.beta_v == -1)
+					|| (v_node.alfa_v == neighbor.alfa_v && 
+					neighbor.beta_v != -1 && v_node.ID < neighbor.ID)){
+				
+				return v_node.alfa_v;
+			}
+		}
+		return null;
+	}
+	
+	private Integer askSecond(Integer v){
+		MSNode v_node = (MSNode)Tools.getNodeByID(v);
+		if(this.askFirst(v_node.pointingNode)!=null){
+			Set<Integer> s = new HashSet<Integer>();
+			s.add(v_node.alfa_v);
+			s.add(v_node.beta_v);
+			MSNode mv = (MSNode)Tools.getNodeByID(v_node.pointingNode);
+			s.remove(mv.alfa_v);
+			return Collections.min(s);
+		}
+		return null;
+	}
+	
+	
+	
+	
+	private Set<Integer> getNeighborPointingMeForRematch(){
+		Set<Integer> s = new HashSet<Integer>();
+		for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
+			MSNode x = (MSNode) it.next().endNode;
+			if(x.p_v == -1 ||x.p_v == this.ID){
+				s.add(x.ID);
+			}
+		}
+		return s;
+	}
+	private int checkNeighborForReMarriage(){
+		Connections conn = this.outgoingConnections;
+		Iterator<Edge> it = conn.iterator();
+		while(it.hasNext()){
+			MSNode temp = (MSNode) it.next().endNode;
+			if(temp.p_v == this.ID){
+				return temp.ID;
+			}
+		}
+		return -1;
+	}
+	
+	private Set<Integer> getSingleNeighbor(){
+		Set<Integer> s = new HashSet<Integer>();
+		for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
+			MSNode x = (MSNode) it.next().endNode;
+			if(!x.isMarried){
+				s.add(x.ID);
+			}
+		}
+		return s;
+	}
+	private Set<Integer> getMarriedNeighbor(){
+		Set<Integer> s = new HashSet<Integer>();
+		for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
+			MSNode x = (MSNode) it.next().endNode;
+			if(x.isMarried){
+				s.add(x.ID);
+			}
+		}
+		return s;
+	}
 }

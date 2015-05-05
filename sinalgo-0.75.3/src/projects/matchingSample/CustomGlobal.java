@@ -207,6 +207,14 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		return true;
 		
 	}
+	private boolean checkIfWeWantToFindTheOptimalCase(){
+		
+		String answer1 = JOptionPane.showInputDialog(null, "Do you want to find the optimal case? Y | N");
+		if(answer1.equals("Y")){
+			return true;
+		}
+		return false;
+	}
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
@@ -215,8 +223,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			switch(this.algorithm_choosed){
 			case 1:
 				if(this.check_First_Algorithm() && this.first_Algorithm == false){
-					this.first_Algorithm = true;
 					Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+					if(checkIfWeWantToFindTheOptimalCase()){
+						
+					}
+					this.first_Algorithm = true;
 				}
 				break;
 			case 2:
@@ -437,6 +448,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		        + l.size()/2,"Max Matching", JOptionPane.INFORMATION_MESSAGE);
 		
 	}
+	
 	
 }
 
