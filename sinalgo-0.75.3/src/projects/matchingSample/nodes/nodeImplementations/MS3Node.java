@@ -71,8 +71,8 @@ public class MS3Node extends Node {
 		}
 		return null;
 	}
-	private Edge getEdgeByEndNode(Integer nodeID){
-		Connections conn = this.outgoingConnections;
+	private Edge getEdgeByEndNode(Integer start, Integer nodeID){
+		Connections conn = Tools.getNodeByID(start).outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		while(it.hasNext()){
 			Edge e = it.next();
@@ -167,14 +167,18 @@ public class MS3Node extends Node {
 			this.want_to_act = (temp!=null && canAct);
 			if(this.want_to_act){
 				myLog.logln("NodeID:"+this.ID+"does matching!!");
-				Edge e;
+				Edge e,e1;
 				this.pointer_Node = temp.ID;
 				myLog.logln("*** Now NodeID:"+this.ID+"is married with "+temp.ID);
 				this.setColor(Color.GREEN);
 				temp.setColor(Color.GREEN);
-				e = this.getEdgeByEndNode(temp.ID);
+				e = getEdgeByEndNode(this.ID,temp.ID);
 				if(e!=null){
 					e.defaultColor = Color.GREEN;
+				}
+				e1 = getEdgeByEndNode(temp.ID, this.ID);
+				if(e1!=null){
+					e1.defaultColor = Color.GREEN;
 				}
 				this.married_edge = e;
 				Tools.repaintGUI();

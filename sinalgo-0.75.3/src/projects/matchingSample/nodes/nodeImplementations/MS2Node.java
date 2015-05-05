@@ -23,8 +23,8 @@ public class MS2Node extends Node {
 	
 	Logging myLog = Logging.getLogger("logAlgorithm2.txt");
 	
-	private Edge getEdgeByEndNode(Integer nodeID){
-		Connections conn = this.outgoingConnections;
+	private Edge getEdgeByEndNode(Integer start, Integer nodeID){
+		Connections conn = Tools.getNodeByID(start).outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		while(it.hasNext()){
 			Edge e = it.next();
@@ -157,15 +157,16 @@ public class MS2Node extends Node {
 			myLog.logln("******* NOW NodeID "+this.ID+" is married with: "+j.ID);
 			this.setColor(Color.GREEN);
 			j.setColor(Color.GREEN);
-			Edge e = this.getEdgeByEndNode(j.ID);
+			Edge e,e1;
+			e = getEdgeByEndNode(this.ID,j.ID);
 			if(e!=null){
 				e.defaultColor = Color.GREEN;
 			}
-			else{
-				myLog.logln("??????????? NOW NodeID "+this.ID+" EDGE NULL");
+			e1 = getEdgeByEndNode(j.ID, this.ID);
+			if(e1!=null){
+				e1.defaultColor = Color.GREEN;
 			}
 			this.married_egde = e;
-			Tools.repaintGUI();
 			Tools.repaintGUI();
 			return true;
 		}

@@ -36,16 +36,20 @@
 */
 package projects.matchingSample;
 
-import java.util.HashMap;
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import javafx.util.Pair;
 
 import javax.swing.JOptionPane;
 
+import projects.matchingSample.nodes.edges.MEdge;
 import projects.matchingSample.nodes.nodeImplementations.MS2Node;
 import projects.matchingSample.nodes.nodeImplementations.MS3Node;
 import projects.matchingSample.nodes.nodeImplementations.MSNode;
 import sinalgo.nodes.Node;
-import sinalgo.nodes.edges.BidirectionalEdge;
 import sinalgo.nodes.edges.Edge;
 import sinalgo.runtime.AbstractCustomGlobal;
 import sinalgo.tools.Tools;
@@ -298,9 +302,21 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
 		
 	}
-	@AbstractCustomGlobal.CustomButton(buttonText="CLEAR", toolTipText="Reset the state of each nodes")
+	@AbstractCustomGlobal.CustomButton(buttonText="CLEAR", toolTipText="Reset the colors of the GUI")
 	public void sampleButton2() {
-		//JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");		
+		//JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
+		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+			Node n = it.next();
+			if(n.getColor()!=Color.BLACK){
+				n.setColor(Color.BLACK);
+			}
+			for(Iterator<Edge> it2=n.outgoingConnections.iterator();it2.hasNext();){
+				Edge e = it2.next();
+				if(e.defaultColor != Color.BLACK){
+					e.defaultColor = Color.BLACK;
+				}
+			}
+		}
 	}
 	
 	@AbstractCustomGlobal.CustomButton(buttonText="Verify", toolTipText="Verify Upper bound")
@@ -361,19 +377,68 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		}
 		for(int z=1;z<k;z++){
 			log.logln("Edge id "+z+ " contains: "+v.get(z).toString());
-		}
+		}*/
 		Iterator<Node> it = Tools.getNodeList().iterator();
+		Integer n = Tools.getNodeList().size();
 		while(it.hasNext()){
 			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
-				log.logln("Edge id --> "+it2.next().getID());
+				MEdge ed = (MEdge)it2.next();
+				ed.setSecondID(n+ed.getID());
+			}
+		}
+		it = Tools.getNodeList().iterator();
+		while(it.hasNext()){
+			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
+				log.logln("Edge id --> "+((MEdge)it2.next()).getSecondID());
 
 			}
-		}*/
+		}
+	}
+	@AbstractCustomGlobal.CustomButton(buttonText="Edmond", toolTipText="Edmong")
+	public void edmondAlgorithm(){
+		Integer sizeOfGraph = Tools.getNodeList().size();
+		List<Integer>[] graph = new List[sizeOfGraph];
+		for(int i=0;i<sizeOfGraph;i++){
+			graph[i] = new ArrayList<Integer>();
+		}
+		for(Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext();){
+			for(Iterator<Edge> it2 = it.next().outgoingConnections.iterator();it2.hasNext();){
+				Edge edge = it2.next();
+				graph[(edge.startNode.ID-1)].add((edge.endNode.ID-1));		
+			}
+		}
+		/*
+		JOptionPane.showMessageDialog(null,"Maximum matching for the given graph is: "
+        + EdmondsMaximumCardinalityMatching.maxMatching(graph),"Max Matching", JOptionPane.INFORMATION_MESSAGE);
+		*/
+		List<Pair<Integer,Integer>> l = EdmondsMaximumCardinalityMatching.maxMatching(graph);
+		for(Pair<Integer,Integer> p:l){
+			Tools.appendToOutput(String.valueOf(p.getKey()) +" : "+String.valueOf(p.getValue())+"\n");
+			Node i = Tools.getNodeByID(p.getKey());
+			Node j = Tools.getNodeByID(p.getValue());
+			i.setColor(Color.MAGENTA);
+			j.setColor(Color.MAGENTA);
+			for(Iterator<Edge> it = i.outgoingConnections.iterator();it.hasNext();){
+				Edge e = it.next();
+				if(e.endNode.ID == j.ID){
+					e.defaultColor = Color.MAGENTA;
+				}
+			}
+			for(Iterator<Edge> it = j.outgoingConnections.iterator();it.hasNext();){
+				Edge e = it.next();
+				if(e.endNode.ID == i.ID){
+					e.defaultColor = Color.MAGENTA;
+				}
+			}
+			
+		}
+		Tools.repaintGUI();
+		JOptionPane.showMessageDialog(null,"Maximum matching for the given graph is: "
+		        + l.size()/2,"Max Matching", JOptionPane.INFORMATION_MESSAGE);
+		
 	}
 	
-	
 }
-
 
 
 
