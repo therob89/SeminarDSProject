@@ -86,6 +86,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	Integer edges_second_algorithm;
 	Integer edges_third_algorithm;
 	Integer nodes_first_algorithm;
+	boolean OPTIMAL_CASE = false;
+	boolean first_Alg_Opt = false;
 	
 	Integer algorithm_choosed = -1;
 	/* (non-Javadoc)
@@ -96,7 +98,13 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		if(this.algorithm_choosed !=-1){
 			switch(this.algorithm_choosed){
 			case 1:
-				return this.first_Algorithm;
+				if(this.OPTIMAL_CASE){
+					//return this.first_Alg_Opt;
+					return false;
+				}
+				else{
+					return this.first_Algorithm;
+				}
 			case 2:
 				return this.second_Algorithm;
 			case 3:
@@ -175,6 +183,21 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		}
 		return true;
 	}
+	private boolean check_First_AlgorithmOptimal(){
+		Integer c = 0;
+		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+			MSNode i = (MSNode) it.next();
+			if(!i.isMarried && i.getP_v() == null){
+				c+=1;
+			}else{
+				MSNode j = (MSNode)Tools.getNodeByID(i.pointingNode);
+				if((i.isMarried && j.isMarried && i.getP_v() == null && j.getP_v() == null) || (i.getP_v() == j.ID && j.getP_v() == i.ID)){
+					c+=1;
+				}
+			}
+		}
+		return c == Tools.getNodeList().size();
+	}
 	private boolean check_Second_Algorithm(){
 		Iterator<Node> it = Tools.getNodeList().iterator();
 		Node _n;
@@ -207,14 +230,6 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		return true;
 		
 	}
-	private boolean checkIfWeWantToFindTheOptimalCase(){
-		
-		String answer1 = JOptionPane.showInputDialog(null, "Do you want to find the optimal case? Y | N");
-		if(answer1.equals("Y")){
-			return true;
-		}
-		return false;
-	}
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
@@ -222,13 +237,27 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		if(this.algorithm_choosed!=-1){
 			switch(this.algorithm_choosed){
 			case 1:
-				if(this.check_First_Algorithm() && this.first_Algorithm == false){
-					Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-					if(checkIfWeWantToFindTheOptimalCase()){
-						
+				if(this.first_Algorithm == false){
+					if(this.check_First_Algorithm()){
+						Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+						this.first_Algorithm = true;
+						for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+							MSNode n = (MSNode)it.next();
+							n.setFindTheOptimum(true);
+						}
 					}
-					this.first_Algorithm = true;
 				}
+				else if (this.first_Algorithm == true && this.OPTIMAL_CASE && !this.first_Alg_Opt){
+					log.logln("Try to find the optimum!!!");
+
+				}
+				/*
+				if(this.first_Algorithm == true && this.OPTIMAL_CASE && !this.first_Alg_Opt){
+					if(this.check_First_AlgorithmOptimal()){
+						Tools.appendToOutput("Optimal Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+						this.first_Alg_Opt = true;
+					}
+				}*/
 				break;
 			case 2:
 				if(this.check_Second_Algorithm() && this.second_Algorithm == false){
@@ -255,6 +284,21 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		String answer = JOptionPane.showInputDialog(null, "This is an example.\nType in any text to echo.");
 		// Show an information message 
 		JOptionPane.showMessageDialog(null, "You typed '" + answer + "'", "Example Echo", JOptionPane.INFORMATION_MESSAGE);
+	}
+	@AbstractCustomGlobal.GlobalMethod(menuText="Optimal Case")
+	public void optimalCase() {
+		// Query the user for an input
+		String answer = JOptionPane.showInputDialog(null, "Insert Y if you want the optimal solution N otherwise.");
+		// Show an information message 
+		if(answer.equals("Y")){
+			this.OPTIMAL_CASE = true;
+		}else{
+			this.OPTIMAL_CASE = false;
+		}
+		if(Tools.getGlobalTime()!=0){
+			JOptionPane.showMessageDialog(null, "Error you can select the optimal algorithm only at beginning","Alert", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 	}
 	@AbstractCustomGlobal.GlobalMethod(menuText="Set Threshold Probability")
 	public void setThreshold() {
@@ -408,6 +452,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	@AbstractCustomGlobal.CustomButton(buttonText="Edmond", toolTipText="Edmong")
 	public void edmondAlgorithm(){
 		Integer sizeOfGraph = Tools.getNodeList().size();
+		@SuppressWarnings("unchecked")
 		List<Integer>[] graph = new List[sizeOfGraph];
 		for(int i=0;i<sizeOfGraph;i++){
 			graph[i] = new ArrayList<Integer>();

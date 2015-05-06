@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sinalgo>
 	<ProjectSelector windowWidth="1280" windowHeight="600" lastChosenProject="matchingSample" windowPosX="0" windowPosY="133" isMaximized="false" selectedTab="1" />
-	<GUI windowWidth="1101" windowHeight="700" windowPosX="83" windowPosY="69" isMaximized="false" ControlPanelExpandSimulation="true" ControlPanelShowFullViewPanel="false" ControlPanelShowTextPanel="true" ControlPanelShowProjectControl="true" RunOperationIsLimited="false" helpWindowWidth="500" helpWindowHeight="500" helpWindowPosX="200" helpWindowPosY="200" helpWindowIsMaximized="false" />
-	<RandomSeed seedFromPreviousRun="8488160832446623606" />
+	<GUI windowWidth="1209" windowHeight="700" windowPosX="669" windowPosY="48" isMaximized="false" ControlPanelExpandSimulation="true" ControlPanelShowFullViewPanel="false" ControlPanelShowTextPanel="true" ControlPanelShowProjectControl="true" RunOperationIsLimited="true" helpWindowWidth="500" helpWindowHeight="500" helpWindowPosX="200" helpWindowPosY="200" helpWindowIsMaximized="false" />
+	<RandomSeed seedFromPreviousRun="-1039776953136475146" />
 	<App lastSelectedFileDirectory="" checkForUpdatesAtStartup="false" updateCheckTimeStamp="0" runCmdLineArgs="" />
 	<GenNodesDlg numNodes="15" />
 </sinalgo>

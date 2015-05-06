@@ -1,0 +1,357 @@
+Node: 1 Now threshold probability is: 0.5
+Node: 2 Now threshold probability is: 0.5
+Node: 3 Now threshold probability is: 0.5
+Node: 4 Now threshold probability is: 0.5
+Node: 5 Now threshold probability is: 0.5
+Node: 6 Now threshold probability is: 0.5
+Node: 1 Now threshold probability is: 0.7
+Node: 2 Now threshold probability is: 0.7
+Node: 3 Now threshold probability is: 0.7
+Node: 4 Now threshold probability is: 0.7
+Node: 5 Now threshold probability is: 0.7
+Node: 6 Now threshold probability is: 0.7
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+Sed rule..now NodeID: 1 pointing to 3
+NodeID:1does seduction rule!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+Sed rule..now NodeID: 2 pointing to 4
+NodeID:2does seduction rule!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+Node:ID 4 married with 2
+NodeID:4does marriage!!
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Cannot execute...Try to next round!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+NodeID:2does update!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+Node:ID 3 married with 1
+NodeID:3does marriage!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+NodeID:4does update!!
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+NodeID:1does update!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Cannot execute...Try to next round!!
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+NodeID:3does update!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Cannot execute...Try to next round!!
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Cannot execute...Try to next round!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Cannot execute...Try to next round!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Cannot execute...Try to next round!!
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+---------------------------------------------------------------------
+Node: 1------------------------ Now find the optimum is: trueAnd Married Predicate is: true
+Node: 2------------------------ Now find the optimum is: trueAnd Married Predicate is: true
+Node: 3------------------------ Now find the optimum is: trueAnd Married Predicate is: true
+Node: 4------------------------ Now find the optimum is: trueAnd Married Predicate is: true
+Node: 5------------------------ Now find the optimum is: trueAnd Married Predicate is: false
+Node: 6------------------------ Now find the optimum is: trueAnd Married Predicate is: false
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+Node: 1****Trying to find the optimum for a married node....!!p_v = null alfa: null beta 6
+1: UPDATE ROUTINE.....START
+1: BEST REMATCH ROUTINE, size of neighbor available are: 0
+1: UPDATE ROUTINE.....BEST REMATCH HAS RETURNED <NULL,NULL>
+1: MATCH FIRST.....START
+1 ASK FIRST ROUTINE
+1 ASK FIRST ROUTINE has Unique values size = 2
+1 ASK FIRST ROUTINE return null
+1: MATCH FIRST.....END FALSE
+1: MATCH SECOND.....START
+1 ASK SECOND ROUTINE
+1 ASK FIRST ROUTINE
+1 ASK FIRST ROUTINE has Unique values size = 1
+1 ASK FIRST ROUTINE return null
+1: MATCH SECOND.....END FALSE
+1: RESET MATCH START
+1 ASK FIRST ROUTINE
+1 ASK FIRST ROUTINE has Unique values size = 2
+1 ASK FIRST ROUTINE return null
+1 ASK SECOND ROUTINE
+1 ASK FIRST ROUTINE
+1 ASK FIRST ROUTINE has Unique values size = 1
+1 ASK FIRST ROUTINE return null
+1: RESET MATCH END FALSE
+---------------------------------------------------------------------
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+Node: 2****Trying to find the optimum for a married node....!!p_v = null alfa: null beta 3
+2: UPDATE ROUTINE.....START
+2: BEST REMATCH ROUTINE, size of neighbor available are: 0
+2: UPDATE ROUTINE.....BEST REMATCH HAS RETURNED <NULL,NULL>
+2: MATCH FIRST.....START
+2 ASK FIRST ROUTINE
+2 ASK FIRST ROUTINE has Unique values size = 2
+2 ASK FIRST ROUTINE return null
+2: MATCH FIRST.....END FALSE
+2: MATCH SECOND.....START
+2 ASK SECOND ROUTINE
+2 ASK FIRST ROUTINE
+2 ASK FIRST ROUTINE has Unique values size = 1
+2 ASK FIRST ROUTINE return null
+2: MATCH SECOND.....END FALSE
+2: RESET MATCH START
+2 ASK FIRST ROUTINE
+2 ASK FIRST ROUTINE has Unique values size = 2
+2 ASK FIRST ROUTINE return null
+2 ASK SECOND ROUTINE
+2 ASK FIRST ROUTINE
+2 ASK FIRST ROUTINE has Unique values size = 1
+2 ASK FIRST ROUTINE return null
+2: RESET MATCH END FALSE
+---------------------------------------------------------------------
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+Node: 3****Trying to find the optimum for a married node....!!p_v = null alfa: null beta 1
+3: UPDATE ROUTINE.....START
+3: BEST REMATCH ROUTINE, size of neighbor available are: 1
+3: BEST REMATCH ROUTINE, only alfa is != null and is = 5
+3: UPDATE ROUTINE.....<a,b> = <5,null>
+3: *************************************************SUCCESSFULLY UPDATED VALUES
+Node: 3 *******UPDATE MOVES DONE!!*******
+3: MATCH FIRST.....START
+3 ASK FIRST ROUTINE
+3 ASK FIRST ROUTINE has Unique values size = 2
+3 ASK FIRST ROUTINE return null
+3: MATCH FIRST.....END FALSE
+3: MATCH SECOND.....START
+3 ASK SECOND ROUTINE
+3 ASK FIRST ROUTINE
+3 ASK FIRST ROUTINE has Unique values size = 1
+3 ASK FIRST ROUTINE return null
+3: MATCH SECOND.....END FALSE
+3: RESET MATCH START
+3 ASK FIRST ROUTINE
+3 ASK FIRST ROUTINE has Unique values size = 2
+3 ASK FIRST ROUTINE return null
+3 ASK SECOND ROUTINE
+3 ASK FIRST ROUTINE
+3 ASK FIRST ROUTINE has Unique values size = 1
+3 ASK FIRST ROUTINE return null
+3: RESET MATCH END FALSE
+---------------------------------------------------------------------
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+Node: 4****Trying to find the optimum for a married node....!!p_v = null alfa: 1 beta null
+4: UPDATE ROUTINE.....START
+4: BEST REMATCH ROUTINE, size of neighbor available are: 2
+4: BEST REMATCH ROUTINE, returning alfa and beta::::::::: alfa:5 beta:6
+4: UPDATE ROUTINE.....<a,b> = <5,6>
+4: *************************************************SUCCESSFULLY UPDATED VALUES
+Node: 4 *******UPDATE MOVES DONE!!*******
+4: MATCH FIRST.....START
+4 ASK FIRST ROUTINE
+4 ASK FIRST ROUTINE has Unique values size = 3
+4 ASK FIRST ROUTINE return null
+4: MATCH FIRST.....END FALSE
+4: MATCH SECOND.....START
+4 ASK SECOND ROUTINE
+4 ASK FIRST ROUTINE
+4 ASK FIRST ROUTINE has Unique values size = 2
+4 ASK FIRST ROUTINE return null
+4: MATCH SECOND.....END FALSE
+4: RESET MATCH START
+4 ASK FIRST ROUTINE
+4 ASK FIRST ROUTINE has Unique values size = 3
+4 ASK FIRST ROUTINE return null
+4 ASK SECOND ROUTINE
+4 ASK FIRST ROUTINE
+4 ASK FIRST ROUTINE has Unique values size = 2
+4 ASK FIRST ROUTINE return null
+4: RESET MATCH END FALSE
+---------------------------------------------------------------------
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+Node: 5****Trying to find the optimum for a single node....!!p_v = 3 alfa: null beta 1
+5: SINGLE NODE ROUTINE
+5: Set of neighbor pointing me is = []
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+Node: 6****Trying to find the optimum for a single node....!!p_v = 4 alfa: 3 beta 1
+6: SINGLE NODE ROUTINE
+6: Set of neighbor pointing me is = []
+---------------------------------------------------------------------
