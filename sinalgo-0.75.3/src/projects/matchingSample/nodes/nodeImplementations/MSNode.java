@@ -444,52 +444,62 @@ public class MSNode extends Node {
 		
 	}
 	private boolean updateRoutine(){
-		myLog.logln(this.ID+": UPDATE ROUTINE.....START");
+		myLog.logln("MATCHED NODE: "+this.ID+": UPDATE ROUTINE.....START");
+		Pair<Integer,Integer> bestRematch = this.bestRematch();
+		if((this.alfa_v != null && this.beta_v !=null && this.alfa_v>this.beta_v)
+				|| (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.alfa_v) || !this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.alfa_v))
+				|| (this.alfa_v==this.beta_v && this.alfa_v!=null)
+				|| (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(),this.p_v))
+				|| ((this.alfa_v!=bestRematch.getKey() || this.beta_v!=bestRematch.getValue()) && (this.p_v == null || (((MSNode)Tools.getNodeByID(this.p_v)).p_v!=this.ID || (((MSNode)Tools.getNodeByID(this.p_v)).p_v!=null)))))
+		{
+			myLog.logln("MATCHED NODE: "+this.ID+": ** UPDATING ALL THE VALUES ** ");
+			this.alfa_v = bestRematch.getKey();
+			this.beta_v = bestRematch.getValue();
+			this.p_v = null;
+			this.rematch_v = false;
+			return true;
+		}
+		myLog.logln("MATCHED NODE: "+this.ID+": UPDATE ROUTINE.....END FALSE");
 		return false;
 	}
 	
 	private boolean matchFirst(){
-		myLog.logln(this.ID+": MATCH FIRST.....START");
+		myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....START");
 		Integer askFirst = this.askFirst(this.ID);
-		MSNode n = null;
-		if(askFirst != null && (this.p_v != askFirst || this.rematch_v != (((n=(MSNode) Tools.getNodeByID(this.p_v)).p_v == this.ID)))){
-			myLog.logln(this.ID+":MATCH FIRST *********** PASSED THE IF ********** CHANGING THE COLOR");
+		Integer p_p_v;
+		if(((MSNode)Tools.getNodeByID(this.p_v)).p_v!=null){
+			p_p_v = ((MSNode)Tools.getNodeByID(this.p_v)).p_v;
+		}
+		else{
+			p_p_v = null;
+		}
+		if((askFirst!=null) && (this.p_v != askFirst || this.rematch_v !=(p_p_v == this.ID))){
+			myLog.logln("MATCHED NODE: "+this.ID+": ** INSIDE THE MATCH FIRST ** ");
 			this.p_v = askFirst;
-			this.rematch_v = (n.p_v == this.ID);
-			this.setColorToEdgeAndNodes(Color.MAGENTA,this,n);
+			this.rematch_v = (p_p_v == this.ID);
 			return true;
 		}
-		myLog.logln(this.ID+": MATCH FIRST.....END FALSE");
+		myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....END FALSE");
 		return false;
 	}
 	
 	
 	private boolean matchSecond(){
-		myLog.logln(this.ID+": MATCH SECOND.....START");
+		myLog.logln("MATCHED NODE: "+this.ID+": MATCH SECOND.....START");
 		Integer askSecond = this.askSecond(this.ID);
-		if(askSecond != null && this.rematch_v && this.p_v != askSecond){
+		if(askSecond!=null 
+				&& (this.isMarried && ((MSNode)Tools.getNodeByID(this.pointingNode)).rematch_v)
+				&& (this.p_v!=askSecond))
+		{
 			this.p_v = askSecond;
-			MSNode n = (MSNode) Tools.getNodeByID(this.p_v);
-			myLog.logln(this.ID+":MATCH SECOND *********** CHANGING COLOR TO MAGENTA**********************");
-			this.setColorToEdgeAndNodes(Color.MAGENTA,this,n);
+			myLog.logln("MATCHED NODE: "+this.ID+": ** INSIDE THE MATCH SECOND ** ");
 			return true;
 		}
-		myLog.logln(this.ID+": MATCH SECOND.....END FALSE");
 		return false;
-
 	}
 	
 	private boolean resetMatch(){
-		myLog.logln(this.ID+": RESET MATCH START");
-		Integer askFirst = this.askFirst(this.ID);
-		Integer askSecond = this.askSecond(this.ID);
-		if((askFirst == null && askSecond == null)  && (this.p_v != null || this.rematch_v != false)){
-			myLog.logln(this.ID+" *********** RESET MATCH SUCCESSFULLY **********************");
-			this.p_v = null;
-			this.rematch_v = false;
-			return true;
-		}
-		myLog.logln(this.ID+": RESET MATCH END FALSE");
+		myLog.logln("MATCHED NODE: "+this.ID+": REset MATCH.....START");
 		return false;
 	}
 	
