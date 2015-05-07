@@ -1,0 +1,149 @@
+Node: 1 Now threshold probability is: 0.9
+Node: 2 Now threshold probability is: 0.9
+Node: 3 Now threshold probability is: 0.9
+Node: 4 Now threshold probability is: 0.9
+Node: 5 Now threshold probability is: 0.9
+Node: 6 Now threshold probability is: 0.9
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+Sed rule..now NodeID: 1 pointing to 3
+NodeID:1does seduction rule!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+Sed rule..now NodeID: 2 pointing to 4
+NodeID:2does seduction rule!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+Node:ID 3 married with 1
+NodeID:3does marriage!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+***WARN: *** Node: 4Scheduler doesn't allow the execution...try next round!!
+---------------------------------------------------------------------
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+NodeID:1does update!!
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+NodeID:3does update!!
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+Node:ID 4 married with 2
+NodeID:4does marriage!!
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+NodeID:2does update!!
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+***WARN: *** Node: 4Scheduler doesn't allow the execution...try next round!!
+---------------------------------------------------------------------
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+NodeID:4does update!!
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+Node: 5Scheduler decides that i can run
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+Node: 6Scheduler decides that i can run
+Node: 1 PRE_STEP 
+Node: 1 POST_STEP 
+---------------------------------------------------------------------
+Node: 1Scheduler decides that i can run
+Node: 2 PRE_STEP 
+Node: 2 POST_STEP 
+---------------------------------------------------------------------
+Node: 2Scheduler decides that i can run
+Node: 3 PRE_STEP 
+Node: 3 POST_STEP 
+---------------------------------------------------------------------
+Node: 3Scheduler decides that i can run
+Node: 4 PRE_STEP 
+Node: 4 POST_STEP 
+---------------------------------------------------------------------
+Node: 4Scheduler decides that i can run
+Node: 5 PRE_STEP 
+Node: 5 POST_STEP 
+---------------------------------------------------------------------
+***WARN: *** Node: 5Scheduler doesn't allow the execution...try next round!!
+---------------------------------------------------------------------
+Node: 6 PRE_STEP 
+Node: 6 POST_STEP 
+---------------------------------------------------------------------
+***WARN: *** Node: 6Scheduler doesn't allow the execution...try next round!!
+---------------------------------------------------------------------
+Node: 1------------------------ Now find the optimum is: trueAnd Married Predicate is: true
+Node: 1------------------------ Start state is = <3, 5, -1, false, married with:3 >
+Node: 2------------------------ Now find the optimum is: trueAnd Married Predicate is: true
+Node: 2------------------------ Start state is = <-1, -1, -1, false, married with:4 >
+Node: 3------------------------ Now find the optimum is: trueAnd Married Predicate is: true
+Node: 3------------------------ Start state is = <5, 5, 5, false, married with:1 >
+Node: 4------------------------ Now find the optimum is: trueAnd Married Predicate is: true

@@ -60,24 +60,24 @@ public class MSNode extends Node {
 			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
 				this.alfa_v = -1;
 			}else{
-				this.alfa_v = (Tools.getNodeByID(Tools.getRandomNumberGenerator().nextInt(Tools.getNodeList().size()))).ID;
+				this.alfa_v = Tools.getNodeList().getRandomNode().ID;	
 			}
 			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
 				this.beta_v = -1;
 			}else{
-				this.beta_v = (Tools.getNodeByID(Tools.getRandomNumberGenerator().nextInt(Tools.getNodeList().size()))).ID;
+				this.beta_v =  Tools.getNodeList().getRandomNode().ID;	
 			}
 		}else{
 			this.p_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
 			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
 				this.alfa_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
 			}else{
-				this.alfa_v = (Tools.getNodeByID(Tools.getRandomNumberGenerator().nextInt(Tools.getNodeList().size()))).ID;
+				this.alfa_v = Tools.getNodeList().getRandomNode().ID;	
 			}
 			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
 				this.beta_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
 			}else{
-				this.beta_v = (Tools.getNodeByID(Tools.getRandomNumberGenerator().nextInt(Tools.getNodeList().size()))).ID;
+				this.beta_v =  Tools.getNodeList().getRandomNode().ID;
 			}
 		}
 		myLog.logln("Node: "+this.ID+"------------------------ Start state is = "+this.printTheStateOfNode());
