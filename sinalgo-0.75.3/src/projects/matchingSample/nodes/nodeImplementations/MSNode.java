@@ -48,36 +48,44 @@ public class MSNode extends Node {
 	public void setFindTheOptimum(boolean findTheOptimum) {
 		this.findTheOptimum = findTheOptimum;
 		myLog.logln("Node: "+this.ID+"------------------------ Now find the optimum is: "+ this.findTheOptimum+ "And Married Predicate is: "+this.isMarried);
-		List<Integer> list = new ArrayList<Integer>();
-		for(Iterator<Edge>it=this.outgoingConnections.iterator();it.hasNext();){
-			MSNode n = (MSNode) it.next().endNode;
-			if(!n.isMarried){
-				list.add(n.ID);
-			}
-		}
-		if(list.isEmpty()){
+		if(!this.isMarried){
 			this.p_v = -1;
-			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
-				this.alfa_v = -1;
-			}else{
-				this.alfa_v = Tools.getNodeList().getRandomNode().ID;	
+			this.alfa_v = -1;
+			this.beta_v = -1;
+		}
+		else{
+			List<Integer> list = new ArrayList<Integer>();
+			for(Iterator<Edge>it=this.outgoingConnections.iterator();it.hasNext();){
+				MSNode n = (MSNode) it.next().endNode;
+				if(!n.isMarried){
+					list.add(n.ID);
+				}
 			}
-			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
-				this.beta_v = -1;
+			if(list.isEmpty()){
+				this.p_v = -1;
+				if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
+					do{
+						this.alfa_v= Tools.getRandomNode().ID;
+					}while(this.alfa_v == this.ID);
+					do{
+						this.beta_v= Tools.getRandomNode().ID;
+					}while(this.beta_v == this.ID);
+
+				}else{
+					this.alfa_v= -1;
+					this.beta_v = -1;
+				}
+				
 			}else{
-				this.beta_v =  Tools.getNodeList().getRandomNode().ID;	
-			}
-		}else{
-			this.p_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
-			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
-				this.alfa_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
-			}else{
-				this.alfa_v = Tools.getNodeList().getRandomNode().ID;	
-			}
-			if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
-				this.beta_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
-			}else{
-				this.beta_v =  Tools.getNodeList().getRandomNode().ID;
+				this.p_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
+				this.alfa_v = this.p_v;
+				if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
+					this.beta_v = -1;
+				}else{
+					do{
+						this.beta_v= Tools.getRandomNode().ID;
+					}while(this.beta_v == this.ID);
+				}
 			}
 		}
 		myLog.logln("Node: "+this.ID+"------------------------ Start state is = "+this.printTheStateOfNode());
@@ -472,16 +480,14 @@ public class MSNode extends Node {
 	private boolean matchFirst(){
 		myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....START");
 		Integer askFirst = this.askFirst(this.ID);
-		Integer p_p_v;
 		if(askFirst==-1){
 			myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....askFirst == null...so return null");
 			return false;
 		}
-		p_p_v = ((MSNode)Tools.getNodeByID(this.p_v)).p_v;
-		if((askFirst!=-1) && (this.p_v != askFirst || this.rematch_v !=(p_p_v == this.ID))){
+		if((askFirst!=-1) && (this.p_v != askFirst || (this.rematch_v !=(((MSNode)Tools.getNodeByID(this.p_v)).p_v == this.ID)))){
 			myLog.logln("MATCHED NODE: "+this.ID+": ** INSIDE THE MATCH FIRST ** ");
 			this.p_v = askFirst;
-			this.rematch_v = (p_p_v == this.ID);
+			this.rematch_v = (((MSNode)Tools.getNodeByID(this.p_v)).p_v == this.ID);
 			return true;
 		}
 		myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....END FALSE");
