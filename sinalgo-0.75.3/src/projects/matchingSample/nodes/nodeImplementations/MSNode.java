@@ -322,7 +322,6 @@ public class MSNode extends Node {
 			return "<" + this.p_v + " >";
 		}
 	}
-	/*
 	@Override
 	public void postStep() {
 		// TODO Auto-generated method stub
@@ -347,32 +346,12 @@ public class MSNode extends Node {
 				return;
 			}
 			this.end_flag = true;
-			if(this.findTheOptimum){
-				if(!this.isMarried){
-					myLog.logln("Single Node: "+this.ID+" current state at the beginning of the move:"+this.printTheStateOfNode());
-					this.singleNodeRoutine();
-					myLog.logln("Single Node: "+this.ID+" current state at the end of the move:"+this.printTheStateOfNode());
-					myLog.logln("---------------------------------------------------------------------");
-				}
-				else{
-					myLog.logln("Married Node: "+this.ID+" current state at the beginning of the move:"+this.printTheStateOfNode());
-					this.updateRoutine();
-					this.matchFirst();
-					this.matchSecond();
-					this.resetMatch();
-					myLog.logln("Married Node: "+this.ID+" current state at the beginning of the move:"+this.printTheStateOfNode());
-					myLog.logln("---------------------------------------------------------------------");
-
-				}		
-			}
 		}else{
 			myLog.logln("***WARN: *** Node: "+this.ID+"Scheduler doesn't allow the execution...try next round!!");
 			myLog.logln("---------------------------------------------------------------------");
 		}
-
-		
-	}*/
-
+	}
+/*
 	public void listOfMoves(){
 		if(!this.isMarried){
 			myLog.logln("Single Node: "+this.ID+" current state at the beginning of the moves:"+this.printTheStateOfNode());
@@ -402,7 +381,7 @@ public class MSNode extends Node {
 			myLog.logln("---------------------------------------------------------------------");
 		}
 
-	}
+	}*/
 
 	@Override
 	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {

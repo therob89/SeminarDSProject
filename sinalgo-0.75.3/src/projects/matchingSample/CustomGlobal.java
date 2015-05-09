@@ -87,8 +87,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	Integer edges_third_algorithm;
 	Integer nodes_first_algorithm;
 	boolean OPTIMAL_CASE = false;
-	boolean first_Alg_Opt = false;
-	
+
 	Integer algorithm_choosed = -1;
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
@@ -98,12 +97,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		if(this.algorithm_choosed !=-1){
 			switch(this.algorithm_choosed) {
 				case 1:
-					if (this.OPTIMAL_CASE) {
-						//return this.first_Alg_Opt;
-						return false;
-					} else {
-						return this.first_Algorithm;
-					}
+					return this.first_Algorithm;
 				case 2:
 					return this.second_Algorithm;
 				case 3:
@@ -226,8 +220,6 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				}
 			}
 		}
-		Tools.appendToOutput("**CAN TERM **** \n");
-
 		return true;
 		
 	}
@@ -237,36 +229,20 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		super.postRound();
 		if(this.algorithm_choosed!=-1){
 			switch(this.algorithm_choosed) {
-				case 1:
-					if (this.first_Algorithm == false) {
-						if (this.check_First_Algorithm()) {
-							Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-							this.first_Algorithm = true;
-							for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext(); ) {
-								MSNode n = (MSNode) it.next();
-								n.setFindTheOptimum(true);
-							}
-						}
-					} else if (this.first_Algorithm == true && this.OPTIMAL_CASE && !this.first_Alg_Opt) {
-						log.logln("Try to find the optimum!!!");
-
-					}
-				/*
-				if(this.first_Algorithm == true && this.OPTIMAL_CASE && !this.first_Alg_Opt){
-					if(this.check_First_AlgorithmOptimal()){
-						Tools.appendToOutput("Optimal Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-						this.first_Alg_Opt = true;
-					}
-				}*/
-					break;
+                case 1:
+                    if(this.check_First_Algorithm() && !this.first_Algorithm){
+                        this.first_Algorithm = true;
+                        Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+                    }
+                    break;
 				case 2:
-					if (this.check_Second_Algorithm() && this.second_Algorithm == false) {
+					if (this.check_Second_Algorithm() && !this.second_Algorithm) {
 						this.second_Algorithm = true;
 						Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
 					}
 					break;
 				case 3:
-					if (this.check_Third_Algorithm() && this.third_Algorithm == false) {
+					if (this.check_Third_Algorithm() && !this.third_Algorithm) {
 						this.third_Algorithm = true;
 						Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
 					}
