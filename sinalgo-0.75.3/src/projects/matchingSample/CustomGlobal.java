@@ -48,6 +48,7 @@ import javax.swing.JOptionPane;
 import projects.matchingSample.nodes.edges.MEdge;
 import projects.matchingSample.nodes.nodeImplementations.MS2Node;
 import projects.matchingSample.nodes.nodeImplementations.MS3Node;
+import projects.matchingSample.nodes.nodeImplementations.MS4Node;
 import projects.matchingSample.nodes.nodeImplementations.MSNode;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.edges.Edge;
@@ -178,21 +179,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		}
 		return true;
 	}
-	private boolean check_First_AlgorithmOptimal(){
-		Integer c = 0;
-		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
-			MSNode i = (MSNode) it.next();
-			if(!i.isMarried && i.getP_v() == null){
-				c+=1;
-			}else{
-				MSNode j = (MSNode)Tools.getNodeByID(i.pointingNode);
-				if((i.isMarried && j.isMarried && i.getP_v() == null && j.getP_v() == null) || (i.getP_v() == j.ID && j.getP_v() == i.ID)){
-					c+=1;
-				}
-			}
-		}
-		return c == Tools.getNodeList().size();
-	}
+
 	private boolean check_Second_Algorithm(){
 		Iterator<Node> it = Tools.getNodeList().iterator();
 		Node _n;
@@ -320,7 +307,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			JOptionPane.showMessageDialog(null, "You have selected:"+this.algorithm_choosed,"Notice", JOptionPane.INFORMATION_MESSAGE);
 			if(this.algorithm_choosed == 4){
 				for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext(); ) {
-					MSNode n = (MSNode) it.next();
+					MS4Node n = (MS4Node) it.next();
 					n.setFindTheOptimum(true);
 				}
 			}
