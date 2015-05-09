@@ -96,19 +96,20 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public boolean hasTerminated() {
 		//return first_Algorithm && second_Algorithm;
 		if(this.algorithm_choosed !=-1){
-			switch(this.algorithm_choosed){
-			case 1:
-				if(this.OPTIMAL_CASE){
-					//return this.first_Alg_Opt;
+			switch(this.algorithm_choosed) {
+				case 1:
+					if (this.OPTIMAL_CASE) {
+						//return this.first_Alg_Opt;
+						return false;
+					} else {
+						return this.first_Algorithm;
+					}
+				case 2:
+					return this.second_Algorithm;
+				case 3:
+					return this.third_Algorithm;
+				case 4:
 					return false;
-				}
-				else{
-					return this.first_Algorithm;
-				}
-			case 2:
-				return this.second_Algorithm;
-			case 3:
-				return this.third_Algorithm;
 			}
 		}
 		return false;
@@ -235,22 +236,21 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	// TODO Auto-generated method stub
 		super.postRound();
 		if(this.algorithm_choosed!=-1){
-			switch(this.algorithm_choosed){
-			case 1:
-				if(this.first_Algorithm == false){
-					if(this.check_First_Algorithm()){
-						Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-						this.first_Algorithm = true;
-						for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
-							MSNode n = (MSNode)it.next();
-							n.setFindTheOptimum(true);
+			switch(this.algorithm_choosed) {
+				case 1:
+					if (this.first_Algorithm == false) {
+						if (this.check_First_Algorithm()) {
+							Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+							this.first_Algorithm = true;
+							for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext(); ) {
+								MSNode n = (MSNode) it.next();
+								n.setFindTheOptimum(true);
+							}
 						}
-					}
-				}
-				else if (this.first_Algorithm == true && this.OPTIMAL_CASE && !this.first_Alg_Opt){
-					log.logln("Try to find the optimum!!!");
+					} else if (this.first_Algorithm == true && this.OPTIMAL_CASE && !this.first_Alg_Opt) {
+						log.logln("Try to find the optimum!!!");
 
-				}
+					}
 				/*
 				if(this.first_Algorithm == true && this.OPTIMAL_CASE && !this.first_Alg_Opt){
 					if(this.check_First_AlgorithmOptimal()){
@@ -258,19 +258,21 @@ public class CustomGlobal extends AbstractCustomGlobal{
 						this.first_Alg_Opt = true;
 					}
 				}*/
-				break;
-			case 2:
-				if(this.check_Second_Algorithm() && this.second_Algorithm == false){
-					this.second_Algorithm = true;
-					Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
-				}
-				break;
-			case 3:
-				if(this.check_Third_Algorithm() && this.third_Algorithm == false){
-					this.third_Algorithm = true;
-					Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");	
-				}
-				break;
+					break;
+				case 2:
+					if (this.check_Second_Algorithm() && this.second_Algorithm == false) {
+						this.second_Algorithm = true;
+						Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
+					}
+					break;
+				case 3:
+					if (this.check_Third_Algorithm() && this.third_Algorithm == false) {
+						this.third_Algorithm = true;
+						Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
+					}
+					break;
+				case 4:
+					log.logln("Try to find the optimum!!!");
 			}
 		}
 	}
@@ -335,11 +337,17 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		// Show an information message 
 		try{
 			this.algorithm_choosed = Integer.parseInt(answer);
-			if(this.algorithm_choosed !=1 && this.algorithm_choosed != 2 && this.algorithm_choosed != 3){
+			if(this.algorithm_choosed !=1 && this.algorithm_choosed != 2 && this.algorithm_choosed != 3 && this.algorithm_choosed!=4){
 				JOptionPane.showMessageDialog(null, "You must insert a valid Algorithm -> 1|2|3 ", "Alert", JOptionPane.INFORMATION_MESSAGE);
 				this.algorithm_choosed = -1;
 			}
 			JOptionPane.showMessageDialog(null, "You have selected:"+this.algorithm_choosed,"Notice", JOptionPane.INFORMATION_MESSAGE);
+			if(this.algorithm_choosed == 4){
+				for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext(); ) {
+					MSNode n = (MSNode) it.next();
+					n.setFindTheOptimum(true);
+				}
+			}
 
 		}catch(NumberFormatException e){
 			JOptionPane.showMessageDialog(null, "You must insert a valid Algorithm -> 1|2|3 ", "Alert", JOptionPane.INFORMATION_MESSAGE);

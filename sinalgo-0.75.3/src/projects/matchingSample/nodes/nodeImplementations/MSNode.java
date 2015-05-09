@@ -21,6 +21,8 @@ import sinalgo.nodes.messages.Inbox;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
 
+import javax.swing.*;
+
 public class MSNode extends Node {
 
 	//public static boolean isSending = true;
@@ -77,8 +79,9 @@ public class MSNode extends Node {
 				}
 				
 			}else{
-				this.p_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
-				this.alfa_v = this.p_v;
+				this.alfa_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
+				//this.p_v = -1;
+				this.p_v = this.alfa_v;
 				if(Tools.getRandomNumberGenerator().nextDouble()>=0.5){
 					this.beta_v = -1;
 				}else{
@@ -256,7 +259,7 @@ public class MSNode extends Node {
 				//&& (j = this.checkMaxNeighborForMarriageWithNullPreference())!=-1){
 				&& (list=this.getListOfUnMarriedWithGretherID())!=null){
 			this.pointingNode = this.getMaxFromList(list);
-			myLog.logln("Sed rule..now NodeID: "+this.ID+" pointing to "+this.pointingNode);
+			myLog.logln("Sed rule..now NodeID: " + this.ID + " pointing to " + this.pointingNode);
 			return true;
 		}
 		return false;
@@ -313,8 +316,13 @@ public class MSNode extends Node {
 	}
 	
 	private String printTheStateOfNode(){
-		return "<"+this.alfa_v+", "+this.beta_v+", "+this.p_v+", "+this.rematch_v+", married with:"+this.pointingNode+" >";
+		if(this.isMarried) {
+			return "<" + this.alfa_v + ", " + this.beta_v + ", " + this.p_v + ", " + this.rematch_v + ", married with:" + this.pointingNode + " >";
+		}else{
+			return "<" + this.p_v + " >";
+		}
 	}
+	/*
 	@Override
 	public void postStep() {
 		// TODO Auto-generated method stub
@@ -363,7 +371,39 @@ public class MSNode extends Node {
 		}
 
 		
+	}*/
+
+	public void listOfMoves(){
+		if(!this.isMarried){
+			myLog.logln("Single Node: "+this.ID+" current state at the beginning of the moves:"+this.printTheStateOfNode());
+			this.singleNodeRoutine();
+			myLog.logln("Single Node: "+this.ID+" current state at the end of the moves:"+this.printTheStateOfNode());
+			myLog.logln("---------------------------------------------------------------------");
+		}
+		else{
+			myLog.logln("Married Node: "+this.ID+" current state at the beginning of the moves:"+this.printTheStateOfNode());
+			this.updateRoutine();
+			this.matchFirst();
+			this.matchSecond();
+			this.resetMatch();
+			myLog.logln("Married Node: "+this.ID+" current state at the end of the moves:"+this.printTheStateOfNode());
+			myLog.logln("---------------------------------------------------------------------");
+
+		}
+
 	}
+	@Override
+	public void postStep() {
+
+		if(this.findTheOptimum && this.isAllowed_To_Move) {
+			this.listOfMoves();
+		}else{
+			myLog.logln("***WARN: *** Node: "+this.ID+"Scheduler doesn't allow the execution...try next round!!");
+			myLog.logln("---------------------------------------------------------------------");
+		}
+
+	}
+
 	@Override
 	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {
 		// TODO Auto-generated method stub
@@ -371,7 +411,7 @@ public class MSNode extends Node {
 	}
 	@NodePopupMethod(menuText="Send_Message")
 	public void myPopupMethod() {
-		myLog.logln("Node:: "+this.ID+" Pressed popup menu");
+		myLog.logln("Node:: " + this.ID + " Pressed popup menu");
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		myLog.logln("Pop-upMenu method for nodeID "+this.ID+" that have outgoingconnections "+this.outgoingConnections.size());
@@ -387,12 +427,29 @@ public class MSNode extends Node {
 		this.setColor(Color.GREEN);
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
-		myLog.logln("Pop-upMenu method for nodeID "+this.ID+" that have outgoingconnections "+this.outgoingConnections.size());
+		myLog.logln("Pop-upMenu method for nodeID " + this.ID + " that have outgoingconnections " + this.outgoingConnections.size());
 		while(it.hasNext()){
 			it.next().defaultColor = Color.GREEN;
 		}
 	}
+	@NodePopupMethod(menuText="Force Marriage")
+	public void forceMarriage(){
+		this.isMarried = true;
+		String answer = JOptionPane.showInputDialog(null, "Insert the node to match");
+		try{
+			this.pointingNode = Integer.valueOf(answer);
+			this.setColor(Color.BLUE);
+			this.getEdgeByEndNode(this.pointingNode).defaultColor = Color.blue;
+			Tools.getNodeByID(this.pointingNode).setColor(Color.BLUE);
+			((MSNode)Tools.getNodeByID(this.pointingNode)).isMarried = true;
+			((MSNode)Tools.getNodeByID(this.pointingNode)).pointingNode = this.ID;
+			((MSNode)Tools.getNodeByID(this.pointingNode)).getEdgeByEndNode(this.ID).defaultColor = Color.blue;
+			Tools.repaintGUI();
+		}catch (NumberFormatException e){
+			myLog.logln("Error with the popup menu");
+		}
 
+	}
 	@Override
 	public void neighborhoodChange() {
 		// TODO Auto-generated method stub
@@ -432,6 +489,7 @@ public class MSNode extends Node {
 				this.p_v = Collections.min(s);
 			}
 			myLog.logln(this.ID+": START SINGLE NODE ROUTINE...taking the lowest from neighbors = "+this.p_v);
+			return true;
 		}
 		myLog.logln(this.ID+": END SINGLE NODE ROUTINE");
 		return false;
@@ -445,26 +503,22 @@ public class MSNode extends Node {
 	 *  
 	 *************************************************************************************************************/
 	private boolean checkIfBelongToSetWithNull(Set<Integer> set, Integer value){
-		boolean flag = false;
-		if(set!=null){
-			set.add(-1);
-			flag = set.contains(value);
-			set.remove(-1);
-		}else{
-			// Set == null
-			return value == -1;
+		if(value == -1){
+			return true;
 		}
-		return flag;
-		
+		if(!set.isEmpty()){
+			return set.contains(value);
+		}
+		return false;
 	}
 	private boolean updateRoutine(){
 		myLog.logln("MATCHED NODE: "+this.ID+": UPDATE ROUTINE.....START");
 		Pair<Integer,Integer> bestRematch = this.bestRematch();
-		if((this.alfa_v>this.beta_v)
-				|| (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.alfa_v) || !this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.beta_v))
+		if((this.alfa_v!=-1 && this.beta_v!=-1 && this.alfa_v>this.beta_v)
+				|| (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.alfa_v) && !this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.beta_v))
 				|| (this.alfa_v==this.beta_v && this.alfa_v!=-1)
 				|| (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(),this.p_v))
-				|| ((this.alfa_v!=bestRematch.getKey() || this.beta_v!=bestRematch.getValue()) && (this.p_v == -1 || (((MSNode)Tools.getNodeByID(this.p_v)).p_v!=this.ID || (((MSNode)Tools.getNodeByID(this.p_v)).p_v!=-1)))))
+				|| ((this.alfa_v!=bestRematch.getKey() || this.beta_v!=bestRematch.getValue()) && (this.p_v == -1 || (((MSNode)Tools.getNodeByID(this.p_v)).p_v!=this.ID && (((MSNode)Tools.getNodeByID(this.p_v)).p_v!=-1)))))
 		{
 			myLog.logln("MATCHED NODE: "+this.ID+": ** UPDATING ALL THE VALUES ** ");
 			this.alfa_v = bestRematch.getKey();
@@ -480,10 +534,6 @@ public class MSNode extends Node {
 	private boolean matchFirst(){
 		myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....START");
 		Integer askFirst = this.askFirst(this.ID);
-		if(askFirst==-1){
-			myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....askFirst == null...so return null");
-			return false;
-		}
 		if((askFirst!=-1) && (this.p_v != askFirst || (this.rematch_v !=(((MSNode)Tools.getNodeByID(this.p_v)).p_v == this.ID)))){
 			myLog.logln("MATCHED NODE: "+this.ID+": ** INSIDE THE MATCH FIRST ** ");
 			this.p_v = askFirst;
@@ -539,7 +589,7 @@ public class MSNode extends Node {
 		Set<Integer> singleNeighbor = this.getSingleNeighbor();
 		HashSet<Integer> singleNeighborAvailable = new HashSet<Integer>();
 		if(singleNeighbor.size()==0){
-			myLog.logln("MATCHED NODE: "+this.ID+": BEST REMATCH :: No Single Neighbor available = "+singleNeighbor.toString());
+			myLog.logln("\t \t MATCHED NODE: "+this.ID+": BEST REMATCH :: No Single Neighbor available = "+singleNeighbor.toString());
 			return new Pair<Integer,Integer>(-1,-1);
 		}
 		for(Integer s_ID:singleNeighbor){
@@ -551,13 +601,13 @@ public class MSNode extends Node {
 		
 		switch(singleNeighborAvailable.size()){
 			case 0:
-				myLog.logln("MATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
+				myLog.logln("\t \tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
 				return new Pair<Integer,Integer>(-1,-1);
 			case 1:
-				myLog.logln("MATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
+				myLog.logln("\t \tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
 				return new Pair<Integer,Integer>(Collections.min(singleNeighborAvailable),-1);
 			default:
-				myLog.logln("MATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
+				myLog.logln("\t \tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
 				Integer alfa = Collections.min(singleNeighborAvailable);
 				singleNeighborAvailable.remove(alfa);
 				return new Pair<Integer,Integer>(alfa,Collections.min(singleNeighborAvailable));
@@ -571,27 +621,33 @@ public class MSNode extends Node {
 		if(this.alfa_v != -1 && marriedWith.alfa_v != -1 && s.size()>=2){
 			if((this.alfa_v<marriedWith.alfa_v) 
 					|| (this.alfa_v == marriedWith.alfa_v && this.beta_v == -1)
-					|| (this.alfa_v == marriedWith.alfa_v && marriedWith.beta_v != -1 && this.ID < marriedWith.ID))
+					|| (this.alfa_v == marriedWith.alfa_v && marriedWith.beta_v != -1 && this.ID < this.pointingNode))
 			{
-				myLog.logln("MATCHED NODE "+this.ID+" ASK FIRST DONE!!! ---> Returning ---> "+this.alfa_v);
+				myLog.logln("\t \t MATCHED NODE "+this.ID+" ASK FIRST("+v+") DONE!!! ---> Returning ---> "+this.alfa_v);
 				return this.alfa_v;
 			}
 		}
-		myLog.logln(this.ID+" ASK FIRST is not executable!!!!");
+		myLog.logln("\t \t"+this.ID+" ASK FIRST("+v+") is not executable!!!!");
 		return -1;
 		
 		
 	}
 	
 	private Integer askSecond(Integer v){
-		Integer askFirst_married = this.askFirst(this.pointingNode);
+		//Integer askFirst_married = this.askFirst(this.pointingNode);
+		Integer askFirst_married = ((MSNode)Tools.getNodeByID(this.pointingNode)).askFirst(this.pointingNode);
 		if(askFirst_married!=-1){
 			Set<Integer> s = new HashSet<Integer>(Arrays.asList(this.alfa_v,this.beta_v));
 			s.remove(((MSNode)Tools.getNodeByID(this.pointingNode)).alfa_v);
-			myLog.logln("MATCHED NODE "+this.ID+" ASK SECOND DONE!!! ---> Returning ---> "+Collections.min(s));
+			s.remove(-1);
+			if(s.isEmpty()){
+				myLog.logln("\t \t Matched node :"+this.ID+"have the lowest betweem alfa_v,beta_v / alfa_m_v == 0");
+				return -1;
+			}
+			myLog.logln("\t \t MATCHED NODE "+this.ID+" ASK SECOND DONE!!! ---> Returning ---> "+Collections.min(s));
 			return Collections.min(s);
 		}
-		myLog.logln(this.ID+" ASK SECOND is not executable!!!!");
+		myLog.logln("\t \t "+this.ID+" I'am executed askSecond("+this.pointingNode +") ASK SECOND is not executable!!!!");
 		return -1;
 	}
 	
