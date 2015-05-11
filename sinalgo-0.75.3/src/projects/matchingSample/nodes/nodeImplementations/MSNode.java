@@ -34,8 +34,11 @@ public class MSNode extends Node {
 	double threshold_probability = 0.5;
 	Logging myLog = Logging.getLogger("logAlgorithm1.txt");
 
+    public Edge getMarried_egde() {
+        return married_egde;
+    }
 
-	public void setFaultState(){
+    public void setFaultState(){
         myLog.logln("Node: " + this.ID + " Faulting the state");
         ArrayList<Integer> list = new ArrayList<Integer>();
         for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
@@ -133,15 +136,15 @@ public class MSNode extends Node {
 		}
 		return null;
 	}
-	private void setColorToEdgeAndNodes(Color color, Node i, Node j){
-		i.setColor(color);
+	private void setColorToEdgeAndNodes(Color color, Node j){
+		this.setColor(color);
 		j.setColor(color);
-		Edge e = this.getEdgeStartAndEnd(i, j);
+		Edge e = this.getEdgeStartAndEnd(this, j);
 		if(e.defaultColor != color){
 			e.defaultColor = color;
 
 		}
-		e = this.getEdgeStartAndEnd(j, i);
+		e = this.getEdgeStartAndEnd(j, this);
 		if(e.defaultColor != color){
 			e.defaultColor = color;
 		}
@@ -173,6 +176,11 @@ public class MSNode extends Node {
 		boolean flag = this.PRmarried();
 		if(this.isMarried != flag){
 			this.isMarried = flag;
+            if(this.getColor() == Color.RED){
+                this.setColor(Color.BLACK);
+                Tools.repaintGUI();
+
+            }
 			return true;
 		}
 		return false;
@@ -188,7 +196,7 @@ public class MSNode extends Node {
 			myLog.logln("Node:ID "+this.ID +" married with "+ j);
 			Edge e = this.getEdgeByEndNode(j);
 			this.married_egde = e;
-			this.setColorToEdgeAndNodes(Color.GREEN, this, Tools.getNodeByID(j));
+			this.setColorToEdgeAndNodes(Color.GREEN, Tools.getNodeByID(j));
 			return true;
 		}
 		return false;
@@ -204,6 +212,11 @@ public class MSNode extends Node {
 				&& (list=this.getListOfUnMarriedWithGreaterID())!=null){
 			this.pointingNode = this.getMaxFromList(list);
 			myLog.logln("Sed rule..now NodeID: " + this.ID + " pointing to " + this.pointingNode);
+            if(this.getColor() == Color.RED){
+                this.setColor(Color.BLACK);
+                Tools.repaintGUI();
+
+            }
 			return true;
 		}
 		return false;
@@ -219,8 +232,6 @@ public class MSNode extends Node {
 				&& (temp= this.getNodeByID(this.pointingNode)).pointingNode!=this.ID
 				&& (temp.isMarried || temp.ID <= this.ID)){
 			this.pointingNode = -1;
-			this.setColor(Color.BLACK);
-			Tools.repaintGUI();
 			return true;
 
 		}

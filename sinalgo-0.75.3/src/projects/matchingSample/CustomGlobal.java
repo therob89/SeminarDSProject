@@ -92,6 +92,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	boolean first_Algorithm = false;
 	boolean second_Algorithm = false;
 	boolean third_Algorithm = false;
+    boolean fourth_algorithm = false;
 	Integer edges_fist_algorithm;
 	Integer edges_second_algorithm;
 	Integer edges_third_algorithm;
@@ -185,7 +186,9 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				if(!n.getEndFlag()){
 					return -1;
 				}
-                count +=1;
+                if(n.getMarried_egde()!=null){
+                    count +=1;
+                }
 			}
 		}
 		return count;
@@ -221,6 +224,23 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		return true;
 		
 	}
+    private Integer check_Fourth_Algorithm(){
+        Iterator<Node> it = Tools.getNodeList().iterator();
+        Node _n;
+        Integer count = 0;
+        while(it.hasNext()){
+            _n = it.next();
+            if(_n.getClass() == MS4Node.class){
+                MS4Node n = (MS4Node)_n;
+                this.edges_fist_algorithm += n.outgoingConnections.size();
+                if(!n.getEndFlag()){
+                    return -1;
+                }
+                count +=1;
+            }
+        }
+        return count;
+    }
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
@@ -232,7 +252,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
                     if((res=this.check_First_Algorithm())!=-1 && !this.first_Algorithm){
                         this.first_Algorithm = true;
                         Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-                        Tools.appendToOutput("Algorithm1 find this size of max matching "+res/2+"\n");
+                        Tools.appendToOutput("Algorithm1 find this size of max matching "+res+"\n");
                     }
                     break;
 				case 2:
@@ -248,7 +268,16 @@ public class CustomGlobal extends AbstractCustomGlobal{
 					}
 					break;
 				case 4:
-					log.logln("Try to find the optimum!!!");
+                    if((res=this.check_Fourth_Algorithm())!=-1 && !this.fourth_algorithm) {
+                        this.fourth_algorithm = true;
+                        Tools.appendToOutput("Maximal converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+                        Tools.appendToOutput("Maximal matching size is =  :"+res/2);
+                        log.logln("Try to find the optimum!!!");
+                        for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext();) {
+                            MS4Node node = (MS4Node) it.next();
+                            node.setFindTheOptimum();
+                        }
+                    }
 			}
 		}
 	}
@@ -321,7 +350,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			if(this.algorithm_choosed == 4){
 				for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext(); ) {
 					MS4Node n = (MS4Node) it.next();
-					n.setFindTheOptimum(true);
+					n.setFindTheOptimum();
 				}
 			}
 
@@ -459,6 +488,13 @@ public class CustomGlobal extends AbstractCustomGlobal{
             switch (this.algorithm_choosed){
                 case 1:
                     MSNode node;
+                    do{
+                        node = (MSNode)Tools.getRandomNode();
+                    }while (set.contains(node.ID));
+                    node.setFaultState();
+                    set.add(node.ID);
+                    break;
+                case 4:
                     do{
                         node = (MSNode)Tools.getRandomNode();
                     }while (set.contains(node.ID));

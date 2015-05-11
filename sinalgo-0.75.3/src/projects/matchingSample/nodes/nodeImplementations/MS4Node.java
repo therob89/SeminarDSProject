@@ -24,11 +24,21 @@ public class MS4Node extends MSNode{
     boolean rematch_v;
     Logging myLog = Logging.getLogger("logAlgorithm4.txt");
     boolean findTheOptimum;
+    boolean hasFinished;
 
-    public Integer getP_v(){
-        return this.p_v;
+
+    public boolean isHasFinished() {
+        return hasFinished;
     }
 
+    public Integer getP_v() {
+        return p_v;
+    }
+
+    @Override
+    public void preStep() {
+        super.preStep();
+    }
 
     @Override
     public void init() {
@@ -39,7 +49,10 @@ public class MS4Node extends MSNode{
 
     @Override
     public void postStep() {
+        super.postStep();
+        if(this.findTheOptimum){
 
+        }
     }
 
     private String printTheStateOfNode(){
@@ -50,8 +63,8 @@ public class MS4Node extends MSNode{
         }
     }
 
-    public void setFindTheOptimum(boolean findTheOptimum) {
-        this.findTheOptimum = findTheOptimum;
+    public void setFindTheOptimum() {
+        this.findTheOptimum = true;
         myLog.logln("Node: "+this.ID+"------------------------ Now find the optimum is: "+ this.findTheOptimum+ "And Married Predicate is: "+this.isMarried);
         if(!this.isMarried){
             this.p_v = -1;
@@ -270,7 +283,6 @@ public class MS4Node extends MSNode{
     }
 
     private Integer askSecond(Integer v){
-        //Integer askFirst_married = this.askFirst(this.pointingNode);
         Integer askFirst_married = ((MS4Node)Tools.getNodeByID(this.pointingNode)).askFirst(this.pointingNode);
         if(askFirst_married!=-1){
             Set<Integer> s = new HashSet<Integer>(Arrays.asList(this.alfa_v,this.beta_v));
@@ -330,18 +342,7 @@ public class MS4Node extends MSNode{
     @Override
     public void draw(Graphics g, PositionTransformation pt, boolean highlight) {
         // TODO Auto-generated method stub
-        super.drawNodeAsDiskWithText(g, pt, highlight, Integer.toString(this.ID), 14, Color.WHITE);
+        super.drawNodeAsDiskWithText(g, pt, highlight, Integer.toString(this.ID), 14, Color.BLACK);
     }
 
-    public Edge getEdgeByEndNode(Integer nodeID){
-        Connections conn = this.outgoingConnections;
-        Iterator<Edge> it = conn.iterator();
-        while(it.hasNext()){
-            Edge e = it.next();
-            if(e.endNode.ID == nodeID){
-                return e;
-            }
-        }
-        return null;
-    }
 }
