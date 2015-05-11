@@ -13,67 +13,25 @@ import sinalgo.nodes.messages.Inbox;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
 
-public class MS2Node extends Node {
+public class MS2Node extends MSNode {
 
-	Integer pointingNode; 
-	boolean isAllowed_To_Move;
-	public boolean end_flag;
-	Edge married_egde;
-	double threshold_probability = 0.5;
 	
 	Logging myLog = Logging.getLogger("logAlgorithm2.txt");
-	
-	private Edge getEdgeByEndNode(Integer start, Integer nodeID){
-		Connections conn = Tools.getNodeByID(start).outgoingConnections;
-		Iterator<Edge> it = conn.iterator();
-		while(it.hasNext()){
-			Edge e = it.next();
-			if(e.endNode.ID == nodeID){
-				return e;
-			}
-		}
-		return null;
-	}
-	public boolean getEndFlag(){
-		return this.end_flag; // this.end_flag;
-	}
-	public void setThresholdProbability(double k){
-		this.threshold_probability = k;
-	}
-	public int getPointingNode(){
-		return this.pointingNode;
-	}	
-	@Override
-	public void handleMessages(Inbox inbox) {
-		// TODO Auto-generated method stub
-	}
+
 
 	@Override
 	public void preStep() {
 		// TODO Auto-generated method stub
-		myLog.logln("Node: "+this.ID+" PRE_STEP ");
-		if(Tools.getRandomNumberGenerator().nextDouble()<=this.threshold_probability){
-			this.isAllowed_To_Move = true;
-		}else{
-			this.isAllowed_To_Move = false;
-		}
+		super.preStep();
 	}
 
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		this.pointingNode = -1 ;
-		this.end_flag = false;
-		this.married_egde = null;
+		super.init();
 		this.setColor(Color.BLUE);
-
 	}
 
-	@Override
-	public void neighborhoodChange() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void postStep() {
@@ -101,11 +59,6 @@ public class MS2Node extends Node {
 
 	}
 
-	@Override
-	public void checkRequirements() throws WrongConfigurationException {
-		// TODO Auto-generated method stub
-
-	}
 	
 	@Override
 	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {
@@ -155,18 +108,9 @@ public class MS2Node extends Node {
 		if(this.pointingNode == -1 && (j=this.checkForMarriageNeighbor())!=null){
 			this.pointingNode = j.ID;
 			myLog.logln("******* NOW NodeID "+this.ID+" is married with: "+j.ID);
-			this.setColor(Color.GREEN);
-			j.setColor(Color.GREEN);
-			Edge e,e1;
-			e = getEdgeByEndNode(this.ID,j.ID);
-			if(e!=null){
-				e.defaultColor = Color.GREEN;
-			}
-			e1 = getEdgeByEndNode(j.ID, this.ID);
-			if(e1!=null){
-				e1.defaultColor = Color.GREEN;
-			}
-			this.married_egde = e;
+            Edge e = this.getEdgeByEndNode(j.ID);
+            this.married_egde = e;
+            this.setColorToEdgeAndNodes(Color.GREEN, Tools.getNodeByID(j.ID));
 			Tools.repaintGUI();
 			return true;
 		}

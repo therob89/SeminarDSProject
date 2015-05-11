@@ -38,6 +38,18 @@ public class MSNode extends Node {
         return married_egde;
     }
 
+	public Integer getPointingNode() {
+		return pointingNode;
+	}
+
+	public boolean isEnd_flag() {
+		return end_flag;
+	}
+
+    public boolean isMarried() {
+        return isMarried;
+    }
+
     public void setFaultState(){
         myLog.logln("Node: " + this.ID + " Faulting the state");
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -48,10 +60,7 @@ public class MSNode extends Node {
         this.pointingNode = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
         this.setColor(Color.RED);
     }
-	
-	public boolean getEndFlag(){
-		return this.end_flag;
-	}
+
 	public void setThresholdProbability(double k){
 		myLog.logln("Node: "+this.ID+" Now threshold probability is: "+ k);
 		this.threshold_probability = k;
@@ -68,7 +77,7 @@ public class MSNode extends Node {
 		}
 		Tools.repaintGUI();
 	}
-	public Edge getEdgeByEndNode(Integer nodeID){
+	protected Edge getEdgeByEndNode(Integer nodeID){
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		while(it.hasNext()){
@@ -79,7 +88,7 @@ public class MSNode extends Node {
 		}
 		return null;
 	}
-	public Edge getEdgeStartAndEnd(Node start, Node end){
+	protected Edge getEdgeStartAndEnd(Node start, Node end){
 		for(Iterator<Edge>it = start.outgoingConnections.iterator();it.hasNext();){
 			Edge e = it.next();
 			if(e.endNode.ID == end.ID){
@@ -136,7 +145,7 @@ public class MSNode extends Node {
 		}
 		return null;
 	}
-	private void setColorToEdgeAndNodes(Color color, Node j){
+	protected void setColorToEdgeAndNodes(Color color, Node j){
 		this.setColor(color);
 		j.setColor(color);
 		Edge e = this.getEdgeStartAndEnd(this, j);

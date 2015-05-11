@@ -44,13 +44,30 @@ public class MS4Node extends MSNode{
     public void init() {
         super.init();
         this.setColor(Color.YELLOW);
+        this.hasFinished = false;
     }
 
 
     @Override
     public void postStep() {
         super.postStep();
-        if(this.findTheOptimum){
+        if(this.findTheOptimum && this.isAllowed_To_Move){
+            if(!this.isMarried()){
+                myLog.logln("------------SINGLE NODE: "+this.ID+"---------------------");
+                singleNodeRoutine();
+                myLog.logln("---------------------------------------------------------");
+            }else{
+                myLog.logln("------------MARRIED NODE: "+this.ID+"---------------------");
+                updateRoutine();
+                matchFirst();
+                matchSecond();
+                resetMatch();
+                myLog.logln("---------------------------------------------------------");
+            }
+        }else{
+            myLog.logln("-----------------");
+            myLog.logln("WARN:: Node ID"+this.ID+" cannot run in this round..try next time");
+            myLog.logln("-----------------");
 
         }
     }
@@ -119,7 +136,7 @@ public class MS4Node extends MSNode{
      *
      *************************************************************************************************************/
     private boolean singleNodeRoutine(){
-        myLog.logln(this.ID+": START SINGLE NODE ROUTINE");
+        myLog.logln("START SINGLE NODE ROUTINE");
         Set<Integer> s = new HashSet<Integer>();
         for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
             MS4Node n = (MS4Node) it.next().endNode;
@@ -127,7 +144,7 @@ public class MS4Node extends MSNode{
                 s.add(n.ID);
             }
         }
-        myLog.logln(this.ID+": START SINGLE NODE ROUTINE...set of neighbors pointing me is: "+ s.toString()+" size = "+s.size());
+        myLog.logln("Single node: "+this.ID+" has this set of neighbors pointing to his"+ s.toString()+" size = "+s.size());
         if((this.p_v == -1 && s.size()!=0)
                 || (!this.checkIfBelongToSetWithNull(this.getMarriedNeighbor(), this.p_v))
                 || (this.p_v!=-1 && ((MS4Node)Tools.getNodeByID(this.p_v)).p_v!=this.ID))
@@ -137,10 +154,10 @@ public class MS4Node extends MSNode{
             }else{
                 this.p_v = Collections.min(s);
             }
-            myLog.logln(this.ID+": START SINGLE NODE ROUTINE...taking the lowest from neighbors = "+this.p_v);
+            myLog.logln("Single node: "+this.ID+" taking the lowest from neighbors = "+this.p_v);
             return true;
         }
-        myLog.logln(this.ID+": END SINGLE NODE ROUTINE");
+        myLog.logln("**WARN** Single node: "+this.ID+" single node routine is not activated");
         return false;
     }
 
@@ -161,7 +178,7 @@ public class MS4Node extends MSNode{
         return false;
     }
     private boolean updateRoutine(){
-        myLog.logln("MATCHED NODE: "+this.ID+": UPDATE ROUTINE.....START");
+        myLog.logln("MATCHED NODE: "+this.ID+": Starting Update Routine");
         Pair<Integer,Integer> bestRematch = this.bestRematch();
         if((this.alfa_v!=-1 && this.beta_v!=-1 && this.alfa_v>this.beta_v)
                 || (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.alfa_v) && !this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.beta_v))
@@ -169,57 +186,57 @@ public class MS4Node extends MSNode{
                 || (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(),this.p_v))
                 || ((this.alfa_v!=bestRematch.getKey() || this.beta_v!=bestRematch.getValue()) && (this.p_v == -1 || (((MS4Node)Tools.getNodeByID(this.p_v)).p_v!=this.ID && (((MS4Node)Tools.getNodeByID(this.p_v)).p_v!=-1)))))
         {
-            myLog.logln("MATCHED NODE: "+this.ID+": ** UPDATING ALL THE VALUES ** ");
+            myLog.logln("MATCHED NODE: "+this.ID+": ***** needed to update its state *****");
             this.alfa_v = bestRematch.getKey();
             this.beta_v = bestRematch.getValue();
             this.p_v = -1;
             this.rematch_v = false;
             return true;
         }
-        myLog.logln("MATCHED NODE: "+this.ID+": UPDATE ROUTINE.....END FALSE");
+        myLog.logln("**WARN** MATCHED NODE: "+this.ID+": UPDATE ROUTINE is not activated");
         return false;
     }
 
     private boolean matchFirst(){
-        myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....START");
+        myLog.logln("MATCHED NODE: "+this.ID+": Starting Match First");
         Integer askFirst = this.askFirst(this.ID);
         if((askFirst!=-1) && (this.p_v != askFirst || (this.rematch_v !=(((MS4Node)Tools.getNodeByID(this.p_v)).p_v == this.ID)))){
-            myLog.logln("MATCHED NODE: "+this.ID+": ** INSIDE THE MATCH FIRST ** ");
+            myLog.logln("MATCHED NODE: "+this.ID+": ***** Match First is correctly executed ***** ");
             this.p_v = askFirst;
             this.rematch_v = (((MS4Node)Tools.getNodeByID(this.p_v)).p_v == this.ID);
             return true;
         }
-        myLog.logln("MATCHED NODE: "+this.ID+": MATCH FIRST.....END FALSE");
+        myLog.logln("**WARN** MATCHED NODE: "+this.ID+": Match first routine is not activated");
         return false;
     }
 
 
     private boolean matchSecond(){
-        myLog.logln("MATCHED NODE: "+this.ID+": MATCH SECOND.....START");
+        myLog.logln("MATCHED NODE: "+this.ID+": Starting Match Second");
         Integer askSecond = this.askSecond(this.ID);
         if(askSecond!=-1
                 && (((MS4Node)Tools.getNodeByID(this.pointingNode)).rematch_v)
                 && (this.p_v!=askSecond))
         {
             this.p_v = askSecond;
-            myLog.logln("MATCHED NODE: "+this.ID+": ** INSIDE THE MATCH SECOND ** ");
+            myLog.logln("MATCHED NODE: "+this.ID+": ***** Match Second is correctly executed ***** ");
             return true;
         }
-        myLog.logln("MATCHED NODE: "+this.ID+": MATCH SECOND.....END FALSE");
+        myLog.logln("**WARN** MATCHED NODE: "+this.ID+": Match second routine is not activated");
         return false;
     }
 
     private boolean resetMatch(){
-        myLog.logln("MATCHED NODE: "+this.ID+": REset MATCH.....START");
+        myLog.logln("MATCHED NODE: "+this.ID+": Starting Reset Matching");
         Integer askFirst = this.askFirst(this.ID);
         Integer askSecond = this.askSecond(this.ID);
         if(((askFirst== -1 && askSecond == -1)) && (this.p_v!=-1 && this.rematch_v!=false)){
-            myLog.logln("MATCHED NODE: "+this.ID+": *** MUST DO A RESET MATCH ***");
+            myLog.logln("MATCHED NODE: "+this.ID+": ***** MUST DO A RESET MATCH ******");
             this.p_v = -1;
             this.rematch_v = false;
             return true;
         }
-        myLog.logln("MATCHED NODE: "+this.ID+": REset MATCH.....END FALSE");
+        myLog.logln("**WARN** MATCHED NODE: "+this.ID+": Reset Matching routine is not activated");
         return false;
     }
 
@@ -238,7 +255,7 @@ public class MS4Node extends MSNode{
         Set<Integer> singleNeighbor = this.getSingleNeighbor();
         HashSet<Integer> singleNeighborAvailable = new HashSet<Integer>();
         if(singleNeighbor.size()==0){
-            myLog.logln("\t \t MATCHED NODE: "+this.ID+": BEST REMATCH :: No Single Neighbor available = "+singleNeighbor.toString());
+            myLog.logln("\t\t\t MATCHED NODE: "+this.ID+": BEST REMATCH Routine -> No Single Neighbor available = "+singleNeighbor.toString());
             return new Pair<Integer,Integer>(-1,-1);
         }
         for(Integer s_ID:singleNeighbor){
@@ -250,13 +267,13 @@ public class MS4Node extends MSNode{
 
         switch(singleNeighborAvailable.size()){
             case 0:
-                myLog.logln("\t \tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
+                myLog.logln("\t\t\tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
                 return new Pair<Integer,Integer>(-1,-1);
             case 1:
-                myLog.logln("\t \tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
+                myLog.logln("\t\t\tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
                 return new Pair<Integer,Integer>(Collections.min(singleNeighborAvailable),-1);
             default:
-                myLog.logln("\t \tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
+                myLog.logln("\t\t\tMATCHED NODE: "+this.ID+": BEST REMATCH :: Neighbor available = "+singleNeighborAvailable.toString());
                 Integer alfa = Collections.min(singleNeighborAvailable);
                 singleNeighborAvailable.remove(alfa);
                 return new Pair<Integer,Integer>(alfa,Collections.min(singleNeighborAvailable));
@@ -272,11 +289,11 @@ public class MS4Node extends MSNode{
                     || (this.alfa_v == marriedWith.alfa_v && this.beta_v == -1)
                     || (this.alfa_v == marriedWith.alfa_v && marriedWith.beta_v != -1 && this.ID < this.pointingNode))
             {
-                myLog.logln("\t \t MATCHED NODE "+this.ID+" ASK FIRST("+v+") DONE!!! ---> Returning ---> "+this.alfa_v);
+                myLog.logln("\t \t MATCHED NODE "+this.ID+" *****ASK FIRST("+v+") is correctly executed *****  ---> Returning ---> "+this.alfa_v);
                 return this.alfa_v;
             }
         }
-        myLog.logln("\t \t"+this.ID+" ASK FIRST("+v+") is not executable!!!!");
+        myLog.logln("\t \t ** WARN ** "+this.ID+" ASK FIRST("+v+") is not activated!!!!");
         return -1;
 
 
@@ -292,10 +309,10 @@ public class MS4Node extends MSNode{
                 myLog.logln("\t \t Matched node :"+this.ID+"have the lowest betweem alfa_v,beta_v / alfa_m_v == 0");
                 return -1;
             }
-            myLog.logln("\t \t MATCHED NODE "+this.ID+" ASK SECOND DONE!!! ---> Returning ---> "+Collections.min(s));
+            myLog.logln("\t \t MATCHED NODE "+this.ID+" *****ASK SECOND("+v+") is correctly executed *****  ---> Returning ---> "+this.alfa_v);
             return Collections.min(s);
         }
-        myLog.logln("\t \t "+this.ID+" I'am executed askSecond("+this.pointingNode +") ASK SECOND is not executable!!!!");
+        myLog.logln("\t \t ** WARN ** "+this.ID+" ASK Second("+v+") is not activated!!!!");
         return -1;
     }
 

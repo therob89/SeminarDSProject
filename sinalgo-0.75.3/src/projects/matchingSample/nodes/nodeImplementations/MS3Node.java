@@ -13,38 +13,18 @@ import sinalgo.nodes.messages.Inbox;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
 
-public class MS3Node extends Node {
+public class MS3Node extends MSNode {
 
-	Integer pointer_Node;
-	boolean end_flag;
-	Edge married_edge;
 	Logging myLog = Logging.getLogger("logAlgorithm3.txt");
-	double threshold_probability = 0.5;
 	boolean isAllowed_To_Move;
 	boolean want_to_act;
 
-	public Integer getPointer_Node() {
-		return pointer_Node;
-	}
-	public boolean getEndFlag(){
-		return this.end_flag;
-	}
-	/*
-	private boolean checkIfCanAct(){
-		Iterator<Edge> it = outgoingConnections.iterator();
-		while(it.hasNext()){
-			MS3Node n = (MS3Node) it.next().endNode;
-			if(n.getWantToAct() == this.want_to_act == true && n.ID >= this.ID){
-				return false;
-			}
-		}
-		return true;
-	}*/
+
 	private MS3Node getNeighborPointingMe(){
 		Iterator<Edge> it = outgoingConnections.iterator();
 		while(it.hasNext()){
 			MS3Node n = (MS3Node) it.next().endNode;
-			if(n.getPointer_Node() == this.ID){
+			if(n.getPointingNode() == this.ID){
 				return n; 
 			}
 		}
@@ -54,7 +34,7 @@ public class MS3Node extends Node {
 		Iterator<Edge> it = outgoingConnections.iterator();
 		while(it.hasNext()){
 			MS3Node n = (MS3Node) it.next().endNode;
-			if(n.getPointer_Node() == -1){
+			if(n.getPointingNode() == -1){
 				return n; 
 			}
 		}
@@ -112,10 +92,8 @@ public class MS3Node extends Node {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		this.pointer_Node = -1;	
+		super.init();
 		this.setColor(Color.PINK);
-		this.end_flag = false;
-		this.want_to_act = false;
 	}
 
 	@Override
@@ -135,7 +113,7 @@ public class MS3Node extends Node {
 	}
 	private MS3Node wantToEngage(){
 		MS3Node temp;
-		if(this.pointer_Node == -1 && (temp=this.getNeighborPointingMe())!=null){
+		if(this.getPointingNode() == -1 && (temp=this.getNeighborPointingMe())!=null){
 			return temp;
 		}
 		return null;
@@ -143,7 +121,7 @@ public class MS3Node extends Node {
 	
 	private MS3Node wantToPropose(){
 		MS3Node temp;
-		if(this.pointer_Node == -1 && this.getNeighborPointingMe()==null 
+		if(this.getPointingNode() == -1 && this.getNeighborPointingMe()==null 
 				&& (temp=this.getAvailableNeighbor())!=null){
 			return temp;
 		}
@@ -151,8 +129,8 @@ public class MS3Node extends Node {
 	}
 	private boolean wantTODesengage(){
 		MS3Node temp;
-		temp = this.getNodeByID(this.pointer_Node);
-		if(this.pointer_Node!=-1 && temp.pointer_Node!=this.ID && temp.pointer_Node != -1){
+		temp = this.getNodeByID(this.getPointingNode());
+		if(this.getPointingNode()!=-1 && temp.getPointingNode()!=this.ID && temp.getPointingNode() != -1){
 			return true;
 		}
 		return false;
@@ -168,7 +146,7 @@ public class MS3Node extends Node {
 			if(this.want_to_act){
 				myLog.logln("NodeID:"+this.ID+"does matching!!");
 				Edge e,e1;
-				this.pointer_Node = temp.ID;
+				this.pointingNode = temp.ID;
 				myLog.logln("*** Now NodeID:"+this.ID+"is married with "+temp.ID);
 				this.setColor(Color.GREEN);
 				temp.setColor(Color.GREEN);
@@ -180,7 +158,7 @@ public class MS3Node extends Node {
 				if(e1!=null){
 					e1.defaultColor = Color.GREEN;
 				}
-				this.married_edge = e;
+				this.married_egde = e;
 				Tools.repaintGUI();
 				return;
 			}
@@ -188,7 +166,7 @@ public class MS3Node extends Node {
 			this.want_to_act=(temp!=null && canAct);
 			if(this.want_to_act){
 				myLog.logln("NodeID:"+this.ID+"does seduction!!");
-				this.pointer_Node = temp.ID;
+				this.pointingNode = temp.ID;
 				return;
 			}
 			this.want_to_act = (this.wantTODesengage() && canAct);

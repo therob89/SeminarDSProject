@@ -93,12 +93,6 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	boolean second_Algorithm = false;
 	boolean third_Algorithm = false;
     boolean fourth_algorithm = false;
-	Integer edges_fist_algorithm;
-	Integer edges_second_algorithm;
-	Integer edges_third_algorithm;
-	Integer nodes_first_algorithm;
-	boolean OPTIMAL_CASE = false;
-
 	Integer algorithm_choosed = -1;
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
@@ -169,11 +163,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public void preRun() {
 		// TODO Auto-generated method stub
 		super.preRun();
-		//this.flag = false;
-		this.edges_fist_algorithm = -1;
-		this.nodes_first_algorithm = -1;
 	}
-	private Integer check_First_Algorithm(){
+	private Integer checkingIfAllNodesHasFinished(){
 		Iterator<Node> it = Tools.getNodeList().iterator();
 		Node _n;
         Integer count = 0;
@@ -181,9 +172,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			_n = it.next();
 			if(_n.getClass() == MSNode.class){
 				MSNode n = (MSNode)_n;
-				this.edges_fist_algorithm += n.outgoingConnections.size();
-				this.nodes_first_algorithm+=1;
-				if(!n.getEndFlag()){
+				if(!n.isEnd_flag()){
 					return -1;
 				}
                 if(n.getMarried_egde()!=null){
@@ -194,53 +183,6 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		return count;
 	}
 
-	private boolean check_Second_Algorithm(){
-		Iterator<Node> it = Tools.getNodeList().iterator();
-		Node _n;
-		while(it.hasNext()){
-			_n = it.next();
-			if(_n.getClass() == MS2Node.class){
-				MS2Node n = (MS2Node)_n;
-				if(!n.getEndFlag()){
-					return false; 
-				}
-			}
-		}
-		return true;
-		
-	}
-	private boolean check_Third_Algorithm(){
-		Iterator<Node> it = Tools.getNodeList().iterator();
-		Node _n;
-		while(it.hasNext()){
-			_n = it.next();
-			if(_n.getClass() == MS3Node.class){
-				MS3Node n = (MS3Node)_n;
-				if(!n.getEndFlag()){
-					return false; 
-				}
-			}
-		}
-		return true;
-		
-	}
-    private Integer check_Fourth_Algorithm(){
-        Iterator<Node> it = Tools.getNodeList().iterator();
-        Node _n;
-        Integer count = 0;
-        while(it.hasNext()){
-            _n = it.next();
-            if(_n.getClass() == MS4Node.class){
-                MS4Node n = (MS4Node)_n;
-                this.edges_fist_algorithm += n.outgoingConnections.size();
-                if(!n.getEndFlag()){
-                    return -1;
-                }
-                count +=1;
-            }
-        }
-        return count;
-    }
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
@@ -249,26 +191,28 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		if(this.algorithm_choosed!=-1){
 			switch(this.algorithm_choosed) {
                 case 1:
-                    if((res=this.check_First_Algorithm())!=-1 && !this.first_Algorithm){
+                    if((res=this.checkingIfAllNodesHasFinished())!=-1 && !this.first_Algorithm){
                         this.first_Algorithm = true;
                         Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
                         Tools.appendToOutput("Algorithm1 find this size of max matching "+res+"\n");
                     }
                     break;
 				case 2:
-					if (this.check_Second_Algorithm() && !this.second_Algorithm) {
+					if ((res=this.checkingIfAllNodesHasFinished())!=-1 && !this.second_Algorithm) {
 						this.second_Algorithm = true;
 						Tools.appendToOutput("Algorithm2 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
-					}
+                        Tools.appendToOutput("Algorithm2 find this size of max matching "+res+"\n");
+                    }
 					break;
 				case 3:
-					if (this.check_Third_Algorithm() && !this.third_Algorithm) {
+					if ((res=this.checkingIfAllNodesHasFinished())!=-1 && !this.third_Algorithm) {
 						this.third_Algorithm = true;
 						Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
-					}
+                        Tools.appendToOutput("Algorithm3 find this size of max matching "+res+"\n");
+                    }
 					break;
 				case 4:
-                    if((res=this.check_Fourth_Algorithm())!=-1 && !this.fourth_algorithm) {
+                    if((res=this.checkingIfAllNodesHasFinished())!=-1 && !this.fourth_algorithm) {
                         this.fourth_algorithm = true;
                         Tools.appendToOutput("Maximal converge in '" + Tools.getGlobalTime() + "'Steps'\n");
                         Tools.appendToOutput("Maximal matching size is =  :"+res/2);
@@ -292,21 +236,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		// Show an information message 
 		JOptionPane.showMessageDialog(null, "You typed '" + answer + "'", "Example Echo", JOptionPane.INFORMATION_MESSAGE);
 	}
-	@AbstractCustomGlobal.GlobalMethod(menuText="Optimal Case")
-	public void optimalCase() {
-		// Query the user for an input
-		String answer = JOptionPane.showInputDialog(null, "Insert Y if you want the optimal solution N otherwise.");
-		// Show an information message 
-		if(answer.equals("Y")){
-			this.OPTIMAL_CASE = true;
-		}else{
-			this.OPTIMAL_CASE = false;
-		}
-		if(Tools.getGlobalTime()!=0){
-			JOptionPane.showMessageDialog(null, "Error you can select the optimal algorithm only at beginning","Alert", JOptionPane.INFORMATION_MESSAGE);
-			return;
-		}
-	}
+
 	@AbstractCustomGlobal.GlobalMethod(menuText="Set Threshold Probability")
 	public void setThreshold() {
 		// Query the user for an input
@@ -485,23 +415,12 @@ public class CustomGlobal extends AbstractCustomGlobal{
     public void faultTheStateOfNode(Integer k){
         Set<Integer> set = new HashSet<Integer>();
         for(int i=0;i<k;i++){
-            switch (this.algorithm_choosed){
-                case 1:
-                    MSNode node;
-                    do{
-                        node = (MSNode)Tools.getRandomNode();
-                    }while (set.contains(node.ID));
-                    node.setFaultState();
-                    set.add(node.ID);
-                    break;
-                case 4:
-                    do{
-                        node = (MSNode)Tools.getRandomNode();
-                    }while (set.contains(node.ID));
-                    node.setFaultState();
-                    set.add(node.ID);
-                    break;
-            }
+            MSNode node;
+            do{
+                node = (MSNode)Tools.getRandomNode();
+            }while (set.contains(node.ID));
+            node.setFaultState();
+            set.add(node.ID);
         }
         Tools.repaintGUI();
     }
