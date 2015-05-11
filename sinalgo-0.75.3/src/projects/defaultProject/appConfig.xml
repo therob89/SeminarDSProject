@@ -2,8 +2,8 @@
 <sinalgo>
 	<ProjectSelector windowWidth="979" windowHeight="601" lastChosenProject="matchingSample" windowPosX="211" windowPosY="157" isMaximized="false" selectedTab="1" />
 	<GUI windowWidth="1209" windowHeight="700" windowPosX="64" windowPosY="31" isMaximized="false" ControlPanelExpandSimulation="true" ControlPanelShowFullViewPanel="false" ControlPanelShowTextPanel="true" ControlPanelShowProjectControl="true" RunOperationIsLimited="false" helpWindowWidth="500" helpWindowHeight="500" helpWindowPosX="200" helpWindowPosY="200" helpWindowIsMaximized="false" />
-	<RandomSeed seedFromPreviousRun="-283376582744377689" />
+	<RandomSeed seedFromPreviousRun="-9147430518809374629" />
 	<App lastSelectedFileDirectory="" checkForUpdatesAtStartup="false" updateCheckTimeStamp="0" runCmdLineArgs="" />
-	<GenNodesDlg numNodes="8" />
+	<GenNodesDlg numNodes="10" />
 </sinalgo>
 

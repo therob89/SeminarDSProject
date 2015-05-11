@@ -28,7 +28,6 @@ public class MSNode extends Node {
 	public boolean isMarried;
 	public Integer pointingNode;
 	boolean isEligibile;
-	int interval;
 	boolean isAllowed_To_Move;
 	public boolean end_flag;
 	Edge married_egde;
@@ -36,6 +35,16 @@ public class MSNode extends Node {
 	Logging myLog = Logging.getLogger("logAlgorithm1.txt");
 
 
+	public void setFaultState(){
+        myLog.logln("Node: " + this.ID + " Faulting the state");
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
+            Node n = it.next().endNode;
+            list.add(n.ID);
+        }
+        this.pointingNode = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
+        this.setColor(Color.RED);
+    }
 	
 	public boolean getEndFlag(){
 		return this.end_flag;
@@ -132,7 +141,7 @@ public class MSNode extends Node {
 			e.defaultColor = color;
 
 		}
-		e = this.getEdgeStartAndEnd(i, j);
+		e = this.getEdgeStartAndEnd(j, i);
 		if(e.defaultColor != color){
 			e.defaultColor = color;
 		}
@@ -173,18 +182,10 @@ public class MSNode extends Node {
 	 * @return True if this rule can be activate, false otherwise
 	 */
 	public boolean marriageRule(){
-		int j = -1;
+		int j;
 		if((this.isMarried == this.PRmarried()) && this.pointingNode == -1 && (j=this.checkNeighborForMarriage())!=-1){
 			this.pointingNode = j;
 			myLog.logln("Node:ID "+this.ID +" married with "+ j);
-			/*
-			this.setColor(Color.GREEN);
-			this.getNodeByID(j).setColor(Color.GREEN);
-			Edge e = this.getEdgeByEndNode(j);
-			if(e!=null){
-				e.defaultColor = Color.GREEN;
-			}
-			Tools.repaintGUI();*/
 			Edge e = this.getEdgeByEndNode(j);
 			this.married_egde = e;
 			this.setColorToEdgeAndNodes(Color.GREEN, this, Tools.getNodeByID(j));
@@ -212,9 +213,10 @@ public class MSNode extends Node {
 	 * @return True if this rule can be activate, false otherwise
 	 */
 	public boolean abandonmentRule(){
-		MSNode temp = this.getNodeByID(this.pointingNode);
+		MSNode temp;
+        myLog.logln("State for nodeID="+this.ID+" is p = "+this.pointingNode);
 		if(this.isMarried == this.PRmarried() && this.pointingNode!=-1 
-				&& temp.pointingNode!=this.ID 
+				&& (temp= this.getNodeByID(this.pointingNode)).pointingNode!=this.ID
 				&& (temp.isMarried || temp.ID <= this.ID)){
 			this.pointingNode = -1;
 			this.setColor(Color.BLACK);

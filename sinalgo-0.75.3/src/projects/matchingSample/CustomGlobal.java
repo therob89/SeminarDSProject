@@ -37,22 +37,30 @@
 package projects.matchingSample;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.function.ToLongBiFunction;
 
 import javafx.util.Pair;
 
 import javax.swing.JOptionPane;
 
+import projects.defaultProject.models.distributionModels.Random;
+import projects.defaultProject.nodes.messages.StringMessage;
 import projects.matchingSample.nodes.edges.MEdge;
 import projects.matchingSample.nodes.nodeImplementations.MS2Node;
 import projects.matchingSample.nodes.nodeImplementations.MS3Node;
 import projects.matchingSample.nodes.nodeImplementations.MS4Node;
 import projects.matchingSample.nodes.nodeImplementations.MSNode;
+import sinalgo.configuration.Configuration;
+import sinalgo.models.DistributionModel;
+import sinalgo.models.Model;
 import sinalgo.nodes.Node;
+import sinalgo.nodes.Position;
 import sinalgo.nodes.edges.Edge;
-import sinalgo.runtime.AbstractCustomGlobal;
+import sinalgo.runtime.*;
+import sinalgo.runtime.Runtime;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
 
@@ -78,7 +86,8 @@ import sinalgo.tools.logging.Logging;
  * added to the GUI. 
  */
 public class CustomGlobal extends AbstractCustomGlobal{
-	
+
+    final String PATH = "/Users/robertopalamaro/Desktop/InputFile/";
 	Logging log = Logging.getLogger("ms_log.txt");
 	boolean first_Algorithm = false;
 	boolean second_Algorithm = false;
@@ -163,9 +172,10 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		this.edges_fist_algorithm = -1;
 		this.nodes_first_algorithm = -1;
 	}
-	private boolean check_First_Algorithm(){
+	private Integer check_First_Algorithm(){
 		Iterator<Node> it = Tools.getNodeList().iterator();
 		Node _n;
+        Integer count = 0;
 		while(it.hasNext()){
 			_n = it.next();
 			if(_n.getClass() == MSNode.class){
@@ -173,11 +183,12 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				this.edges_fist_algorithm += n.outgoingConnections.size();
 				this.nodes_first_algorithm+=1;
 				if(!n.getEndFlag()){
-					return false; 
+					return -1;
 				}
+                count +=1;
 			}
 		}
-		return true;
+		return count;
 	}
 
 	private boolean check_Second_Algorithm(){
@@ -214,12 +225,14 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public void postRound() {
 	// TODO Auto-generated method stub
 		super.postRound();
+        Integer res;
 		if(this.algorithm_choosed!=-1){
 			switch(this.algorithm_choosed) {
                 case 1:
-                    if(this.check_First_Algorithm() && !this.first_Algorithm){
+                    if((res=this.check_First_Algorithm())!=-1 && !this.first_Algorithm){
                         this.first_Algorithm = true;
                         Tools.appendToOutput("Algorithm1 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+                        Tools.appendToOutput("Algorithm1 find this size of max matching "+res/2+"\n");
                     }
                     break;
 				case 2:
@@ -317,20 +330,9 @@ public class CustomGlobal extends AbstractCustomGlobal{
 
 		}
 	}
-	
-	/**
-	 * An example to add a button to the user interface. In this sample, the button is labeled
-	 * with a text 'GO'. Alternatively, you can specify an icon that is shown on the button. See
-	 * AbstractCustomGlobal.CustomButton for more details.   
-	 */
-	@AbstractCustomGlobal.CustomButton(buttonText="GO", toolTipText="A sample button")
-	public void sampleButton() {
-		JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
-		
-	}
+
 	@AbstractCustomGlobal.CustomButton(buttonText="CLEAR", toolTipText="Reset the colors of the GUI")
 	public void sampleButton2() {
-		//JOptionPane.showMessageDialog(null, "You Pressed the 'GO' button.");
 		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
 			Node n = it.next();
 			if(n.getColor()!=Color.BLACK){
@@ -385,86 +387,186 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	public void rankOfMatrix() {
 		JOptionPane.showMessageDialog(null, "Rank = "+(this.computeMatrix()/2), "Size of Max Matching", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	@AbstractCustomGlobal.CustomButton(buttonText="Try", toolTipText="Try")
-	public void computeEdge(){
-		/*
-		Iterator<Node> it = Tools.getNodeList().iterator();
-		HashMap<Integer,Edge> v = new HashMap<Integer, Edge>();
-		int k = 1;
-		while(it.hasNext()){
-			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
-				Edge e = it2.next();
-				if(!v.containsValue(e)){
-					v.put(k,e);
-					k+=1;
-				}
-			}
-		}
-		for(int z=1;z<k;z++){
-			log.logln("Edge id "+z+ " contains: "+v.get(z).toString());
-		}*/
-		Iterator<Node> it = Tools.getNodeList().iterator();
-		Integer n = Tools.getNodeList().size();
-		while(it.hasNext()){
-			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
-				MEdge ed = (MEdge)it2.next();
-				ed.setSecondID(n+ed.getID());
-			}
-		}
-		it = Tools.getNodeList().iterator();
-		while(it.hasNext()){
-			for(Iterator<Edge>it2=it.next().outgoingConnections.iterator();it2.hasNext();){
-				log.logln("Edge id --> "+((MEdge)it2.next()).getSecondID());
+	@AbstractCustomGlobal.CustomButton(buttonText="Edmond", toolTipText="Edmond")
+	public void edmondAlgorithm() {
+        Integer sizeOfGraph = Tools.getNodeList().size();
+        @SuppressWarnings("unchecked")
+        List<Integer>[] graph = new List[sizeOfGraph];
+        for (int i = 0; i < sizeOfGraph; i++) {
+            graph[i] = new ArrayList<Integer>();
+        }
+        for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext(); ) {
+            for (Iterator<Edge> it2 = it.next().outgoingConnections.iterator(); it2.hasNext(); ) {
+                Edge edge = it2.next();
+                graph[(edge.startNode.ID - 1)].add((edge.endNode.ID - 1));
+            }
+        }
+        List<Pair<Integer, Integer>> l = EdmondsMaximumCardinalityMatching.maxMatching(graph);
+        for (Pair<Integer, Integer> p : l) {
+            Tools.appendToOutput(String.valueOf(p.getKey()) + " : " + String.valueOf(p.getValue()) + "\n");
+            Node i = Tools.getNodeByID(p.getKey());
+            Node j = Tools.getNodeByID(p.getValue());
+            i.setColor(Color.MAGENTA);
+            j.setColor(Color.MAGENTA);
+            for (Iterator<Edge> it = i.outgoingConnections.iterator(); it.hasNext(); ) {
+                Edge e = it.next();
+                if (e.endNode.ID == j.ID) {
+                    e.defaultColor = Color.MAGENTA;
+                }
+            }
+            for (Iterator<Edge> it = j.outgoingConnections.iterator(); it.hasNext(); ) {
+                Edge e = it.next();
+                if (e.endNode.ID == i.ID) {
+                    e.defaultColor = Color.MAGENTA;
+                }
+            }
 
-			}
-		}
-	}
-	@AbstractCustomGlobal.CustomButton(buttonText="Edmond", toolTipText="Edmong")
-	public void edmondAlgorithm(){
-		Integer sizeOfGraph = Tools.getNodeList().size();
-		@SuppressWarnings("unchecked")
-		List<Integer>[] graph = new List[sizeOfGraph];
-		for(int i=0;i<sizeOfGraph;i++){
-			graph[i] = new ArrayList<Integer>();
-		}
-		for(Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext();){
-			for(Iterator<Edge> it2 = it.next().outgoingConnections.iterator();it2.hasNext();){
-				Edge edge = it2.next();
-				graph[(edge.startNode.ID-1)].add((edge.endNode.ID-1));		
-			}
-		}
-		/*
-		JOptionPane.showMessageDialog(null,"Maximum matching for the given graph is: "
-        + EdmondsMaximumCardinalityMatching.maxMatching(graph),"Max Matching", JOptionPane.INFORMATION_MESSAGE);
-		*/
-		List<Pair<Integer,Integer>> l = EdmondsMaximumCardinalityMatching.maxMatching(graph);
-		for(Pair<Integer,Integer> p:l){
-			Tools.appendToOutput(String.valueOf(p.getKey()) +" : "+String.valueOf(p.getValue())+"\n");
-			Node i = Tools.getNodeByID(p.getKey());
-			Node j = Tools.getNodeByID(p.getValue());
-			i.setColor(Color.MAGENTA);
-			j.setColor(Color.MAGENTA);
-			for(Iterator<Edge> it = i.outgoingConnections.iterator();it.hasNext();){
-				Edge e = it.next();
-				if(e.endNode.ID == j.ID){
-					e.defaultColor = Color.MAGENTA;
-				}
-			}
-			for(Iterator<Edge> it = j.outgoingConnections.iterator();it.hasNext();){
-				Edge e = it.next();
-				if(e.endNode.ID == i.ID){
-					e.defaultColor = Color.MAGENTA;
-				}
-			}
-			
-		}
-		Tools.repaintGUI();
-		JOptionPane.showMessageDialog(null,"Maximum matching for the given graph is: "
-		        + l.size()/2,"Max Matching", JOptionPane.INFORMATION_MESSAGE);
-		
-	}
-	
+        }
+        Tools.repaintGUI();
+        JOptionPane.showMessageDialog(null, "Maximum matching for the given graph is: "
+                + l.size() / 2, "Max Matching", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    @AbstractCustomGlobal.CustomButton(buttonText="[Build Graph]", toolTipText="Build the Graph according to Erdos Enji model")
+    public void buildGraph(){
+        try {
+            double probability = Double.parseDouble(Tools.showQueryDialog("p factor [0,1]:"));
+            Integer algorithmType = Integer.parseInt(Tools.showQueryDialog("Choose algorithm 1|2|3|4:"));
+            Integer numberOfFaults = Integer.parseInt(Tools.showQueryDialog("Insert the number of initial faults"));
+            if ((probability < 0 || probability > 1) || (algorithmType < 1 || algorithmType > 4)) {
+                JOptionPane.showMessageDialog(null, "Insert appropriate values for probability and number of Nodes", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            this.algorithm_choosed = algorithmType;
+            JOptionPane.showMessageDialog(null, "Building the graph with this parameters: |N|=" + Tools.getNodeList().size() + " p =" + probability + "Number of faults = " + numberOfFaults, "Notice", JOptionPane.INFORMATION_MESSAGE);
+            log.logln("Parameters for simulation are " + Tools.getNodeList().size() + " p: " + probability + " algorithm = " + algorithmType + "Number of faults = " + numberOfFaults);
+            buildErdosRenyiConnections(probability);
+            if (numberOfFaults < 0 || numberOfFaults > Tools.getNodeList().size()) {
+                JOptionPane.showMessageDialog(null, "You have insert a wrong number of faults..taking a random value", "Error", JOptionPane.INFORMATION_MESSAGE);
+                faultTheStateOfNode(Tools.getRandomNumberGenerator().nextInt(Tools.getNodeList().size()));
+            } else {
+                faultTheStateOfNode(numberOfFaults);
+            }
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Insert appropriate values for values", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void faultTheStateOfNode(Integer k){
+        Set<Integer> set = new HashSet<Integer>();
+        for(int i=0;i<k;i++){
+            switch (this.algorithm_choosed){
+                case 1:
+                    MSNode node;
+                    do{
+                        node = (MSNode)Tools.getRandomNode();
+                    }while (set.contains(node.ID));
+                    node.setFaultState();
+                    set.add(node.ID);
+                    break;
+            }
+        }
+        Tools.repaintGUI();
+    }
+    public void buildErdosRenyiConnections(Double probability){
+        PrintWriter writer,writer2;
+        writer  = null;
+        writer2 = null;
+        Calendar cal = Calendar.getInstance();
+        cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH-mm-ss");
+        try {
+            writer = new PrintWriter(PATH+"Simulation" + sdf.format(cal.getTime()) + ".txt");
+            writer.println("#####----- start of node posiitons -----#####");
+            for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+                Node node = it.next();
+                Position pos = node.getPosition();
+                writer.println(String.valueOf(pos.xCoord)+","+String.valueOf(pos.yCoord)+","+String.valueOf(pos.zCoord));
+            }
+            writer2 = new PrintWriter(PATH+"Connections"+sdf.format(cal.getTime())+".txt");
+            ArrayList<Pair<Integer,Integer>> l = computeCombinations();
+            for(Pair<Integer,Integer> pair : l){
+                if(Tools.getRandomNumberGenerator().nextDouble()<=probability){
+                    Node n = Tools.getNodeByID(pair.getKey());
+                    n.addBidirectionalConnectionTo(Tools.getNodeByID(pair.getValue()));
+                    writer2.println(pair.getKey()+","+pair.getValue());
+                }
+            }
+            Tools.repaintGUI();
+            for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+                Node n = it.next();
+                for(Iterator<Edge> edge = n.outgoingConnections.iterator();edge.hasNext();){
+                    Edge e = edge.next();
+                    log.logln("Start node :"+e.startNode.ID +" to "+ e.endNode.ID);
+                }
+            }
+        }catch (FileNotFoundException e){
+            Tools.appendToOutput("File not found");
+        }finally {
+            if(writer!=null){
+                writer.close();
+            }
+            if(writer2!=null){
+                writer2.close();
+            }
+        }
+
+    }
+    private static ArrayList<Pair<Integer,Integer>> computeCombinations(){
+        ArrayList<Pair<Integer,Integer>> list = new ArrayList<Pair<Integer, Integer>>();
+        for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+            Node i = it.next();
+            for(Iterator<Node> it2 = Tools.getNodeList().iterator();it2.hasNext();){
+                Node j = it2.next();
+                Integer i_ID = i.ID;
+                Integer j_ID = j.ID;
+                if(i_ID!=j_ID){
+                    Pair<Integer,Integer> p_temp = new Pair<Integer, Integer>(i_ID,j_ID);
+                    Pair<Integer,Integer> p_inv = new Pair<Integer, Integer>(j_ID,i_ID);
+                    if(!list.contains(p_temp) && !list.contains(p_inv)){
+                        list.add(p_temp);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+    @AbstractCustomGlobal.CustomButton(buttonText="[Connections]", toolTipText="Create Connections")
+    public void connectionsByFile() {
+        String path = Tools.showQueryDialog("Insert the name of the connection file");
+        if (path.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Insert a valid name for connection file", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        BufferedReader br = null;
+        try {
+            String sCurrentLine;
+            br = new BufferedReader(new FileReader(PATH+path));
+            while ((sCurrentLine = br.readLine()) != null) {
+                String[] tokens = sCurrentLine.split(",");
+                Integer node_i = Integer.parseInt(tokens[0]);
+                Integer node_j = Integer.parseInt(tokens[1]);
+                Node n = Tools.getNodeByID(node_i);
+                n.addBidirectionalConnectionTo(Tools.getNodeByID(node_j));
+            }
+
+        }
+        catch (FileNotFoundException e){
+            JOptionPane.showMessageDialog(null, "File not found!!!", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
+
+        }catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null)br.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            Tools.repaintGUI();
+        }
+    }
 	
 }
 

@@ -18,12 +18,8 @@ import java.util.List;
 /**
  * Created by robertopalamaro on 09/05/15.
  */
-public class MS4Node extends Node{
+public class MS4Node extends MSNode{
 
-    double threshold_probability = 0.5;
-    public Integer pointingNode;
-    boolean isAllowed_To_Move;
-    public boolean isMarried;
     Integer p_v,alfa_v,beta_v;
     boolean rematch_v;
     Logging myLog = Logging.getLogger("logAlgorithm4.txt");
@@ -36,40 +32,14 @@ public class MS4Node extends Node{
 
     @Override
     public void init() {
-        this.isMarried = this.rematch_v = this.isAllowed_To_Move = false;
-        this.p_v = this.alfa_v = this.beta_v = -1;
+        super.init();
         this.setColor(Color.YELLOW);
     }
 
-    @Override
-    public void neighborhoodChange() {
-
-    }
 
     @Override
     public void postStep() {
 
-    }
-
-    @Override
-    public void checkRequirements() throws WrongConfigurationException {
-
-    }
-
-
-    @Override
-    public void handleMessages(Inbox inbox) {
-
-    }
-
-    @Override
-    public void preStep() {
-        myLog.logln("Node: "+this.ID+" PRE_STEP ");
-        if(Tools.getRandomNumberGenerator().nextDouble()<=this.threshold_probability){
-            this.isAllowed_To_Move = true;
-        }else{
-            this.isAllowed_To_Move = false;
-        }
     }
 
     private String printTheStateOfNode(){
