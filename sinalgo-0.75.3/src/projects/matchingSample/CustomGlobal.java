@@ -226,6 +226,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
                         for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
                             MS4Node node = (MS4Node)it.next();
                             if(node.isSecondMatchDone()){
+                                Tools.appendToOutput("********************************************************* \n");
                                 node.setColorToEdgeAndNodes(Color.BLACK, Tools.getNodeByID(node.pointingNode));
                                 Tools.getNodeByID(node.pointingNode).setColor(Color.YELLOW);
                                 node.setColorToEdgeAndNodes(Color.MAGENTA, Tools.getNodeByID(node.getP_v()));
