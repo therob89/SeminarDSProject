@@ -77,7 +77,7 @@ public class MSNode extends Node {
 		}
 		Tools.repaintGUI();
 	}
-	protected Edge getEdgeByEndNode(Integer nodeID){
+	public Edge getEdgeByEndNode(Integer nodeID){
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		while(it.hasNext()){
@@ -145,7 +145,7 @@ public class MSNode extends Node {
 		}
 		return null;
 	}
-	protected void setColorToEdgeAndNodes(Color color, Node j){
+	public void setColorToEdgeAndNodes(Color color, Node j){
 		this.setColor(color);
 		j.setColor(color);
 		Edge e = this.getEdgeStartAndEnd(this, j);

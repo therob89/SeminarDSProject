@@ -93,6 +93,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	boolean second_Algorithm = false;
 	boolean third_Algorithm = false;
     boolean fourth_algorithm = false;
+    boolean fourth_optimal = false;
+    Integer tempFourth;
 	Integer algorithm_choosed = -1;
 	/* (non-Javadoc)
 	 * @see runtime.AbstractCustomGlobal#hasTerminated()
@@ -108,7 +110,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				case 3:
 					return this.third_Algorithm;
 				case 4:
-					return false;
+					return this.fourth_optimal;
 			}
 		}
 		return false;
@@ -165,29 +167,24 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		super.preRun();
 	}
 	private Integer checkingIfAllNodesHasFinished(){
-		Iterator<Node> it = Tools.getNodeList().iterator();
-		Node _n;
-        Integer count = 0;
-		while(it.hasNext()){
-			_n = it.next();
-			if(_n.getClass() == MSNode.class){
-				MSNode n = (MSNode)_n;
-				if(!n.isEnd_flag()){
-					return -1;
-				}
-                if(n.getMarried_egde()!=null){
-                    count +=1;
-                }
-			}
+		Integer count = 0;
+		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+			MSNode node = (MSNode)it.next();
+            if(!node.isEnd_flag()){
+                return  -1;
+            }
+            if(node.getMarried_egde()!=null){
+                count+=1;
+            }
 		}
-		return count;
+        return count;
 	}
 
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
 		super.postRound();
-        Integer res;
+        Integer res = 0;
 		if(this.algorithm_choosed!=-1){
 			switch(this.algorithm_choosed) {
                 case 1:
@@ -209,23 +206,76 @@ public class CustomGlobal extends AbstractCustomGlobal{
 						this.third_Algorithm = true;
 						Tools.appendToOutput("Algorithm3 converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
                         Tools.appendToOutput("Algorithm3 find this size of max matching "+res+"\n");
+                        this.tempFourth = res;
                     }
 					break;
 				case 4:
-                    if((res=this.checkingIfAllNodesHasFinished())!=-1 && !this.fourth_algorithm) {
+                    if(!this.fourth_algorithm && (res=this.checkingIfAllNodesHasFinished())!=-1) {
                         this.fourth_algorithm = true;
                         Tools.appendToOutput("Maximal converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-                        Tools.appendToOutput("Maximal matching size is =  :"+res/2);
+                        Tools.appendToOutput("Maximal matching size is = "+res+"\n");
                         log.logln("Try to find the optimum!!!");
                         for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext();) {
                             MS4Node node = (MS4Node) it.next();
                             node.setFindTheOptimum();
                         }
+                        this.tempFourth = res;
+                    }
+                    if(this.fourth_algorithm && this.checkingIfThereIsAnIncreaseOfMatch()&& !this.fourth_optimal){
+                        res = 0;
+                        for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+                            MS4Node node = (MS4Node)it.next();
+                            if(node.isSecondMatchDone()){
+                                node.setColorToEdgeAndNodes(Color.BLACK, Tools.getNodeByID(node.pointingNode));
+                                Tools.getNodeByID(node.pointingNode).setColor(Color.YELLOW);
+                                node.setColorToEdgeAndNodes(Color.MAGENTA, Tools.getNodeByID(node.getP_v()));
+                                MS4Node married = (MS4Node)Tools.getNodeByID(node.getPointingNode());
+                                married.setColorToEdgeAndNodes(Color.MAGENTA,Tools.getNodeByID(married.getP_v()));
+                                res+=1;
+                            }
+                        }
+                        Tools.appendToOutput("Alg 4 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+                        Tools.appendToOutput("Algorithm 4 matching size is = "+(res+this.tempFourth)+"\n");
+                        this.fourth_optimal = true;
                     }
 			}
 		}
 	}
-	
+    /*
+        TODO: modify this method
+         Thus two neighboring nodes v and w are matched if and only if
+         either pv = w and pw = v, or if pv = null, pw = null, and (v,w) ∈ M′.
+         In a stable state, all nodes in matched(V) will satisfy one of these conditions,
+         while each node x ∈ single(V )
+         will have px = null if it has not been able to match and px = v, where v ∈ single(N(x)) if it has matched with v.
+     */
+	public boolean checkingIfThereIsAnIncreaseOfMatch(){
+
+        log.logln("--------------State for the nodes---------------------");
+        for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+            MS4Node node = (MS4Node)it.next();
+            log.logln("NODE_ID "+node.ID+"pointing node: "+node.pointingNode+" p_v = "+node.getP_v()+" isMarried "+node.isMarried());
+        }
+        log.logln("-------------------------------------------------------");
+        for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+            MS4Node node = (MS4Node)it.next();
+            MS4Node pointing_node;
+            if(!node.isMarried() && (node.getP_v() == -1
+                    || (pointing_node=(MS4Node)Tools.getNodeByID(node.getP_v()))!=null
+                    && node.outgoingConnections.contains(node,pointing_node)
+                    && pointing_node.getP_v() ==node.ID)){
+                log.logln("NODE_ID "+node.ID+" SINGLE");
+                continue;
+            }
+            pointing_node = (MS4Node)Tools.getNodeByID(node.getP_v());
+            if((pointing_node!=null && pointing_node.getP_v() == node.ID) || (node.getP_v() == -1 && node.isMarried && ((MS4Node)(Tools.getNodeByID(node.pointingNode))).getP_v()==-1)){
+                log.logln("NODE_ID "+node.ID+" MATCHED");
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
 	/**
 	 * An example of a method that will be available through the menu of the GUI.
 	 */
@@ -341,7 +391,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
 			
 		}
 	}
-	
+    @AbstractCustomGlobal.CustomButton(buttonText="Check", toolTipText="cond")
+    public void checkCondition() {
+        Tools.appendToOutput("Max matching is --> " + this.checkingIfThereIsAnIncreaseOfMatch() + "\n");
+    }
+
 	@AbstractCustomGlobal.CustomButton(buttonText="RK", toolTipText="Find Max Matching Size")
 	public void rankOfMatrix() {
 		JOptionPane.showMessageDialog(null, "Rank = "+(this.computeMatrix()/2), "Size of Max Matching", JOptionPane.INFORMATION_MESSAGE);
