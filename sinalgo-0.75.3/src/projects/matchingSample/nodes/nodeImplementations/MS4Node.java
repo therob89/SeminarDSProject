@@ -139,7 +139,7 @@ public class MS4Node extends MSNode{
     /***********************************************************************************************************
      *
      *
-     *  									SINGLE NODE ROUTINE
+     *  									SINGLE NODE ROUTINE ajfaijs
      *
      *
      *************************************************************************************************************/
@@ -165,6 +165,7 @@ public class MS4Node extends MSNode{
             myLog.logln("Single node: "+this.ID+" taking the lowest from neighbors = "+this.p_v);
             return true;
         }
+        this.p_v = -1;
         myLog.logln("**WARN** Single node: "+this.ID+" single node routine is not activated");
         return false;
     }
