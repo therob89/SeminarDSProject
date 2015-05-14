@@ -17,8 +17,10 @@ public class MS3Node extends MSNode {
 
 	Logging myLog = Logging.getLogger("logAlgorithm3.txt");
 	boolean want_to_act;
+    private final Color defaultColor = Color.PINK;
 
-	@Override
+
+    @Override
 	public void init() {
 		// TODO Auto-generated method stub
 		super.init();
@@ -52,12 +54,12 @@ public class MS3Node extends MSNode {
 	protected MS3Node wantToEngage(){
 		Integer pointingNeighbor;
 		if(this.getPointingNode() == -1 && (pointingNeighbor=checkNeighborForMarriage())!=-1){
-			return (MS3Node)Tools.getNodeByID(pointingNeighbor);
+            return (MS3Node)Tools.getNodeByID(pointingNeighbor);
 		}
 		return null;
 	}
 	
-	private MS3Node wantToPropose(){
+	protected MS3Node wantToPropose(){
 		Integer availableNeighbor;
 		if(this.getPointingNode() == -1 && this.checkNeighborForMarriage()==-1
 				&& (availableNeighbor=this.getAvailableNeighbor())!=-1){
@@ -65,7 +67,7 @@ public class MS3Node extends MSNode {
 		}
 		return null;
 	}
-	private boolean wantTODesengage(){
+	protected boolean wantTODesengage(){
         MS3Node n;
 		if(this.getPointingNode()!=-1 && (n=(MS3Node)Tools.getNodeByID(this.getPointingNode())).getPointingNode()!=this.ID && n.getPointingNode()!=-1){
 			return true;
@@ -80,6 +82,7 @@ public class MS3Node extends MSNode {
             MS3Node node;
 			boolean canAct = this.allowedToAct();
 			if((this.want_to_act = (node=this.wantToEngage())!=null && canAct)){
+                checkIfWeAreInFault();
                 myLog.logln("*** MARRIAGE for Node: "+this.ID +" with node "+node.ID+"***");
                 this.pointingNode = node.ID;
                 this.isMarried = true;
@@ -87,11 +90,13 @@ public class MS3Node extends MSNode {
                 return;
             }
             if((this.want_to_act = (node = this.wantToPropose())!=null && canAct)){
+                checkIfWeAreInFault();
                 myLog.logln("** Proposing Node: "+this.ID +" to node "+node.ID+"**");
                 this.pointingNode = node.ID;
                 return;
             }
             if((this.want_to_act = this.wantTODesengage() && canAct)){
+                checkIfWeAreInFault();
                 myLog.logln("* Node: "+this.ID +" does DESENGAGE!!!!!");
                 this.pointingNode = -1;
                 if(this.isMarried){

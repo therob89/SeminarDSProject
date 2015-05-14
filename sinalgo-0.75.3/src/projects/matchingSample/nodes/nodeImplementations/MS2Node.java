@@ -15,10 +15,11 @@ import sinalgo.tools.logging.Logging;
 
 public class MS2Node extends MSNode {
 
-	
 	Logging myLog = Logging.getLogger("logAlgorithm2.txt");
+    private final Color defaultColor = Color.BLUE;
 
-	@Override
+
+    @Override
 	public void init() {
 		// TODO Auto-generated method stub
 		super.init();
@@ -77,6 +78,7 @@ public class MS2Node extends MSNode {
 		MS2Node j;
 		if(this.pointingNode == -1 && (j=(MS2Node)Tools.getNodeByID(this.checkNeighborForMarriage()))!=null){
             myLog.logln("*** MARRIAGE for Node: "+this.ID +" with node "+j.ID+"***");
+            checkIfWeAreInFault();
             this.pointingNode = j.ID;
             this.isMarried = true;
 			setColorToEdgeAndNodes(Color.GREEN,j);
@@ -92,6 +94,7 @@ public class MS2Node extends MSNode {
 	public boolean seductionRule(){
 		MS2Node n;
 		if(this.pointingNode == -1 && checkNeighborForMarriage()==-1 && (n = this.getMarriableNode())!=null){
+            checkIfWeAreInFault();
             myLog.logln("** Seduction rule for Node: "+this.ID +" to node "+n.ID+"**");
             this.pointingNode = n.ID;
 			return true;
@@ -107,11 +110,8 @@ public class MS2Node extends MSNode {
 		MS2Node temp;
 		if(this.pointingNode!=-1 && (temp=((MS2Node)Tools.getNodeByID(this.pointingNode))).getPointingNode()!=this.ID && temp.getPointingNode()!=-1){
             myLog.logln("* Node: "+this.ID +" does abandonment Rule!!!!!");
+            checkIfWeAreInFault();
             this.pointingNode = -1;
-			if(this.getColor()!=Color.BLUE){
-                this.setColor(Color.BLUE);
-                Tools.repaintGUI();
-            }
 			return true;
 		}
 		return false;

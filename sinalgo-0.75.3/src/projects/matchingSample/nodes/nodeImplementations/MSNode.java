@@ -26,12 +26,14 @@ import javax.swing.*;
 public class MSNode extends Node {
 
 	public boolean isMarried;
+    private final Color defaultColor = Color.BLACK;
 	public Integer pointingNode;
 	boolean isEligibile;
 	boolean isAllowed_To_Move;
 	public boolean end_flag;
 	Edge married_egde;
 	double threshold_probability = 0.5;
+
 	Logging myLog = Logging.getLogger("logAlgorithm1.txt");
 
     public Edge getMarried_egde() {
@@ -132,7 +134,12 @@ public class MSNode extends Node {
 		return null;
 	}
 
-	
+	public void checkIfWeAreInFault(){
+        if(this.getColor()==Color.RED){
+            this.setColor(defaultColor);
+            Tools.repaintGUI();
+        }
+    }
 	
 	private MSNode getNodeByID(int id){
 		Connections conn = this.outgoingConnections;
@@ -185,14 +192,11 @@ public class MSNode extends Node {
 	 * @return True if this rule can be activate, false otherwise
 	 */
 	public boolean updateRules(){
-		boolean flag = this.PRmarried();
+        boolean flag = this.PRmarried();
 		if(this.isMarried != flag){
-			this.isMarried = flag;
-            if(this.getColor() == Color.RED){
-                this.setColor(Color.BLACK);
-				Tools.repaintGUI();
-
-            }
+            myLog.logln("*NodeID:"+this.ID+"does update rule!! *");
+            checkIfWeAreInFault();
+            this.isMarried = flag;
 			return true;
 		}
 		return false;
@@ -204,10 +208,11 @@ public class MSNode extends Node {
 	public boolean marriageRule(){
 		int j;
 		if((this.isMarried == this.PRmarried()) && this.pointingNode == -1 && (j=this.checkNeighborForMarriage())!=-1){
-			this.pointingNode = j;
-			myLog.logln("Node:ID "+this.ID +" married with "+ j);
-			this.setColorToEdgeAndNodes(Color.GREEN, Tools.getNodeByID(j));
-			return true;
+            myLog.logln("**** Node:ID "+this.ID +" married with "+ j+"****");
+            this.pointingNode = j;
+            checkIfWeAreInFault();
+            this.setColorToEdgeAndNodes(Color.GREEN, Tools.getNodeByID(j));
+            return true;
 		}
 		return false;
 	}
@@ -217,16 +222,12 @@ public class MSNode extends Node {
 	 */
 	public boolean seductionRule(){
 		List<Integer>list;
-		if((this.isMarried == this.PRmarried()) && this.pointingNode == -1 //&& this.checkNeighborForMarriage()==-1 
-				//&& (j = this.checkMaxNeighborForMarriageWithNullPreference())!=-1){
+		if((this.isMarried == this.PRmarried())
+                && this.pointingNode == -1
 				&& (list=this.getListOfUnMarriedWithGreaterID())!=null){
-			this.pointingNode = this.getMaxFromList(list);
-			myLog.logln("Sed rule..now NodeID: " + this.ID + " pointing to " + this.pointingNode);
-            if(this.getColor() == Color.RED){
-                this.setColor(Color.BLACK);
-                Tools.repaintGUI();
-
-            }
+            myLog.logln("**Seduction rule..now NodeID: " + this.ID + " pointing to " + this.pointingNode+"**");
+            this.pointingNode = this.getMaxFromList(list);
+            checkIfWeAreInFault();
 			return true;
 		}
 		return false;
@@ -240,8 +241,10 @@ public class MSNode extends Node {
 		if(this.isMarried == this.PRmarried() && this.pointingNode!=-1
 				&& (temp= this.getNodeByID(this.pointingNode)).pointingNode!=this.ID
 				&& (temp.isMarried || temp.ID <= this.ID)){
-			this.pointingNode = -1;
-			if(this.married_egde != null){
+            myLog.logln("**Abandonment rule for NodeID: " + this.ID + "**");
+            this.pointingNode = -1;
+            checkIfWeAreInFault();
+            if(this.married_egde != null){
 				married_egde = null;
 			}
 			return true;
@@ -283,25 +286,27 @@ public class MSNode extends Node {
 	@Override
 	public void postStep() {
 		// TODO Auto-generated method stub
-		myLog.logln("Node: "+this.ID+" POST_STEP ");
 		myLog.logln("---------------------------------------------------------------------");
 		if(this.isAllowed_To_Move){
 			myLog.logln("Node: "+this.ID+"Scheduler decides that i can run");
 			if(this.updateRules()){
-				myLog.logln("NodeID:"+this.ID+"does update!!");
-				return;
+                myLog.logln("---------------------------------------------------------------------");
+                return;
 			}
 			if(this.marriageRule()){
 				myLog.logln("NodeID:"+this.ID+"does marriage!!");
-				return;
+                myLog.logln("---------------------------------------------------------------------");
+                return;
 			}
 			if(this.seductionRule()){
 				myLog.logln("NodeID:"+this.ID+"does seduction rule!!");
-				return;
+                myLog.logln("---------------------------------------------------------------------");
+                return;
 			}
 			if(this.abandonmentRule()){
 				myLog.logln("NodeID:"+this.ID+"does abandonment rule!!");
-				return;
+                myLog.logln("---------------------------------------------------------------------");
+                return;
 			}
 			this.end_flag = true;
 		}else{
@@ -309,37 +314,6 @@ public class MSNode extends Node {
 			myLog.logln("---------------------------------------------------------------------");
 		}
 	}
-/*
-	public void listOfMoves(){
-		if(!this.isMarried){
-			myLog.logln("Single Node: "+this.ID+" current state at the beginning of the moves:"+this.printTheStateOfNode());
-			this.singleNodeRoutine();
-			myLog.logln("Single Node: "+this.ID+" current state at the end of the moves:"+this.printTheStateOfNode());
-			myLog.logln("---------------------------------------------------------------------");
-		}
-		else{
-			myLog.logln("Married Node: "+this.ID+" current state at the beginning of the moves:"+this.printTheStateOfNode());
-			this.updateRoutine();
-			this.matchFirst();
-			this.matchSecond();
-			this.resetMatch();
-			myLog.logln("Married Node: "+this.ID+" current state at the end of the moves:"+this.printTheStateOfNode());
-			myLog.logln("---------------------------------------------------------------------");
-
-		}
-
-	}
-	@Override
-	public void postStep() {
-
-		if(this.findTheOptimum && this.isAllowed_To_Move) {
-			this.listOfMoves();
-		}else{
-			myLog.logln("***WARN: *** Node: "+this.ID+"Scheduler doesn't allow the execution...try next round!!");
-			myLog.logln("---------------------------------------------------------------------");
-		}
-
-	}*/
 
 	@Override
 	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {

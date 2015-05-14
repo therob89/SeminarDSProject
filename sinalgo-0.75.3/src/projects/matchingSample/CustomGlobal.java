@@ -94,6 +94,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	boolean third_Algorithm = false;
     boolean fourth_algorithm = false;
     boolean fourth_optimal = false;
+    boolean fiveth_algorithm = false;
     Integer tempFourth;
 	Integer algorithm_choosed = -1;
 	/* (non-Javadoc)
@@ -111,6 +112,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 					return this.third_Algorithm;
 				case 4:
 					return this.fourth_optimal;
+                case 5:
+                    return this.fiveth_algorithm;
 			}
 		}
 		return false;
@@ -446,9 +449,9 @@ public class CustomGlobal extends AbstractCustomGlobal{
     public void buildGraph(){
         try {
             double probability = Double.parseDouble(Tools.showQueryDialog("p factor [0,1]:"));
-            Integer algorithmType = Integer.parseInt(Tools.showQueryDialog("Choose algorithm 1|2|3|4:"));
+            Integer algorithmType = Integer.parseInt(Tools.showQueryDialog("Choose algorithm 1|2|3|4|5:"));
             Integer numberOfFaults = Integer.parseInt(Tools.showQueryDialog("Insert the number of initial faults"));
-            if ((probability < 0 || probability > 1) || (algorithmType < 1 || algorithmType > 4)) {
+            if ((probability < 0 || probability > 1) || (algorithmType < 1 || algorithmType > 5)) {
                 JOptionPane.showMessageDialog(null, "Insert appropriate values for probability and number of Nodes", "Alert", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
