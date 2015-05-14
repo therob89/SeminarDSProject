@@ -101,7 +101,7 @@ public class MSNode extends Node {
 	 * Check if neighbor was pointing to me
 	 * @return The id of neighbor such that neighbor.ID == self,  -1 otherwise
 	 */
-	private int checkNeighborForMarriage(){
+	protected int checkNeighborForMarriage(){
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		while(it.hasNext()){
@@ -153,10 +153,13 @@ public class MSNode extends Node {
 			e.defaultColor = color;
 
 		}
+        this.married_egde = e;
 		e = this.getEdgeStartAndEnd(j, this);
 		if(e.defaultColor != color){
 			e.defaultColor = color;
 		}
+		((MSNode)j).isMarried = true;
+        ((MSNode)j).married_egde = e;
 		Tools.repaintGUI();
 
 	}
@@ -187,7 +190,7 @@ public class MSNode extends Node {
 			this.isMarried = flag;
             if(this.getColor() == Color.RED){
                 this.setColor(Color.BLACK);
-                Tools.repaintGUI();
+				Tools.repaintGUI();
 
             }
 			return true;
@@ -203,8 +206,6 @@ public class MSNode extends Node {
 		if((this.isMarried == this.PRmarried()) && this.pointingNode == -1 && (j=this.checkNeighborForMarriage())!=-1){
 			this.pointingNode = j;
 			myLog.logln("Node:ID "+this.ID +" married with "+ j);
-			Edge e = this.getEdgeByEndNode(j);
-			this.married_egde = e;
 			this.setColorToEdgeAndNodes(Color.GREEN, Tools.getNodeByID(j));
 			return true;
 		}
@@ -236,13 +237,14 @@ public class MSNode extends Node {
 	 */
 	public boolean abandonmentRule(){
 		MSNode temp;
-        myLog.logln("State for nodeID="+this.ID+" is p = "+this.pointingNode);
-		if(this.isMarried == this.PRmarried() && this.pointingNode!=-1 
+		if(this.isMarried == this.PRmarried() && this.pointingNode!=-1
 				&& (temp= this.getNodeByID(this.pointingNode)).pointingNode!=this.ID
 				&& (temp.isMarried || temp.ID <= this.ID)){
 			this.pointingNode = -1;
+			if(this.married_egde != null){
+				married_egde = null;
+			}
 			return true;
-
 		}
 		return false;
 	}

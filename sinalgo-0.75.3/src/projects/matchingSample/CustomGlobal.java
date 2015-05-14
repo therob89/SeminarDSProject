@@ -173,11 +173,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
             if(!node.isEnd_flag()){
                 return  -1;
             }
-            if(node.getMarried_egde()!=null){
+            if(node.isMarried()){
                 count+=1;
             }
 		}
-        return count;
+        return count/2;
 	}
 
 	@Override
@@ -217,6 +217,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
                         log.logln("Try to find the optimum!!!");
                         for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext();) {
                             MS4Node node = (MS4Node) it.next();
+                            log.logln("Married for "+node.ID+" node is = "+node.isMarried());
                             node.setFindTheOptimum();
                         }
                         this.tempFourth = res;
@@ -226,7 +227,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
                         for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
                             MS4Node node = (MS4Node)it.next();
                             if(node.isSecondMatchDone()){
-                                Tools.appendToOutput("********************************************************* \n");
+                                Tools.appendToOutput("**NODE with a success in MATCH SECOND =="+node.ID+" \n");
                                 node.setColorToEdgeAndNodes(Color.BLACK, Tools.getNodeByID(node.pointingNode));
                                 Tools.getNodeByID(node.pointingNode).setColor(Color.YELLOW);
                                 node.setColorToEdgeAndNodes(Color.MAGENTA, Tools.getNodeByID(node.getP_v()));
@@ -235,9 +236,9 @@ public class CustomGlobal extends AbstractCustomGlobal{
                                 res+=1;
                             }
                         }
-                        Tools.appendToOutput("Alg 4 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-                        Tools.appendToOutput("Algorithm 4 matching size is = "+(res+this.tempFourth)+"\n");
-                        this.fourth_optimal = true;
+                        //Tools.appendToOutput("Alg 4 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+                        //Tools.appendToOutput("Algorithm 4 matching size is = "+(res+this.tempFourth)+"\n");
+                        //this.fourth_optimal = true;
                     }
 			}
 		}

@@ -65,7 +65,7 @@ public class MS4Node extends MSNode{
             if(!this.isMarried()){
                 myLog.logln("------------SINGLE NODE: " + this.ID + "  Turn..state = " + this.printTheStateOfNode() + "---------------------");
                 singleNodeRoutine();
-                myLog.logln("------------------Node ID: "+this.ID+" END TURN state : "+this.printTheStateOfNode()+"----------------------------");
+                myLog.logln("------------Node ID: "+this.ID+" END TURN state : "+this.printTheStateOfNode()+"----------------------------");
             }else{
                 myLog.logln("------------MARRIED NODE: " + this.ID + " Turn..state = " + this.printTheStateOfNode() + "---------------------");
                 updateRoutine();
@@ -123,7 +123,7 @@ public class MS4Node extends MSNode{
 
             }else{
                 this.alfa_v = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
-                this.p_v = this.alfa_v;
+                this.p_v = -1;
                 list.remove(this.alfa_v);
                 if(list.isEmpty()){
                     this.beta_v = -1;
@@ -165,7 +165,6 @@ public class MS4Node extends MSNode{
             myLog.logln("Single node: "+this.ID+" taking the lowest from neighbors = "+this.p_v);
             return true;
         }
-        this.p_v = -1;
         myLog.logln("**WARN** Single node: "+this.ID+" single node routine is not activated");
         return false;
     }
@@ -189,17 +188,19 @@ public class MS4Node extends MSNode{
     private boolean updateRoutine(){
         myLog.logln("MATCHED NODE: "+this.ID+": Starting Update Routine");
         Pair<Integer,Integer> bestRematch = this.bestRematch();
-        if((this.alfa_v!=-1 && this.beta_v!=-1 && this.alfa_v>this.beta_v)
-                || (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.alfa_v) && !this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.beta_v))
+        if((this.alfa_v!=-1 && this.beta_v!=-1 && this.alfa_v > this.beta_v)
+                || (this.alfa_v==-1 && this.beta_v!=-1)
+                || (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.alfa_v) || !this.checkIfBelongToSetWithNull(this.getSingleNeighbor(), this.beta_v))
                 || (this.alfa_v==this.beta_v && this.alfa_v!=-1)
                 || (!this.checkIfBelongToSetWithNull(this.getSingleNeighbor(),this.p_v))
-                || ((this.alfa_v!=bestRematch.getKey() && this.beta_v!=bestRematch.getValue()) && (this.p_v == -1 || (((MS4Node)Tools.getNodeByID(this.p_v)).p_v!=this.ID && (((MS4Node)Tools.getNodeByID(this.p_v)).p_v!=-1)))))
+                || (!(this.alfa_v==bestRematch.getKey() && this.beta_v==bestRematch.getValue()) && (this.p_v == -1 || (((MS4Node)Tools.getNodeByID(this.p_v)).p_v!=this.ID && (((MS4Node)Tools.getNodeByID(this.p_v)).p_v!=-1)))))
         {
             myLog.logln("MATCHED NODE: "+this.ID+": ***** needed to update its state *****");
             this.alfa_v = bestRematch.getKey();
             this.beta_v = bestRematch.getValue();
             this.p_v = -1;
             this.rematch_v = false;
+            this.secondMatchDone = false;
             return true;
         }
         myLog.logln("**WARN** MATCHED NODE: "+this.ID+": UPDATE ROUTINE is not activated");
@@ -240,7 +241,7 @@ public class MS4Node extends MSNode{
         myLog.logln("MATCHED NODE: "+this.ID+": Starting Reset Matching");
         Integer askFirst = this.askFirst(this.ID);
         Integer askSecond = this.askSecond(this.ID);
-        if(((askFirst== -1 && askSecond == -1)) && (this.p_v!=-1 && this.rematch_v!=false)){
+        if(((askFirst== -1 && askSecond == -1)) && (!(this.p_v==-1 && this.rematch_v==false))){
             myLog.logln("MATCHED NODE: " + this.ID + ": ***** MUST DO A RESET MATCH ******");
             this.p_v = -1;
             this.rematch_v = false;
