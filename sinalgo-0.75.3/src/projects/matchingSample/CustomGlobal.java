@@ -95,13 +95,11 @@ public class CustomGlobal extends AbstractCustomGlobal{
     boolean fourth_algorithm = false;
     boolean approximazion_alg = false;
     boolean fifth_algorithm = false;
-    Integer tempFourth;
+    Integer tempFourth = 0;
 	Integer algorithm_choosed = -1;
-	/* (non-Javadoc)
-	 * @see runtime.AbstractCustomGlobal#hasTerminated()
-	 */
+
+
 	public boolean hasTerminated() {
-		//return first_Algorithm && second_Algorithm;
 		if(this.algorithm_choosed !=-1){
 			switch(this.algorithm_choosed) {
 				case 1:
@@ -222,23 +220,28 @@ public class CustomGlobal extends AbstractCustomGlobal{
                             MS4Node node = (MS4Node) it.next();
                             log.logln("Married for "+node.ID+" node is = "+node.isMarried());
                             node.setFindTheOptimum();
+                            node.end_flag = false;
                         }
                         this.tempFourth = res;
                     }
-                    if(this.fourth_algorithm && this.checkingIfThereIsAnIncreaseOfMatch()&& !this.approximazion_alg){
-                        res = 0;
+                    if(this.fourth_algorithm && (res=this.checkingIfAllNodesHasFinished())!=-1 && !this.approximazion_alg){
+                        Integer c = 0;
                         for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
                             MS4Node node = (MS4Node)it.next();
                             if(node.isSecondMatchDone()){
-                                Tools.appendToOutput("**NODE with a success in MATCH SECOND =="+node.ID+" \n");
+                                //Tools.appendToOutput("**NODE with a success in MATCH SECOND =="+node.ID+" \n");
                                 node.setColorToEdgeAndNodes(Color.BLACK, Tools.getNodeByID(node.pointingNode));
                                 Tools.getNodeByID(node.pointingNode).setColor(Color.YELLOW);
                                 node.setColorToEdgeAndNodes(Color.MAGENTA, Tools.getNodeByID(node.getP_v()));
                                 MS4Node married = (MS4Node)Tools.getNodeByID(node.getPointingNode());
                                 married.setColorToEdgeAndNodes(Color.MAGENTA,Tools.getNodeByID(married.getP_v()));
-                                res+=1;
+                                c+=1;
                             }
                         }
+                        Tools.appendToOutput("Approx algorithm converge in '" + Tools.getGlobalTime() + "'Steps'\n");
+                        Tools.appendToOutput("New Maximal matching size is = "+(res+c)+" so improved by "+c+"\n");
+                        this.approximazion_alg = true;
+                        break;
                     }
                 case 5:
                     if ((res=this.checkingIfAllNodesHasFinished())!=-1 && !this.fifth_algorithm) {

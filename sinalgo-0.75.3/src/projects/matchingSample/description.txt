@@ -4,6 +4,12 @@ The goal of this project is compare different Algorithms in terms of, stabilizat
 
 [1] A new self-stabilizing maximal matching algorithm. Fredrik Manne, Morten Mjelde, Laurence Pilard, Sébastien Tixeuil.
 	Stabilization time = 4N + 2M 
+
 [2] Matching algorithm seen in class
+
 [3] Self-stabilization for Maximal matching without Fairness Assumption  Maria Gradinariu, Sebastien Tixeuil
 	Stabilization time = O(Delta(max number of nodes that want to act) x m))
+
+[4] Self-stabilizing Randomized Maximal Matching Algorithm
+
+[5] A self-stabilizing 2 -approximation algorithm for the maximum 3 matching problem, stabilizes in O(n^2) steps
