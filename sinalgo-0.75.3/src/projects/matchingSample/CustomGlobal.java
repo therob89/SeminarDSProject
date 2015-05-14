@@ -93,8 +93,8 @@ public class CustomGlobal extends AbstractCustomGlobal{
 	boolean second_Algorithm = false;
 	boolean third_Algorithm = false;
     boolean fourth_algorithm = false;
-    boolean fourth_optimal = false;
-    boolean fiveth_algorithm = false;
+    boolean approximazion_alg = false;
+    boolean fifth_algorithm = false;
     Integer tempFourth;
 	Integer algorithm_choosed = -1;
 	/* (non-Javadoc)
@@ -111,9 +111,9 @@ public class CustomGlobal extends AbstractCustomGlobal{
 				case 3:
 					return this.third_Algorithm;
 				case 4:
-					return this.fourth_optimal;
+					return this.approximazion_alg;
                 case 5:
-                    return this.fiveth_algorithm;
+                    return this.fifth_algorithm;
 			}
 		}
 		return false;
@@ -225,7 +225,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
                         }
                         this.tempFourth = res;
                     }
-                    if(this.fourth_algorithm && this.checkingIfThereIsAnIncreaseOfMatch()&& !this.fourth_optimal){
+                    if(this.fourth_algorithm && this.checkingIfThereIsAnIncreaseOfMatch()&& !this.approximazion_alg){
                         res = 0;
                         for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
                             MS4Node node = (MS4Node)it.next();
@@ -239,10 +239,14 @@ public class CustomGlobal extends AbstractCustomGlobal{
                                 res+=1;
                             }
                         }
-                        //Tools.appendToOutput("Alg 4 converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-                        //Tools.appendToOutput("Algorithm 4 matching size is = "+(res+this.tempFourth)+"\n");
-                        //this.fourth_optimal = true;
                     }
+                case 5:
+                    if ((res=this.checkingIfAllNodesHasFinished())!=-1 && !this.fifth_algorithm) {
+                        this.fifth_algorithm = true;
+                        Tools.appendToOutput("Algorithm3_probabilistic converge in  '" + Tools.getGlobalTime() + "'Steps'\n");
+                        Tools.appendToOutput("Algorithm3_probabilistic  find this size of max matching " + res + "\n");
+                    }
+
 			}
 		}
 	}
