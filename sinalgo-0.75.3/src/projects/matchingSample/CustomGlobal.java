@@ -172,7 +172,7 @@ public class CustomGlobal extends AbstractCustomGlobal{
 		for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
 			MSNode node = (MSNode)it.next();
             if(!node.isEnd_flag()){
-                return  -1;
+                return -1;
             }
             if(node.isMarried()){
                 count+=1;
@@ -181,6 +181,30 @@ public class CustomGlobal extends AbstractCustomGlobal{
         return count/2;
 	}
 
+    private void printTheMarriages(){
+        TreeMap<Integer,Integer> map = new TreeMap<Integer, Integer>();
+        List<Integer> singleList = new ArrayList<Integer>();
+        for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();) {
+            MS4Node node = (MS4Node)it.next();
+            if(node.isMarried()){
+                if(node.pointingNode != -1 && node.getP_v()!=-1){
+                    if(!map.containsKey(node.ID) && !map.containsKey(node.pointingNode)){
+                        map.put(node.ID,node.pointingNode);
+                    }
+                }
+                if(node.getP_v() != -1 && node.pointingNode == -1){
+                    if(!map.containsKey(node.ID) && !map.containsKey(node.getP_v())){
+                        map.put(node.ID,node.getP_v());
+                    }
+                }
+            }
+            else{
+                singleList.add(node.ID);
+            }
+        }
+        log.logln("Married nodes ---> "+map.toString());
+        log.logln("Single nodes ----> "+singleList.toString());
+    }
 	@Override
 	public void postRound() {
 	// TODO Auto-generated method stub
@@ -212,34 +236,51 @@ public class CustomGlobal extends AbstractCustomGlobal{
 					break;
 				case 4:
                     if(!this.fourth_algorithm && (res=this.checkingIfAllNodesHasFinished())!=-1) {
+                        Integer c = 0;
                         this.fourth_algorithm = true;
                         Tools.appendToOutput("Maximal converge in '" + Tools.getGlobalTime() + "'Steps'\n");
                         Tools.appendToOutput("Maximal matching size is = "+res+"\n");
                         log.logln("Try to find the optimum!!!");
                         for (Iterator<Node> it = Tools.getNodeList().iterator(); it.hasNext();) {
                             MS4Node node = (MS4Node) it.next();
-                            log.logln("Married for "+node.ID+" node is = "+node.isMarried());
+                            if(node.isMarried()){
+                                c+=1;
+                            }
                             node.setFindTheOptimum();
                             node.end_flag = false;
                         }
+                        this.printTheMarriages();
+                        log.logln("Total number of nodes married = "+c);
                         this.tempFourth = res;
                     }
                     if(this.fourth_algorithm && (res=this.checkingIfAllNodesHasFinished())!=-1 && !this.approximazion_alg){
-                        Integer c = 0;
+                        Tools.appendToOutput("RES ---->"+res+"\n");
                         for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
                             MS4Node node = (MS4Node)it.next();
                             if(node.isSecondMatchDone()){
                                 //Tools.appendToOutput("**NODE with a success in MATCH SECOND =="+node.ID+" \n");
                                 node.setColorToEdgeAndNodes(Color.BLACK, Tools.getNodeByID(node.pointingNode));
-                                Tools.getNodeByID(node.pointingNode).setColor(Color.YELLOW);
+                                Tools.getNodeByID(node.pointingNode).setColor(node.defaultColor);
                                 node.setColorToEdgeAndNodes(Color.MAGENTA, Tools.getNodeByID(node.getP_v()));
+                                ((MS4Node)Tools.getNodeByID(node.getP_v())).isMarried = true;
                                 MS4Node married = (MS4Node)Tools.getNodeByID(node.getPointingNode());
                                 married.setColorToEdgeAndNodes(Color.MAGENTA,Tools.getNodeByID(married.getP_v()));
-                                c+=1;
+                                ((MS4Node)Tools.getNodeByID(married.getP_v())).isMarried = true;
                             }
                         }
+                        Integer newRes = checkingIfAllNodesHasFinished();
                         Tools.appendToOutput("Approx algorithm converge in '" + Tools.getGlobalTime() + "'Steps'\n");
-                        Tools.appendToOutput("New Maximal matching size is = "+(res+c)+" so improved by "+c+"\n");
+                        Tools.appendToOutput("New Maximal matching size is = "+newRes+" so improved by "+(newRes-tempFourth)+"\n");
+                        log.logln("--------------------APPROX RESULT-----------------------------");
+                        Integer count = 0;
+                        for(Iterator<Node> it = Tools.getNodeList().iterator();it.hasNext();){
+                            MS4Node node = (MS4Node)it.next();
+                            if(node.isMarried()) {
+                                count++;
+                            }
+                        }
+                        this.printTheMarriages();
+                        log.logln("----------------NUMBER OF MARRIED : "+count+"-----------------------------");
                         this.approximazion_alg = true;
                         break;
                     }

@@ -24,9 +24,11 @@ import sinalgo.tools.logging.Logging;
 import javax.swing.*;
 
 public class MSNode extends Node {
-    public boolean isMarried2;
+
+
+	public boolean marriedPredicate;
     public boolean isMarried;
-    private final Color defaultColor = Color.BLACK;
+    public final Color defaultColor = Color.BLACK;
 	public Integer pointingNode;
 	boolean isEligibile;
 	boolean isAllowed_To_Move;
@@ -36,10 +38,9 @@ public class MSNode extends Node {
 
 	Logging myLog = Logging.getLogger("logAlgorithm1.txt");
 
-
-    public boolean isMarried2() {
-        return isMarried2;
-    }
+	public boolean isMarriedPredicate() {
+		return marriedPredicate;
+	}
 
     public Edge getMarried_egde() {
         return married_egde;
@@ -65,6 +66,11 @@ public class MSNode extends Node {
             list.add(n.ID);
         }
         this.pointingNode = list.get(Tools.getRandomNumberGenerator().nextInt(list.size()));
+		if(Tools.getRandomNumberGenerator().nextDouble()>0.5){
+            this.marriedPredicate = false;
+        }else{
+            this.marriedPredicate = true;
+        }
         this.setColor(Color.RED);
     }
 
@@ -74,7 +80,7 @@ public class MSNode extends Node {
 	}
 	public void clearState(){
 		this.isMarried = false;
-        this.isMarried2 = false;
+        this.marriedPredicate = false;
 		this.pointingNode = -1;
 		if(this.getColor()!=Color.BLACK){
 			this.setColor(Color.BLACK);
@@ -120,17 +126,12 @@ public class MSNode extends Node {
 		}
 		return -1;
 	}
-	private int getMaxFromList(List<Integer> list){
-		Collections.sort(list);
-		return list.get(list.size()-1);
-	}
+
 	private List<Integer> getListOfUnMarriedWithGreaterID(){
-		List<Integer>list = new ArrayList<Integer>();
-		Connections conn = this.outgoingConnections;
-		Iterator<Edge> it = conn.iterator();
-		while(it.hasNext()){
+        List<Integer> list = new ArrayList<Integer>();
+		for(Iterator<Edge> it = outgoingConnections.iterator();it.hasNext();){
 			MSNode temp = (MSNode) it.next().endNode;
-			if(temp.pointingNode == -1 && temp.ID>this.ID && !temp.isMarried2){
+			if(temp.pointingNode == -1 && temp.ID>this.ID && !temp.isMarriedPredicate()){
 				list.add(temp.ID);
 			}
 		}
@@ -176,7 +177,7 @@ public class MSNode extends Node {
 		Tools.repaintGUI();
 
 	}
-	public boolean PRmarried(){
+	public boolean checkMarriedPredicate(){
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
 		while(it.hasNext()){
@@ -198,11 +199,11 @@ public class MSNode extends Node {
 	 * @return True if this rule can be activate, false otherwise
 	 */
 	public boolean updateRules(){
-        boolean flag = this.PRmarried();
-		if(this.isMarried2 != flag){
+        boolean flag = this.checkMarriedPredicate();
+		if(this.marriedPredicate != flag){
             myLog.logln("*NodeID:"+this.ID+"does update rule!! *");
             checkIfWeAreInFault();
-            this.isMarried2 = flag;
+            this.marriedPredicate = flag;
 			return true;
 		}
 		return false;
@@ -213,10 +214,9 @@ public class MSNode extends Node {
 	 */
 	public boolean marriageRule(){
 		int j;
-		if((this.isMarried2 == this.PRmarried()) && this.pointingNode == -1 && (j=this.checkNeighborForMarriage())!=-1){
+		if((this.marriedPredicate == this.checkMarriedPredicate()) && this.pointingNode == -1 && (j=this.checkNeighborForMarriage())!=-1){
             myLog.logln("**** Node:ID "+this.ID +" married with "+ j+"****");
             this.pointingNode = j;
-            checkIfWeAreInFault();
             this.isMarried = true;
             this.setColorToEdgeAndNodes(Color.GREEN, Tools.getNodeByID(j));
             return true;
@@ -229,11 +229,12 @@ public class MSNode extends Node {
 	 */
 	public boolean seductionRule(){
 		List<Integer>list;
-		if((this.isMarried2 == this.PRmarried())
+		if((this.marriedPredicate == this.checkMarriedPredicate())
                 && this.pointingNode == -1
+                && this.checkNeighborForMarriage() == -1
 				&& (list=this.getListOfUnMarriedWithGreaterID())!=null){
             myLog.logln("**Seduction rule..now NodeID: " + this.ID + " pointing to " + this.pointingNode+"**");
-            this.pointingNode = this.getMaxFromList(list);
+            this.pointingNode = Collections.max(list);
             checkIfWeAreInFault();
 			return true;
 		}
@@ -245,9 +246,9 @@ public class MSNode extends Node {
 	 */
 	public boolean abandonmentRule(){
 		MSNode temp;
-		if(this.isMarried2 == this.PRmarried() && this.pointingNode!=-1
-				&& (temp= this.getNodeByID(this.pointingNode)).pointingNode!=this.ID
-				&& (temp.isMarried2 || temp.ID <= this.ID)){
+		if(this.marriedPredicate == this.checkMarriedPredicate() && this.pointingNode!=-1
+				&& (temp = this.getNodeByID(this.pointingNode)).pointingNode!=this.ID
+				&& (temp.isMarriedPredicate() || temp.ID <= this.ID)){
             myLog.logln("**Abandonment rule for NodeID: " + this.ID + "**");
             this.pointingNode = -1;
             checkIfWeAreInFault();
@@ -283,7 +284,7 @@ public class MSNode extends Node {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		this.isMarried = this.isMarried2 = false;
+		this.isMarried = this.marriedPredicate = false;
 		this.pointingNode = -1 ;
 		this.isEligibile = true;
 		this.end_flag = false;

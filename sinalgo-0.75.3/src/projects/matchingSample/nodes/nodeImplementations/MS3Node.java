@@ -17,7 +17,7 @@ public class MS3Node extends MSNode {
 
 	Logging myLog = Logging.getLogger("logAlgorithm3.txt");
 	boolean want_to_act;
-    private final Color defaultColor = Color.PINK;
+    public final Color defaultColor = Color.PINK;
 
 
     @Override

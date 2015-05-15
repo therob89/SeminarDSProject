@@ -16,7 +16,7 @@ import sinalgo.tools.logging.Logging;
 public class MS2Node extends MSNode {
 
 	Logging myLog = Logging.getLogger("logAlgorithm2.txt");
-    private final Color defaultColor = Color.BLUE;
+	public final Color defaultColor = Color.BLUE;
 
 
     @Override
