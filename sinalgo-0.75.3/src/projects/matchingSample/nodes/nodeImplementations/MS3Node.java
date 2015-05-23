@@ -15,16 +15,16 @@ import sinalgo.tools.logging.Logging;
 
 public class MS3Node extends MSNode {
 
-	Logging myLog = Logging.getLogger("logAlgorithm3.txt");
+	//Logging myLog = Logging.getLogger("logAlgorithm3.txt");
 	boolean want_to_act;
-    public final Color defaultColor = Color.PINK;
+    public final static Color defaultColor = Color.PINK;
 
 
     @Override
 	public void init() {
 		// TODO Auto-generated method stub
 		super.init();
-		this.setColor(Color.PINK);
+		this.setColor(defaultColor);
 	}
 
 
@@ -83,7 +83,7 @@ public class MS3Node extends MSNode {
 			boolean canAct = this.allowedToAct();
 			if((this.want_to_act = (node=this.wantToEngage())!=null && canAct)){
                 checkIfWeAreInFault();
-                myLog.logln("*** MARRIAGE for Node: "+this.ID +" with node "+node.ID+"***");
+                //myLog.logln("*** MARRIAGE for Node: "+this.ID +" with node "+node.ID+"***");
                 this.pointingNode = node.ID;
                 this.isMarried = true;
                 this.setColorToEdgeAndNodes(Color.GREEN, node);
@@ -91,13 +91,13 @@ public class MS3Node extends MSNode {
             }
             if((this.want_to_act = (node = this.wantToPropose())!=null && canAct)){
                 checkIfWeAreInFault();
-                myLog.logln("** Proposing Node: "+this.ID +" to node "+node.ID+"**");
+                //myLog.logln("** Proposing Node: "+this.ID +" to node "+node.ID+"**");
                 this.pointingNode = node.ID;
                 return;
             }
             if((this.want_to_act = this.wantTODesengage() && canAct)){
                 checkIfWeAreInFault();
-                myLog.logln("* Node: "+this.ID +" does DESENGAGE!!!!!");
+                //myLog.logln("* Node: "+this.ID +" does DESENGAGE!!!!!");
                 this.pointingNode = -1;
                 if(this.isMarried){
                     this.isMarried = false;
@@ -109,14 +109,14 @@ public class MS3Node extends MSNode {
             p2 = wantToPropose()!=null;
             p3 = wantTODesengage();
             if(this.want_to_act != (p1 || p2 || p3)){
-                myLog.logln("* Node: "+this.ID +" does an UPDATE!!!!!");
+                //myLog.logln("* Node: "+this.ID +" does an UPDATE!!!!!");
                 this.want_to_act = p1 || p2 || p3;
                 return;
             }
 			this.end_flag = true;
-			myLog.logln("\t \t NodeID:"+this.ID+"cannot perform any action...so END FLAG = TRUE");
+			//myLog.logln("\t \t NodeID:"+this.ID+"cannot perform any action...so END FLAG = TRUE");
 		}else{
-			myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!..having wantToAct ="+this.want_to_act);
+			//myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!..having wantToAct ="+this.want_to_act);
 		}
 	}
 	

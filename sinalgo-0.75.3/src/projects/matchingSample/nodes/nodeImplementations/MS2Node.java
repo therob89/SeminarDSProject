@@ -15,8 +15,8 @@ import sinalgo.tools.logging.Logging;
 
 public class MS2Node extends MSNode {
 
-	Logging myLog = Logging.getLogger("logAlgorithm2.txt");
-	public final Color defaultColor = Color.BLUE;
+	//Logging myLog = Logging.getLogger("logAlgorithm2.txt");
+	public final static Color defaultColor = Color.BLUE;
 
 
     @Override
@@ -35,17 +35,17 @@ public class MS2Node extends MSNode {
                 return;
 			}
 			if(this.seductionRule()){
-				myLog.logln("NodeID:"+this.ID+"does seduction rule!!");
+				//myLog.logln("NodeID:"+this.ID+"does seduction rule!!");
 				return;
 			}
 			if(this.abandonmentRule()){
-				myLog.logln("NodeID:"+this.ID+"does abandonment rule!!");
+				//myLog.logln("NodeID:"+this.ID+"does abandonment rule!!");
 				return;
 			}
 			this.end_flag = true;
-            myLog.logln("\t \t NodeID:"+this.ID+"cannot perform any action...so END FLAG = TRUE");
+            //myLog.logln("\t \t NodeID:"+this.ID+"cannot perform any action...so END FLAG = TRUE");
         }else{
-			myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!");
+			//myLog.logln("Node: "+this.ID+"Cannot execute...Try to next round!!");
 		}
 
 	}
@@ -77,7 +77,7 @@ public class MS2Node extends MSNode {
 	public boolean matchingRule(){
 		MS2Node j;
 		if(this.pointingNode == -1 && (j=(MS2Node)Tools.getNodeByID(this.checkNeighborForMarriage()))!=null){
-            myLog.logln("*** MARRIAGE for Node: "+this.ID +" with node "+j.ID+"***");
+            //myLog.logln("*** MARRIAGE for Node: "+this.ID +" with node "+j.ID+"***");
             checkIfWeAreInFault();
             this.pointingNode = j.ID;
             this.isMarried = true;
@@ -95,7 +95,7 @@ public class MS2Node extends MSNode {
 		MS2Node n;
 		if(this.pointingNode == -1 && checkNeighborForMarriage()==-1 && (n = this.getMarriableNode())!=null){
             checkIfWeAreInFault();
-            myLog.logln("** Seduction rule for Node: "+this.ID +" to node "+n.ID+"**");
+            //myLog.logln("** Seduction rule for Node: "+this.ID +" to node "+n.ID+"**");
             this.pointingNode = n.ID;
 			return true;
 		}
@@ -109,7 +109,7 @@ public class MS2Node extends MSNode {
 	public boolean abandonmentRule(){
 		MS2Node temp;
 		if(this.pointingNode!=-1 && (temp=((MS2Node)Tools.getNodeByID(this.pointingNode))).getPointingNode()!=this.ID && temp.getPointingNode()!=-1){
-            myLog.logln("* Node: "+this.ID +" does abandonment Rule!!!!!");
+            //myLog.logln("* Node: "+this.ID +" does abandonment Rule!!!!!");
             checkIfWeAreInFault();
             this.pointingNode = -1;
 			return true;

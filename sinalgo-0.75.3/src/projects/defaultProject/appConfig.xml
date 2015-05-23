@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sinalgo>
-	<ProjectSelector windowWidth="979" windowHeight="599" lastChosenProject="matchingSample" windowPosX="301" windowPosY="93" isMaximized="false" selectedTab="1" />
-	<GUI windowWidth="1209" windowHeight="700" windowPosX="55" windowPosY="69" isMaximized="false" ControlPanelExpandSimulation="true" ControlPanelShowFullViewPanel="false" ControlPanelShowTextPanel="true" ControlPanelShowProjectControl="true" RunOperationIsLimited="false" helpWindowWidth="500" helpWindowHeight="500" helpWindowPosX="200" helpWindowPosY="200" helpWindowIsMaximized="false" />
-	<RandomSeed seedFromPreviousRun="-1213526222718111183" />
+	<ProjectSelector windowWidth="979" windowHeight="599" lastChosenProject="matchingSample" windowPosX="146" windowPosY="88" isMaximized="false" selectedTab="1" />
+	<GUI windowWidth="1053" windowHeight="712" windowPosX="92" windowPosY="37" isMaximized="false" ControlPanelExpandSimulation="true" ControlPanelShowFullViewPanel="false" ControlPanelShowTextPanel="true" ControlPanelShowProjectControl="true" RunOperationIsLimited="false" helpWindowWidth="500" helpWindowHeight="500" helpWindowPosX="200" helpWindowPosY="200" helpWindowIsMaximized="false" />
+	<RandomSeed seedFromPreviousRun="2919695890511917467" />
 	<App lastSelectedFileDirectory="" checkForUpdatesAtStartup="false" updateCheckTimeStamp="0" runCmdLineArgs="" />
-	<GenNodesDlg numNodes="40" />
+	<GenNodesDlg numNodes="10" />
 </sinalgo>
 

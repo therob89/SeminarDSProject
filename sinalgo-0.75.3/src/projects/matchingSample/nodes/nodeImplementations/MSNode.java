@@ -28,15 +28,20 @@ public class MSNode extends Node {
 
 	public boolean marriedPredicate;
     public boolean isMarried;
-    public final Color defaultColor = Color.BLACK;
+    public final static Color defaultColor = Color.BLACK;
 	public Integer pointingNode;
 	boolean isEligibile;
 	boolean isAllowed_To_Move;
 	public boolean end_flag;
 	Edge married_egde;
+	boolean fault_flag;
 	double threshold_probability = 0.5;
 
-	Logging myLog = Logging.getLogger("logAlgorithm1.txt");
+	//Logging myLog = Logging.getLogger("logAlgorithm1.txt");
+
+	public boolean isFault_flag() {
+		return fault_flag;
+	}
 
 	public boolean isMarriedPredicate() {
 		return marriedPredicate;
@@ -59,7 +64,7 @@ public class MSNode extends Node {
     }
 
     public void setFaultState(){
-        myLog.logln("Node: " + this.ID + " Faulting the state");
+        //myLog.logln("Node: " + this.ID + " Faulting the state");
         ArrayList<Integer> list = new ArrayList<Integer>();
         for(Iterator<Edge> it = this.outgoingConnections.iterator();it.hasNext();){
             Node n = it.next().endNode;
@@ -71,11 +76,12 @@ public class MSNode extends Node {
         }else{
             this.marriedPredicate = true;
         }
+		this.fault_flag = true;
         this.setColor(Color.RED);
     }
 
 	public void setThresholdProbability(double k){
-		myLog.logln("Node: "+this.ID+" Now threshold probability is: "+ k);
+		//myLog.logln("Node: "+this.ID+" Now threshold probability is: "+ k);
 		this.threshold_probability = k;
 	}
 	public void clearState(){
@@ -143,7 +149,22 @@ public class MSNode extends Node {
 
 	public void checkIfWeAreInFault(){
         if(this.getColor()==Color.RED){
-            this.setColor(defaultColor);
+            if(this.getClass() == MSNode.class){
+                setColor(MSNode.defaultColor);
+            }
+            if(this.getClass() == MS2Node.class){
+                setColor(MS2Node.defaultColor);
+            }
+            if(this.getClass() == MS3Node.class){
+                setColor(MS3Node.defaultColor);
+
+            }
+            if(this.getClass() == MS4Node.class){
+                setColor(MS4Node.defaultColor);
+
+            if(this.getClass() == MS5Node.class)
+                setColor(MS5Node.defaultColor);
+            }
             Tools.repaintGUI();
         }
     }
@@ -201,7 +222,7 @@ public class MSNode extends Node {
 	public boolean updateRules(){
         boolean flag = this.checkMarriedPredicate();
 		if(this.marriedPredicate != flag){
-            myLog.logln("*NodeID:"+this.ID+"does update rule!! *");
+            ////myLog.logln("*NodeID:"+this.ID+"does update rule!! *");
             checkIfWeAreInFault();
             this.marriedPredicate = flag;
 			return true;
@@ -215,7 +236,7 @@ public class MSNode extends Node {
 	public boolean marriageRule(){
 		int j;
 		if((this.marriedPredicate == this.checkMarriedPredicate()) && this.pointingNode == -1 && (j=this.checkNeighborForMarriage())!=-1){
-            myLog.logln("**** Node:ID "+this.ID +" married with "+ j+"****");
+            //myLog.logln("**** Node:ID "+this.ID +" married with "+ j+"****");
             this.pointingNode = j;
             this.isMarried = true;
             this.setColorToEdgeAndNodes(Color.GREEN, Tools.getNodeByID(j));
@@ -233,7 +254,7 @@ public class MSNode extends Node {
                 && this.pointingNode == -1
                 && this.checkNeighborForMarriage() == -1
 				&& (list=this.getListOfUnMarriedWithGreaterID())!=null){
-            myLog.logln("**Seduction rule..now NodeID: " + this.ID + " pointing to " + this.pointingNode+"**");
+            //myLog.logln("**Seduction rule..now NodeID: " + this.ID + " pointing to " + this.pointingNode+"**");
             this.pointingNode = Collections.max(list);
             checkIfWeAreInFault();
 			return true;
@@ -249,7 +270,7 @@ public class MSNode extends Node {
 		if(this.marriedPredicate == this.checkMarriedPredicate() && this.pointingNode!=-1
 				&& (temp = this.getNodeByID(this.pointingNode)).pointingNode!=this.ID
 				&& (temp.isMarriedPredicate() || temp.ID <= this.ID)){
-            myLog.logln("**Abandonment rule for NodeID: " + this.ID + "**");
+            //myLog.logln("**Abandonment rule for NodeID: " + this.ID + "**");
             this.pointingNode = -1;
             checkIfWeAreInFault();
             if(this.married_egde != null){
@@ -265,7 +286,7 @@ public class MSNode extends Node {
 		// TODO Auto-generated method stub
 		if(inbox.hasNext()) {
 			MSMessage m = (MSMessage) inbox.next();
-			myLog.logln("Node: "+this.ID+" has received this message "+m.getPayload());
+			//myLog.logln("Node: "+this.ID+" has received this message "+m.getPayload());
 		}
 		
 	}
@@ -273,7 +294,7 @@ public class MSNode extends Node {
 	@Override
 	public void preStep() {
 		// TODO Auto-generated method stub
-		myLog.logln("Node: "+this.ID+" PRE_STEP ");
+		//myLog.logln("Node: "+this.ID+" PRE_STEP ");
 		if(Tools.getRandomNumberGenerator().nextDouble()<=this.threshold_probability){
 			this.isAllowed_To_Move = true;
 		}else{
@@ -284,7 +305,7 @@ public class MSNode extends Node {
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		this.isMarried = this.marriedPredicate = false;
+		this.isMarried = this.marriedPredicate = this.fault_flag = false;
 		this.pointingNode = -1 ;
 		this.isEligibile = true;
 		this.end_flag = false;
@@ -295,32 +316,32 @@ public class MSNode extends Node {
 	@Override
 	public void postStep() {
 		// TODO Auto-generated method stub
-		myLog.logln("---------------------------------------------------------------------");
+		//myLog.logln("---------------------------------------------------------------------");
 		if(this.isAllowed_To_Move){
-			myLog.logln("Node: "+this.ID+"Scheduler decides that i can run");
+			//myLog.logln("Node: "+this.ID+"Scheduler decides that i can run");
 			if(this.updateRules()){
-                myLog.logln("---------------------------------------------------------------------");
+                //myLog.logln("---------------------------------------------------------------------");
                 return;
 			}
 			if(this.marriageRule()){
-				myLog.logln("NodeID:"+this.ID+"does marriage!!");
-                myLog.logln("---------------------------------------------------------------------");
+				//myLog.logln("NodeID:"+this.ID+"does marriage!!");
+                //myLog.logln("---------------------------------------------------------------------");
                 return;
 			}
 			if(this.seductionRule()){
-				myLog.logln("NodeID:"+this.ID+"does seduction rule!!");
-                myLog.logln("---------------------------------------------------------------------");
+				//myLog.logln("NodeID:"+this.ID+"does seduction rule!!");
+                //myLog.logln("---------------------------------------------------------------------");
                 return;
 			}
 			if(this.abandonmentRule()){
-				myLog.logln("NodeID:"+this.ID+"does abandonment rule!!");
-                myLog.logln("---------------------------------------------------------------------");
+				//myLog.logln("NodeID:"+this.ID+"does abandonment rule!!");
+                //myLog.logln("---------------------------------------------------------------------");
                 return;
 			}
 			this.end_flag = true;
 		}else{
-			myLog.logln("***WARN: *** Node: "+this.ID+"Scheduler doesn't allow the execution...try next round!!");
-			myLog.logln("---------------------------------------------------------------------");
+			//myLog.logln("***WARN: *** Node: "+this.ID+"Scheduler doesn't allow the execution...try next round!!");
+			//myLog.logln("---------------------------------------------------------------------");
 		}
 	}
 
@@ -331,10 +352,10 @@ public class MSNode extends Node {
 	}
 	@NodePopupMethod(menuText="Send_Message")
 	public void myPopupMethod() {
-		myLog.logln("Node:: " + this.ID + " Pressed popup menu");
+		//myLog.logln("Node:: " + this.ID + " Pressed popup menu");
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
-		myLog.logln("Pop-upMenu method for nodeID "+this.ID+" that have outgoingconnections "+this.outgoingConnections.size());
+		//myLog.logln("Pop-upMenu method for nodeID "+this.ID+" that have outgoingconnections "+this.outgoingConnections.size());
 		while(it.hasNext()){
 			MSMessage m = new MSMessage("hello from "+this.ID);
 			this.send(m, it.next().endNode);
@@ -347,7 +368,7 @@ public class MSNode extends Node {
 		this.setColor(Color.GREEN);
 		Connections conn = this.outgoingConnections;
 		Iterator<Edge> it = conn.iterator();
-		myLog.logln("Pop-upMenu method for nodeID " + this.ID + " that have outgoingconnections " + this.outgoingConnections.size());
+		//myLog.logln("Pop-upMenu method for nodeID " + this.ID + " that have outgoingconnections " + this.outgoingConnections.size());
 		while(it.hasNext()){
 			it.next().defaultColor = Color.GREEN;
 		}
